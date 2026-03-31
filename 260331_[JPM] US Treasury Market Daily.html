@@ -1,0 +1,1253 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>미국 국채 시장 일일 분석 | J.P. Morgan | 2026.03.31</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=IBM+Plex+Sans+KR:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-base:     #080b10;
+    --bg-card:     #0e1320;
+    --bg-card2:    #111827;
+    --bg-rule:     #1a2235;
+    --accent-gold: #c9a84c;
+    --accent-amber:#e8b84b;
+    --accent-blue: #4a9eff;
+    --accent-red:  #ff5c5c;
+    --accent-green:#3ecf8e;
+    --accent-mute: #5a7a9a;
+    --text-prim:   #e8edf5;
+    --text-sec:    #8ea3bb;
+    --text-mute:   #4a6278;
+    --text-label:  #c0cfe0;
+    --border:      #1e2d42;
+    --border-gold: rgba(201,168,76,0.35);
+    --glow-gold:   rgba(201,168,76,0.08);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html {
+    font-size: 15px;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--bg-base);
+    color: var(--text-prim);
+    font-family: 'IBM Plex Sans KR', sans-serif;
+    font-weight: 400;
+    line-height: 1.8;
+    overflow-x: hidden;
+  }
+
+  /* Subtle grid texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(30,45,66,0.3) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(30,45,66,0.3) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page-wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 28px 80px;
+  }
+
+  /* ── HEADER ── */
+  .report-header {
+    border-bottom: 1px solid var(--border);
+    padding: 52px 0 40px;
+    margin-bottom: 52px;
+    position: relative;
+  }
+
+  .report-header::after {
+    content: '';
+    position: absolute;
+    bottom: -1px; left: 0;
+    width: 120px; height: 2px;
+    background: var(--accent-gold);
+  }
+
+  .header-meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .source-badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    color: var(--accent-gold);
+    background: rgba(201,168,76,0.1);
+    border: 1px solid var(--border-gold);
+    padding: 4px 10px;
+    border-radius: 2px;
+    text-transform: uppercase;
+  }
+
+  .date-badge {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--text-sec);
+    letter-spacing: 0.06em;
+  }
+
+  .report-title {
+    font-family: 'Playfair Display', 'Noto Serif KR', serif;
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 700;
+    font-style: italic;
+    color: var(--text-prim);
+    line-height: 1.2;
+    margin-bottom: 14px;
+    letter-spacing: -0.01em;
+  }
+
+  .report-subtitle {
+    font-size: 14px;
+    color: var(--text-sec);
+    font-weight: 300;
+    letter-spacing: 0.02em;
+    line-height: 1.6;
+  }
+
+  /* ── EXEC SUMMARY ── */
+  .exec-summary {
+    background: var(--bg-card);
+    border: 1px solid var(--border-gold);
+    border-left: 3px solid var(--accent-gold);
+    padding: 28px 32px;
+    margin-bottom: 52px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .exec-summary::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 200px; height: 100%;
+    background: linear-gradient(90deg, transparent, var(--glow-gold));
+    pointer-events: none;
+  }
+
+  .section-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--accent-gold);
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border-gold);
+  }
+
+  .summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .summary-item {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+  }
+
+  .summary-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent-gold);
+    margin-top: 8px;
+    flex-shrink: 0;
+  }
+
+  .summary-text {
+    font-size: 13px;
+    color: var(--text-label);
+    line-height: 1.65;
+  }
+
+  .summary-text strong {
+    color: var(--text-prim);
+    font-weight: 600;
+  }
+
+  /* ── YIELD TICKER ── */
+  .yield-ticker {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
+    margin-bottom: 52px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .ticker-cell {
+    background: var(--bg-card2);
+    padding: 18px 20px;
+    position: relative;
+  }
+
+  .ticker-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--text-mute);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .ticker-value {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--text-prim);
+    margin-bottom: 6px;
+  }
+
+  .ticker-chg {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    display: flex;
+    gap: 10px;
+  }
+
+  .chg-down { color: var(--accent-green); }
+  .chg-up   { color: var(--accent-red); }
+  .chg-qtd  { color: var(--accent-amber); font-size: 10px; }
+
+  /* ── SECTION ── */
+  .section {
+    margin-bottom: 56px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 28px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+
+  .section-num {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--accent-gold);
+    letter-spacing: 0.1em;
+  }
+
+  .section-title {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-prim);
+    letter-spacing: -0.01em;
+  }
+
+  /* ── BODY TEXT ── */
+  .prose p {
+    font-size: 14px;
+    color: var(--text-label);
+    line-height: 1.9;
+    margin-bottom: 18px;
+  }
+
+  .prose p:last-child { margin-bottom: 0; }
+
+  .prose strong {
+    color: var(--text-prim);
+    font-weight: 600;
+  }
+
+  .prose em {
+    color: var(--accent-amber);
+    font-style: normal;
+  }
+
+  .inline-figure {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    color: var(--accent-blue);
+    background: rgba(74,158,255,0.08);
+    border: 1px solid rgba(74,158,255,0.2);
+    padding: 2px 8px;
+    border-radius: 2px;
+    white-space: nowrap;
+  }
+
+  /* ── CHARTS ── */
+  .chart-wrapper {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 28px;
+    margin: 32px 0;
+  }
+
+  .chart-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--text-sec);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .chart-subtitle {
+    font-size: 12px;
+    color: var(--text-mute);
+    margin-bottom: 24px;
+    font-weight: 300;
+  }
+
+  .chart-source {
+    font-size: 10px;
+    color: var(--text-mute);
+    margin-top: 14px;
+    font-family: 'IBM Plex Mono', monospace;
+    letter-spacing: 0.04em;
+  }
+
+  /* ── ATTRIBUTION TABLE ── */
+  .attr-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12.5px;
+    font-family: 'IBM Plex Mono', monospace;
+    margin: 24px 0;
+  }
+
+  .attr-table th {
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-mute);
+    text-align: left;
+    padding: 8px 14px;
+    border-bottom: 1px solid var(--border);
+    font-weight: 400;
+  }
+
+  .attr-table th:not(:first-child) { text-align: right; }
+
+  .attr-table td {
+    padding: 10px 14px;
+    color: var(--text-label);
+    border-bottom: 1px solid rgba(30,45,66,0.6);
+  }
+
+  .attr-table td:not(:first-child) { text-align: right; }
+
+  .attr-table tr.highlight td {
+    background: rgba(201,168,76,0.06);
+    color: var(--accent-amber);
+    font-weight: 500;
+  }
+
+  .attr-table tr.subhighlight td {
+    background: rgba(74,158,255,0.05);
+    color: var(--accent-blue);
+  }
+
+  /* ── DATA TABLE ── */
+  .data-table-wrap {
+    overflow-x: auto;
+    margin: 24px 0;
+    border: 1px solid var(--border);
+    border-radius: 3px;
+  }
+
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11.5px;
+    white-space: nowrap;
+  }
+
+  .data-table th {
+    background: var(--bg-rule);
+    padding: 9px 14px;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-mute);
+    text-align: right;
+    font-weight: 400;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .data-table th:first-child { text-align: left; }
+
+  .data-table td {
+    padding: 9px 14px;
+    color: var(--text-label);
+    border-bottom: 1px solid rgba(30,45,66,0.5);
+    text-align: right;
+  }
+
+  .data-table td:first-child {
+    text-align: left;
+    color: var(--text-prim);
+    font-weight: 500;
+  }
+
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr:nth-child(even) td { background: rgba(14,19,32,0.4); }
+
+  .pos { color: var(--accent-red) !important; }
+  .neg { color: var(--accent-green) !important; }
+  .neu { color: var(--text-sec) !important; }
+
+  /* ── CALLOUT ── */
+  .callout {
+    display: flex;
+    gap: 18px;
+    align-items: flex-start;
+    background: var(--bg-card);
+    border-left: 3px solid var(--accent-blue);
+    padding: 20px 24px;
+    margin: 28px 0;
+    border-radius: 0 3px 3px 0;
+  }
+
+  .callout.warn { border-left-color: var(--accent-amber); }
+  .callout.bull { border-left-color: var(--accent-green); }
+
+  .callout-icon {
+    font-size: 20px;
+    flex-shrink: 0;
+    line-height: 1;
+    margin-top: 2px;
+  }
+
+  .callout-body { flex: 1; }
+
+  .callout-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-prim);
+    margin-bottom: 6px;
+    letter-spacing: 0.04em;
+  }
+
+  .callout-text {
+    font-size: 13px;
+    color: var(--text-sec);
+    line-height: 1.75;
+  }
+
+  /* ── POSITIONING GRID ── */
+  .pos-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 2px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+    margin: 24px 0;
+  }
+
+  .pos-cell {
+    background: var(--bg-card2);
+    padding: 20px 18px;
+  }
+
+  .pos-cell-label {
+    font-size: 10px;
+    color: var(--text-mute);
+    letter-spacing: 0.08em;
+    margin-bottom: 10px;
+    line-height: 1.4;
+    text-transform: uppercase;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  .pos-cell-score {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 26px;
+    font-weight: 500;
+    margin-bottom: 8px;
+  }
+
+  .pos-cell-desc {
+    font-size: 11px;
+    color: var(--text-mute);
+    line-height: 1.5;
+  }
+
+  .score-extreme-short { color: var(--accent-red); }
+  .score-short        { color: #ff8c5a; }
+  .score-neutral      { color: var(--text-sec); }
+  .score-long         { color: var(--accent-green); }
+
+  /* ── TECH LEVEL DIAGRAM ── */
+  .tech-diagram {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 28px;
+    margin: 28px 0;
+    border-radius: 3px;
+  }
+
+  /* ── STRATEGY BLOCK ── */
+  .strategy-block {
+    background: linear-gradient(135deg, rgba(201,168,76,0.06) 0%, rgba(14,19,32,0) 60%);
+    border: 1px solid var(--border-gold);
+    padding: 32px;
+    border-radius: 3px;
+    margin: 28px 0;
+  }
+
+  .strategy-title {
+    font-family: 'Noto Serif KR', serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--accent-gold);
+    margin-bottom: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .strategy-title::before {
+    content: '';
+    width: 20px; height: 1px;
+    background: var(--accent-gold);
+  }
+
+  .strategy-rows {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .strategy-row {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .strategy-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 2px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    white-space: nowrap;
+  }
+
+  .tag-buy  { background: rgba(62,207,142,0.15); color: var(--accent-green); border: 1px solid rgba(62,207,142,0.3); }
+  .tag-watch{ background: rgba(232,184,75,0.12); color: var(--accent-amber); border: 1px solid rgba(232,184,75,0.3); }
+  .tag-risk { background: rgba(255,92,92,0.1);  color: var(--accent-red);   border: 1px solid rgba(255,92,92,0.25); }
+
+  .strategy-row-text {
+    font-size: 13px;
+    color: var(--text-label);
+    line-height: 1.7;
+  }
+
+  /* ── FOOTER ── */
+  .report-footer {
+    margin-top: 60px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    font-size: 10.5px;
+    color: var(--text-mute);
+    font-family: 'IBM Plex Mono', monospace;
+    line-height: 1.7;
+    letter-spacing: 0.02em;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    .page-wrap { padding: 0 16px 60px; }
+    .yield-ticker { grid-template-columns: repeat(2, 1fr); }
+    .summary-grid { grid-template-columns: 1fr; }
+    .pos-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- HEADER -->
+  <header class="report-header">
+    <div class="header-meta">
+      <span class="source-badge">J.P. Morgan · Global Markets Strategy</span>
+      <span class="date-badge">2026 / 03 / 31</span>
+    </div>
+    <h1 class="report-title">미국 국채 시장 일일 분석</h1>
+    <p class="report-subtitle">US Treasury Market Daily — 중동 지정학적 리스크와 Fed 기대 재조정, 2년물 롱 유지 권고</p>
+  </header>
+
+  <!-- YIELD TICKER -->
+  <div class="yield-ticker">
+    <div class="ticker-cell">
+      <div class="ticker-label">2Y Treasury</div>
+      <div class="ticker-value">3.80%</div>
+      <div class="ticker-chg">
+        <span class="chg-down">▼ 2.9bp</span>
+        <span class="chg-qtd pos">QTD +33bp</span>
+      </div>
+    </div>
+    <div class="ticker-cell">
+      <div class="ticker-label">5Y Treasury</div>
+      <div class="ticker-value">3.94%</div>
+      <div class="ticker-chg">
+        <span class="chg-down">▼ 3.5bp</span>
+        <span class="chg-qtd pos">QTD +23bp</span>
+      </div>
+    </div>
+    <div class="ticker-cell">
+      <div class="ticker-label">10Y Treasury</div>
+      <div class="ticker-value">4.31%</div>
+      <div class="ticker-chg">
+        <span class="chg-down">▼ 3.2bp</span>
+        <span class="chg-qtd pos">QTD +16bp</span>
+      </div>
+    </div>
+    <div class="ticker-cell">
+      <div class="ticker-label">30Y Treasury</div>
+      <div class="ticker-value">4.89%</div>
+      <div class="ticker-chg">
+        <span class="chg-down">▼ 1.4bp</span>
+        <span class="chg-qtd pos">QTD +6bp</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXEC SUMMARY -->
+  <div class="exec-summary">
+    <div class="section-label">핵심 요약</div>
+    <div class="summary-grid">
+      <div class="summary-item">
+        <div class="summary-dot"></div>
+        <div class="summary-text"><strong>수익률 하락:</strong> 중간 만기 섹터 강세 속 전 구간 2–4bp 하락. 이란 분쟁 종결 가능성 헤드라인이 촉매.</div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-dot"></div>
+        <div class="summary-text"><strong>분쟁 이후 누적 상승:</strong> 갈등 발발 1개월간 25–40bp 급등, 공정가치 프레임워크 기준 대부분 펀더멘털로 설명 가능.</div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-dot"></div>
+        <div class="summary-text"><strong>주요 드라이버:</strong> 1y1y OIS가 한 달 만에 56bp 급등—Fed 긴축 기대 재조정이 10년물 상승의 핵심 원인.</div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-dot"></div>
+        <div class="summary-text"><strong>포지션 권고:</strong> 유가 $125/bbl 접근 시 Fed 비대칭적 완화 전환 리스크 → <strong>2년물 국채 롱 유지</strong>.</div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-dot"></div>
+        <div class="summary-text"><strong>고용 냉각 신호:</strong> JOLTS 고용률 3.4%→3.1%, Conference Board 노동시장 스프레드 5.7%로 하락. 실업률 4.5% 상향 리스크.</div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-dot"></div>
+        <div class="summary-text"><strong>기술적 지지:</strong> 2년물 4.02–4.11% 지지선 반등 유효, 근거리 바닥은 3.60–3.65% (50·200일 이평, 피보나치 61.8%).</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 1: MARKET CONTEXT -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <h2 class="section-title">시장 배경 및 당일 흐름</h2>
+    </div>
+
+    <div class="prose">
+      <p>3월 31일 미국 국채 시장은 지정학적 불확실성이 일시적으로 완화되는 가운데 전 구간 수익률이 2–4bp 하락하며 마감했다. 중간 만기 구간, 특히 5년물이 가장 큰 폭의 하락을 기록하며 상대적 강세를 보였는데, 이는 이란 분쟁 관련 헤드라인이 혼재된 가운데서도 종결 가능성에 무게가 실리면서 안전자산 해소 심리가 작동한 결과로 풀이된다. 구체적으로는 트럼프 대통령이 호르무즈 해협을 재개방하지 않은 채로 이란에 대한 군사 작전을 종료하는 방안을 검토 중이라는 보도가 나왔고, 이란 대통령 역시 협상 종결에 대한 의지를 표명하면서 갈등 해소에 대한 기대감이 시장에 반영되었다.</p>
+
+      <p>지정학 요인에 더해 실물경제 데이터도 채권 강세에 힘을 보탰다. 2월 JOLTS 보고서에서 고용률(hiring rate)이 3.4%에서 3.1%로 하락하며 이번 사이클 최저치를 경신했다. 이는 단순한 구인 수 증감이 아닌, <strong>실제 고용 창출 속도</strong>가 둔화되고 있음을 의미한다. Conference Board 소비자 신뢰도 조사에서는 노동시장 스프레드(일자리가 충분하다는 응답 비율 - 일자리를 찾기 어렵다는 응답 비율)가 2월 잠정치 7.4%에서 5.7%로 하향 수정된 뒤 3월에도 5.8%에 머물렀다. J.P. Morgan 이코노미스트는 이 지표 흐름이 실업률 4.5% 상승 리스크를 실증적으로 뒷받침한다고 평가했다. 고용시장 냉각 신호는 Fed의 정책 완화 여지를 열어두는 방향으로 작용하며, 단기 국채 수요를 지지하는 구조적 요인이 된다.</p>
+
+      <p>오늘 움직임만 놓고 보면 수치는 크지 않다. 그러나 이 하루는 한 달간의 급격한 금리 상승 흐름이 전환점에 놓여 있음을 시사하는 시그널로 해석해야 한다. J.P. Morgan은 이 보고서에서 분쟁 시작 이후 1개월간의 금리 급등 전체를 되짚으며, 향후 방향성 판단의 근거를 제시하고 있다.</p>
+    </div>
+  </section>
+
+  <!-- SECTION 2: ATTRIBUTION ANALYSIS -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <h2 class="section-title">10년물 금리 급등 요인 분해</h2>
+    </div>
+
+    <div class="prose">
+      <p>중동 분쟁이 시작된 2월 27일 이후 3월 31일까지 10년물 국채 수익률은 <em>35bp</em> 상승했다. J.P. Morgan의 공정가치(fair-value) 회귀 모형(R² = 98.0%)은 이 기간 적정 상승폭을 30bp로 추정하는데, 실제치가 이를 5bp 상회한 데 그쳤다는 것은 펀더멘털로 상당 부분 설명이 가능한 움직임임을 의미한다. 다시 말해, 이번 금리 급등이 공황 성격의 오버슈팅이라기보다 경제 기초 여건의 변화를 반영한 합리적 재조정에 가깝다는 것이다.</p>
+
+      <p>가장 결정적인 드라이버는 <strong>Fed 정책 기대의 매파적 재조정</strong>이었다. 단기 금리 기대를 대리하는 1y1y OIS 금리가 한 달 만에 56bp 급등하며 모형 내 +32bp 상승 기여를 이끌었다. 이는 분쟁으로 인한 유가 급등이 인플레이션 우려를 자극하고, 시장이 Fed의 금리 인하 일정을 뒤로 미루는 방향으로 기대를 급격히 수정했음을 보여준다. 반면 물가 기대(5y5y TIPS 브레이크이븐)는 -7bp 하락하며 오히려 금리를 소폭 낮추는 방향으로 작용했고, Fed 대차대조표 변수와 관세 더미는 영향이 미미했다.</p>
+
+      <p>또한 주목할 부분은 <strong>평균 회귀 효과</strong>다. 2월 27일 시점에 10년물은 모형 적정값 대비 14bp 낮게 거래되고 있었는데, 이 괴리가 이번 금리 상승의 추가 연료 역할을 했다. 3월 31일 현재 괴리는 9bp로 축소됐다. 이 격차가 여전히 존재한다는 것은 추가적인 상방 압력의 씨앗이 완전히 제거되지 않았음을 암시하지만, 그 크기가 줄었다는 점에서 극단적인 추가 상승보다는 안정화 국면 진입 가능성에 더 무게가 실린다.</p>
+    </div>
+
+    <!-- ATTRIBUTION WATERFALL CHART -->
+    <div class="chart-wrapper">
+      <div class="chart-title">Figure 1 — 10년물 금리 변화 요인 분해</div>
+      <div class="chart-subtitle">2026.02.27 → 2026.03.31 · Attribution Analysis (bp)</div>
+      <svg viewBox="0 0 820 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+        <defs>
+          <linearGradient id="barGold" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#c9a84c"/>
+            <stop offset="100%" stop-color="#a07030"/>
+          </linearGradient>
+          <linearGradient id="barBlue" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#4a9eff"/>
+            <stop offset="100%" stop-color="#2060c0"/>
+          </linearGradient>
+          <linearGradient id="barRed" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#ff5c5c"/>
+            <stop offset="100%" stop-color="#c03030"/>
+          </linearGradient>
+          <linearGradient id="barGreen" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#3ecf8e"/>
+            <stop offset="100%" stop-color="#209060"/>
+          </linearGradient>
+        </defs>
+
+        <!-- Y axis labels -->
+        <text x="50" y="30" fill="#4a6278" font-size="9" font-family="IBM Plex Mono" text-anchor="end">+40bp</text>
+        <text x="50" y="70" fill="#4a6278" font-size="9" font-family="IBM Plex Mono" text-anchor="end">+30bp</text>
+        <text x="50" y="110" fill="#4a6278" font-size="9" font-family="IBM Plex Mono" text-anchor="end">+20bp</text>
+        <text x="50" y="150" fill="#4a6278" font-size="9" font-family="IBM Plex Mono" text-anchor="end">+10bp</text>
+        <text x="50" y="190" fill="#4a6278" font-size="9" font-family="IBM Plex Mono" text-anchor="end">0bp</text>
+        <text x="50" y="230" fill="#4a6278" font-size="9" font-family="IBM Plex Mono" text-anchor="end">-10bp</text>
+
+        <!-- Grid lines -->
+        <line x1="58" y1="28" x2="820" y2="28" stroke="#1e2d42" stroke-width="0.5"/>
+        <line x1="58" y1="68" x2="820" y2="68" stroke="#1e2d42" stroke-width="0.5"/>
+        <line x1="58" y1="108" x2="820" y2="108" stroke="#1e2d42" stroke-width="0.5"/>
+        <line x1="58" y1="148" x2="820" y2="148" stroke="#1e2d42" stroke-width="0.5"/>
+        <line x1="58" y1="188" x2="820" y2="188" stroke="#1e2d42" stroke-width="1"/>
+        <line x1="58" y1="228" x2="820" y2="228" stroke="#1e2d42" stroke-width="0.5"/>
+
+        <!-- Bars: baseline y=188, scale=4px per bp -->
+        <!-- Intercept: +8.84bp → height=35.4, y=152.6 -->
+        <rect x="80" y="152" width="80" height="36" fill="url(#barGold)" rx="2"/>
+        <text x="120" y="146" fill="#c9a84c" font-size="10" font-family="IBM Plex Mono" text-anchor="middle">+8.8</text>
+        <text x="120" y="268" fill="#8ea3bb" font-size="9" font-family="IBM Plex Mono" text-anchor="middle">절편</text>
+
+        <!-- 1y1y OIS: +32bp → height=128, y=60 -->
+        <rect x="190" y="60" width="80" height="128" fill="url(#barRed)" rx="2"/>
+        <text x="230" y="54" fill="#ff5c5c" font-size="10" font-family="IBM Plex Mono" text-anchor="middle">+32</text>
+        <text x="230" y="268" fill="#8ea3bb" font-size="9" font-family="IBM Plex Mono" text-anchor="middle">1y1y OIS</text>
+        <text x="230" y="278" fill="#4a6278" font-size="8" font-family="IBM Plex Mono" text-anchor="middle">(Fed 기대)</text>
+
+        <!-- JPM FRI: +1bp → height=4, y=184 -->
+        <rect x="300" y="184" width="80" height="4" fill="url(#barGold)" rx="1"/>
+        <text x="340" y="178" fill="#c9a84c" font-size="10" font-family="IBM Plex Mono" text-anchor="middle">+1</text>
+        <text x="340" y="268" fill="#8ea3bb" font-size="9" font-family="IBM Plex Mono" text-anchor="middle">JPM FRI</text>
+
+        <!-- TIPS B/E: -2bp → bar below zero, height=8, y=188 -->
+        <rect x="410" y="188" width="80" height="8" fill="url(#barGreen)" rx="1"/>
+        <text x="450" y="206" fill="#3ecf8e" font-size="10" font-family="IBM Plex Mono" text-anchor="middle">-2</text>
+        <text x="450" y="268" fill="#8ea3bb" font-size="9" font-family="IBM Plex Mono" text-anchor="middle">TIPS B/E</text>
+
+        <!-- Fed B/S: -1bp -->
+        <rect x="520" y="188" width="80" height="4" fill="url(#barGreen)" rx="1"/>
+        <text x="560" y="204" fill="#3ecf8e" font-size="10" font-family="IBM Plex Mono" text-anchor="middle">-1</text>
+        <text x="560" y="268" fill="#8ea3bb" font-size="9" font-family="IBM Plex Mono" text-anchor="middle">Fed B/S</text>
+
+        <!-- Total expected: 30bp -->
+        <rect x="630" y="68" width="80" height="120" fill="none" stroke="#c9a84c" stroke-width="2" stroke-dasharray="4,3" rx="2"/>
+        <text x="670" y="62" fill="#c9a84c" font-size="10" font-family="IBM Plex Mono" text-anchor="middle">예측 +30</text>
+        <text x="670" y="268" fill="#c9a84c" font-size="9" font-family="IBM Plex Mono" text-anchor="middle">모형 예측</text>
+
+        <!-- Actual: 35bp -->
+        <rect x="720" y="48" width="80" height="140" fill="url(#barBlue)" rx="2" opacity="0.8"/>
+        <text x="760" y="42" fill="#4a9eff" font-size="10" font-family="IBM Plex Mono" text-anchor="middle">실제 +35</text>
+        <text x="760" y="268" fill="#4a9eff" font-size="9" font-family="IBM Plex Mono" text-anchor="middle">실제 변화</text>
+      </svg>
+      <div class="chart-source">Source: J.P. Morgan, US Treasury, Federal Reserve Bank of New York · R² = 98.0%</div>
+    </div>
+
+    <!-- ATTRIBUTION TABLE -->
+    <table class="attr-table">
+      <thead>
+        <tr>
+          <th>변수</th>
+          <th>현재값</th>
+          <th>MTD 변화</th>
+          <th>계수</th>
+          <th>기여도 (bp)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>절편 (Intercept)</td>
+          <td>—</td>
+          <td>—</td>
+          <td>—</td>
+          <td>+8.84</td>
+        </tr>
+        <tr class="highlight">
+          <td>1y1y OIS 금리 (Fed 기대)</td>
+          <td>3.49%</td>
+          <td>+0.56%p</td>
+          <td>0.568</td>
+          <td>+32</td>
+        </tr>
+        <tr>
+          <td>JPM US FRI</td>
+          <td>92.6%pt</td>
+          <td>-0.2</td>
+          <td>-0.05</td>
+          <td>+1</td>
+        </tr>
+        <tr>
+          <td>5y5y TIPS 브레이크이븐</td>
+          <td>1.88%</td>
+          <td>-0.07</td>
+          <td>0.219</td>
+          <td>-2</td>
+        </tr>
+        <tr>
+          <td>Fed 대차대조표 (GDP 비)</td>
+          <td>21.0%</td>
+          <td>+0.1</td>
+          <td>-0.112</td>
+          <td>-1</td>
+        </tr>
+        <tr>
+          <td>관세 더미</td>
+          <td>1.0</td>
+          <td>0.0</td>
+          <td>-0.078</td>
+          <td>0</td>
+        </tr>
+        <tr class="highlight">
+          <td>모형 예측치 합계</td>
+          <td></td><td></td><td></td>
+          <td><strong>+30bp</strong></td>
+        </tr>
+        <tr class="subhighlight">
+          <td>실제 변화</td>
+          <td></td><td></td><td></td>
+          <td><strong>+35bp</strong></td>
+        </tr>
+        <tr>
+          <td>잔차 (2/27 기준 저평가)</td>
+          <td></td><td></td><td></td>
+          <td>-14bp</td>
+        </tr>
+        <tr>
+          <td>잔차 (3/31 기준)</td>
+          <td></td><td></td><td></td>
+          <td>-9bp</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- SECTION 3: YIELD TABLE -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <h2 class="section-title">수익률 현황 및 커브 구조</h2>
+    </div>
+
+    <div class="prose">
+      <p>2분기 첫 날의 마감 기준으로 미 국채 수익률 곡선 전체를 조망하면, 분기 중(QTD) 단기 구간의 상승 폭이 중·장기 대비 훨씬 크다는 점이 두드러진다. 2년물은 분기 중 33bp 급등하며 현재 3.80%에 위치해 있는 반면, 10년물은 같은 기간 15.7bp 오른 4.31%, 30년물은 6.1bp 상승에 그친 4.89%다. 이처럼 단기 금리가 장기 금리보다 훨씬 더 크게 반응했다는 것은 시장이 단기적인 Fed 정책 경로 변화에 더 민감하게 반응하고 있음을 보여준다. 다시 말해, 이번 금리 상승의 본질은 장기 인플레이션 우려보다 <strong>근거리 Fed 경로의 매파적 재조정</strong>에 있다.</p>
+
+      <p>수익률 곡선 기울기 측면에서는 분기 중 전반적인 평탄화(flattening)가 진행되었다. 2년·10년 스프레드(2s/10s)는 분기 중 -17.3bp 좁아져 현재 51.2bp에 머물고 있다. 이는 인플레이션 공포보다 성장 둔화 및 단기 긴축 우려가 복합적으로 작용하는 상황에서 나타나는 전형적인 패턴이다. 만약 이란 분쟁이 해소되고 유가가 안정된다면 단기 금리가 더 큰 폭으로 하락하면서 커브가 스티프닝(steepening)될 가능성이 있다.</p>
+
+      <p>인플레이션 기대(TIPS 브레이크이븐)를 보면 5년물 BEI가 260.7bp로 분기 중 33.4bp 급등한 것이 눈에 띈다. 이는 에너지 가격 충격이 단기 물가 기대에 상당한 영향을 미쳤음을 뜻한다. 반면 10년·30년 BEI는 각각 231bp, 218bp로 분기 중 변화가 제한적이어서, 시장이 중기적 인플레이션 탈착(unanchoring)까지는 우려하지 않고 있음을 시사한다.</p>
+    </div>
+
+    <!-- YIELD CURVE SVG CHART -->
+    <div class="chart-wrapper">
+      <div class="chart-title">수익률 곡선 스냅샷 — 3월 31일 마감 기준</div>
+      <div class="chart-subtitle">만기별 수익률 및 분기 누적 변화 (bp)</div>
+      <svg viewBox="0 0 820 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+        <defs>
+          <linearGradient id="curveGrad" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#4a9eff"/>
+            <stop offset="100%" stop-color="#c9a84c"/>
+          </linearGradient>
+        </defs>
+        <!-- Grid -->
+        <line x1="60" y1="20" x2="60" y2="220" stroke="#1e2d42" stroke-width="1"/>
+        <line x1="60" y1="220" x2="800" y2="220" stroke="#1e2d42" stroke-width="1"/>
+
+        <!-- Y axis ticks: 3.5% to 5.0%, range 1.5%, scale: 200px/1.5% = 133.3px/% -->
+        <!-- 3.5%=220, 4.0%=153.3, 4.5%=86.7, 5.0%=20 -->
+        <text x="55" y="224" fill="#4a6278" font-size="9" font-family="IBM Plex Mono" text-anchor="end">3.50</text>
+        <text x="55" y="158" fill="#4a6278" font-size="9" font-family="IBM Plex Mono" text-anchor="end">4.00</text>
+        <text x="55" y="91" fill="#4a6278" font-size="9" font-family="IBM Plex Mono" text-anchor="end">4.50</text>
+        <text x="55" y="24" fill="#4a6278" font-size="9" font-family="IBM Plex Mono" text-anchor="end">5.00</text>
+        <line x1="60" y1="157" x2="800" y2="157" stroke="#1e2d42" stroke-width="0.4" stroke-dasharray="3,4"/>
+        <line x1="60" y1="90" x2="800" y2="90" stroke="#1e2d42" stroke-width="0.4" stroke-dasharray="3,4"/>
+
+        <!-- Points: 2Y=3.80→y=186.7, 5Y=3.94→y=168, 10Y=4.31→y=119.3, 30Y=4.89→y=41.3 -->
+        <!-- x positions: 2Y=130, 5Y=280, 10Y=500, 30Y=760 -->
+        <polyline points="130,187 280,168 500,119 760,41" fill="none" stroke="url(#curveGrad)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+
+        <!-- Area fill -->
+        <polygon points="130,187 280,168 500,119 760,41 760,220 130,220" fill="url(#curveGrad)" opacity="0.06"/>
+
+        <!-- Data points -->
+        <circle cx="130" cy="187" r="5" fill="#4a9eff" stroke="#0e1320" stroke-width="2"/>
+        <circle cx="280" cy="168" r="5" fill="#6ab0ff" stroke="#0e1320" stroke-width="2"/>
+        <circle cx="500" cy="119" r="5" fill="#a0c060" stroke="#0e1320" stroke-width="2"/>
+        <circle cx="760" cy="41"  r="5" fill="#c9a84c" stroke="#0e1320" stroke-width="2"/>
+
+        <!-- Labels -->
+        <text x="130" y="176" fill="#e8edf5" font-size="11" font-family="IBM Plex Mono" text-anchor="middle" font-weight="500">3.80%</text>
+        <text x="130" y="242" fill="#8ea3bb" font-size="9"  font-family="IBM Plex Mono" text-anchor="middle">2Y</text>
+        <text x="280" y="157" fill="#e8edf5" font-size="11" font-family="IBM Plex Mono" text-anchor="middle" font-weight="500">3.94%</text>
+        <text x="280" y="242" fill="#8ea3bb" font-size="9"  font-family="IBM Plex Mono" text-anchor="middle">5Y</text>
+        <text x="500" y="108" fill="#e8edf5" font-size="11" font-family="IBM Plex Mono" text-anchor="middle" font-weight="500">4.31%</text>
+        <text x="500" y="242" fill="#8ea3bb" font-size="9"  font-family="IBM Plex Mono" text-anchor="middle">10Y</text>
+        <text x="760" y="30"  fill="#e8edf5" font-size="11" font-family="IBM Plex Mono" text-anchor="middle" font-weight="500">4.89%</text>
+        <text x="760" y="242" fill="#8ea3bb" font-size="9"  font-family="IBM Plex Mono" text-anchor="middle">30Y</text>
+
+        <!-- QTD change badges -->
+        <rect x="90"  y="195" width="80" height="16" rx="2" fill="rgba(255,92,92,0.15)"/>
+        <text x="130" y="206" fill="#ff5c5c" font-size="9" font-family="IBM Plex Mono" text-anchor="middle">QTD +33.0bp</text>
+        <rect x="240" y="175" width="80" height="16" rx="2" fill="rgba(255,92,92,0.15)"/>
+        <text x="280" y="186" fill="#ff5c5c" font-size="9" font-family="IBM Plex Mono" text-anchor="middle">QTD +23.4bp</text>
+        <rect x="460" y="127" width="80" height="16" rx="2" fill="rgba(255,140,80,0.15)"/>
+        <text x="500" y="138" fill="#ff8c50" font-size="9" font-family="IBM Plex Mono" text-anchor="middle">QTD +15.7bp</text>
+        <rect x="720" y="49" width="80" height="16" rx="2" fill="rgba(201,168,76,0.15)"/>
+        <text x="760" y="60"  fill="#c9a84c" font-size="9" font-family="IBM Plex Mono" text-anchor="middle">QTD +6.1bp</text>
+
+        <!-- Y label -->
+        <text x="15" y="130" fill="#4a6278" font-size="9" font-family="IBM Plex Mono" text-anchor="middle" transform="rotate(-90,15,130)">수익률 (%)</text>
+      </svg>
+      <div class="chart-source">Source: J.P. Morgan · 2026.03.31 마감 기준</div>
+    </div>
+
+    <!-- DATA TABLE -->
+    <div class="data-table-wrap">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>만기</th>
+            <th>현재 (%)</th>
+            <th>1일 변화</th>
+            <th>WTD</th>
+            <th>QTD/YTD</th>
+            <th>3M 평균</th>
+            <th>3M 저점</th>
+            <th>3M 고점</th>
+            <th>3M 백분위</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>2년</td><td>3.80</td><td class="neg">-2.9</td><td class="neg">-11.7</td><td class="pos">+33.0</td><td>3.58</td><td>3.38</td><td>3.98</td><td>69%</td></tr>
+          <tr><td>5년</td><td>3.94</td><td class="neg">-3.5</td><td class="neg">-12.7</td><td class="pos">+23.4</td><td>3.77</td><td>3.51</td><td>4.09</td><td>74%</td></tr>
+          <tr><td>10년</td><td>4.31</td><td class="neg">-3.2</td><td class="neg">-12.9</td><td class="pos">+15.7</td><td>4.19</td><td>3.96</td><td>4.44</td><td>73%</td></tr>
+          <tr><td>30년</td><td>4.89</td><td class="neg">-1.4</td><td class="neg">-9.1</td><td class="pos">+6.1</td><td>4.82</td><td>4.63</td><td>4.98</td><td>74%</td></tr>
+          <tr><td>2s/10s</td><td>51.2bp</td><td class="neg">-0.3</td><td class="neg">-1.2</td><td class="neg">-17.3</td><td>60.7</td><td>43.2</td><td>72.7</td><td>27%</td></tr>
+          <tr><td>5Y TIPS B/E</td><td>260.7bp</td><td class="neg">-2.5</td><td class="neg">-1.6</td><td class="pos">+33.4</td><td>250.7</td><td>229.1</td><td>271.7</td><td>74%</td></tr>
+          <tr><td>10Y TIPS B/E</td><td>231.0bp</td><td class="neg">-0.8</td><td class="neg">-0.7</td><td class="pos">+6.3</td><td>232.0</td><td>226.1</td><td>241.2</td><td>32%</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- SECTION 4: TECHNICAL ANALYSIS -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <h2 class="section-title">기술적 분석 — 2년물 지지 구조</h2>
+    </div>
+
+    <div class="prose">
+      <p>기술적 분석 관점에서 2년물 국채는 3월 중 매도세가 정점을 찍은 뒤 중기 지지 구간에서 반등을 이어가고 있다. 핵심 지지 구간은 <em>4.02–4.11%</em>로, 이 레벨은 단순한 이전 고점 수준이 아니라 다층적 기술적 요인이 집결된 구간이다. 2024–2025년 차트 변곡점이 위치하고, 2025년 전반기 저가 범위의 하단선이 지나며, 피보나치 되돌림 수준도 해당 구간에 형성되어 있다. 이 세 가지 요인이 중첩된다는 것은 해당 레벨에서의 지지력이 단순한 심리적 지지를 훨씬 넘어선다는 의미다.</p>
+
+      <p>단기적으로 J.P. Morgan의 기술적 분석팀은 3월 28일 개장 시 형성된 <em>3.91% 불갭(bull gap)</em>이 전술적 지지선 역할을 할 것으로 본다. 이 수준이 유지되는 한 단기 추가 하락보다 반등 지속에 무게를 두는 것이 합리적이다. 반면 근거리 하단으로는 <em>3.60–3.65% 구간</em>이 강고한 바닥을 형성할 것으로 예상된다. 이 구간은 9월~2월 박스권 지지선이자, 50일 및 200일 이동평균선이 위치하며, 3월 매도세의 61.8% 피보나치 되돌림 수준이 겹치는 다중 지지 구간이다. 이 세 지표가 같은 레벨에 집중된다는 것은 기술적 관점에서 이 수준 아래로 금리가 쉽게 내려가기 어려움을 강하게 시사한다.</p>
+
+      <p>결론적으로, 2년물 금리의 단기 방향성은 <strong>3.60–3.65%(하방 지지) ~ 4.02–4.11%(상방 저항)</strong>의 범위 내 거래를 기본 시나리오로 설정해야 한다. 모멘텀 지표의 다이버전스 시그널이 반등을 지지하고 있는 만큼, 이 범위 내에서는 듀레이션 롱 포지션을 유지하는 것이 JPM의 권고다.</p>
+    </div>
+
+    <!-- TECHNICAL LEVEL DIAGRAM -->
+    <div class="tech-diagram">
+      <div class="chart-title">2년물 주요 기술적 레벨</div>
+      <div class="chart-subtitle" style="margin-bottom:20px;">수익률 상승 = 하향, 수익률 하락 = 상향으로 표시</div>
+      <svg viewBox="0 0 820 320" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+        <!-- Background bands -->
+        <!-- Resistance zone 4.02-4.11: maps y= for 4.11→high, 4.02→lower -->
+        <!-- Scale: 3.50%=270, 4.20%=30, range 0.70%=240px, 1%=342px -->
+        <!-- y = 270 - (yield - 3.50) * 342 -->
+        <!-- 3.60 = 270-34.2=235.8, 3.65=252.9, 3.80=212.4, 3.91=176.2, 4.02=140, 4.11=109.4, 4.20=30-->
+
+        <!-- Resistance zone 4.02-4.11 -->
+        <rect x="60" y="109" width="700" height="31" fill="rgba(255,92,92,0.08)" rx="1"/>
+        <line x1="60" y1="109" x2="760" y2="109" stroke="#ff5c5c" stroke-width="1" stroke-dasharray="5,3" opacity="0.6"/>
+        <line x1="60" y1="140" x2="760" y2="140" stroke="#ff5c5c" stroke-width="1" stroke-dasharray="5,3" opacity="0.4"/>
+        <text x="770" y="119" fill="#ff5c5c" font-size="9" font-family="IBM Plex Mono">4.11%</text>
+        <text x="770" y="145" fill="#ff5c5c" font-size="9" font-family="IBM Plex Mono">4.02%</text>
+        <text x="62" y="128" fill="#ff5c5c" font-size="10" font-family="IBM Plex Mono" opacity="0.7">▲ 상방 저항 구간 (2024-25 차트 변곡점)</text>
+
+        <!-- Floor zone 3.60-3.65 -->
+        <rect x="60" y="236" width="700" height="18" fill="rgba(62,207,142,0.08)" rx="1"/>
+        <line x1="60" y1="236" x2="760" y2="236" stroke="#3ecf8e" stroke-width="1" stroke-dasharray="5,3" opacity="0.6"/>
+        <line x1="60" y1="254" x2="760" y2="254" stroke="#3ecf8e" stroke-width="1" stroke-dasharray="5,3" opacity="0.4"/>
+        <text x="770" y="246" fill="#3ecf8e" font-size="9" font-family="IBM Plex Mono">3.60%</text>
+        <text x="770" y="258" fill="#3ecf8e" font-size="9" font-family="IBM Plex Mono">3.65%</text>
+        <text x="62" y="248" fill="#3ecf8e" font-size="10" font-family="IBM Plex Mono" opacity="0.7">▼ 하방 바닥 구간 (50d/200d MA, Fib 61.8%)</text>
+
+        <!-- Current yield: 3.80% → y=212.4 -->
+        <line x1="60" y1="212" x2="760" y2="212" stroke="#4a9eff" stroke-width="2"/>
+        <circle cx="420" cy="212" r="6" fill="#4a9eff" stroke="#0e1320" stroke-width="2"/>
+        <text x="770" y="217" fill="#4a9eff" font-size="10" font-family="IBM Plex Mono" font-weight="500">3.80% ◀ 현재</text>
+
+        <!-- Bull gap: 3.91% → y=176.2 -->
+        <line x1="60" y1="176" x2="760" y2="176" stroke="#c9a84c" stroke-width="1.5" stroke-dasharray="6,3"/>
+        <text x="770" y="181" fill="#c9a84c" font-size="9" font-family="IBM Plex Mono">3.91% 불갭</text>
+
+        <!-- Labels for annotations -->
+        <text x="63" y="300" fill="#4a6278" font-size="9" font-family="IBM Plex Mono">낮은 수익률 (가격 상승)</text>
+        <text x="630" y="300" fill="#4a6278" font-size="9" font-family="IBM Plex Mono">높은 수익률 (가격 하락)</text>
+
+        <!-- Arrows -->
+        <text x="720" y="300" fill="#4a6278" font-size="16">→</text>
+        <text x="60" y="300" fill="#4a6278" font-size="16">←</text>
+      </svg>
+      <div class="chart-source">Source: J.P. Morgan, Bloomberg Finance L.P.</div>
+    </div>
+  </section>
+
+  <!-- SECTION 5: POSITIONING -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <h2 class="section-title">포지셔닝 분석 — 투자자 군별 노출도</h2>
+    </div>
+
+    <div class="prose">
+      <p>금리 방향성 판단에서 포지셔닝 데이터는 가격 이상의 정보를 제공한다. 현재 시장에서 가장 주목해야 할 신호는 <strong>CFTC 비상업적 포지션의 극단적 숏</strong>이다. SOFR 및 국채선물 넷롱 포지션의 1년 Z-스코어가 2.06으로, 이는 지난 1년간 데이터 기준으로 최상위 수준의 숏 포지션 집중을 의미한다. 헤지펀드·투기적 트레이더 군이 이 정도 수준으로 매도에 집중해 있다는 것은, 뉴스 흐름이 긍정적으로 전환될 경우 숏 커버링(short covering)에 의한 급격한 가격 반등 가능성을 높이는 '역설적 지지 요인'이 된다.</p>
+
+      <p>반면 J.P. Morgan 국채 클라이언트 서베이(TCS)는 훨씬 중립에 가깝다. 순롱(net long) 포지션의 Z-스코어는 0.21로 중립이지만, 4주 이동평균 서베이 인덱스는 -0.54로 소폭 숏에 기울어 있다. 이는 자산운용사와 리얼머니 투자자들이 극단적 포지셔닝보다는 신중한 관망 자세를 유지하고 있음을 시사한다. 액티브 코어 채권펀드 매니저들의 10년물 듀레이션 익스포저 Z-스코어는 -1.47로, 지난 1년 기준 상당히 낮은 수준의 듀레이션을 보유하고 있다. 이는 금리 하락 시 성과 방어를 위한 재진입 매수 수요가 잠재적으로 상당히 축적되어 있음을 의미한다.</p>
+
+      <p>CTA(추세추종형 펀드)의 10년물 노출도는 Z-스코어 -0.54로 소폭 숏이며, 매크로 헤지펀드 역시 -0.87로 방향성 시각이 부정적으로 기울어 있다. 한편 T-노트 달러 가중 Put/Call 비율의 Z-스코어가 1.09로 상승해 있어, 옵션 시장에서의 하방 헤지 수요도 적지 않은 상황이다. 전반적으로 포지셔닝 프레임워크는 투기 세력의 숏 집중과 리얼머니의 낮은 듀레이션이라는 <strong>'반등 시 급격한 롤오버' 가능성</strong>을 내포한 구조를 보여준다.</p>
+    </div>
+
+    <!-- Z-SCORE VISUALIZATION -->
+    <div class="chart-wrapper">
+      <div class="chart-title">포지셔닝 Z-스코어 대시보드 (1년 기준)</div>
+      <div class="chart-subtitle">양(+) = 롱 집중 / 음(-) = 숏 집중 · 절대값 클수록 극단적</div>
+      <svg viewBox="0 0 820 260" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block;">
+        <!-- Center line -->
+        <line x1="410" y1="10" x2="410" y2="240" stroke="#1e2d42" stroke-width="1.5"/>
+        <!-- Left zones -->
+        <rect x="60"  y="10" width="350" height="230" fill="rgba(62,207,142,0.02)" rx="2"/>
+        <!-- Right zones -->
+        <rect x="410" y="10" width="350" height="230" fill="rgba(255,92,92,0.02)" rx="2"/>
+
+        <text x="235" y="252" fill="#3ecf8e" font-size="9" font-family="IBM Plex Mono" text-anchor="middle" opacity="0.6">◀ 롱 (가격 상승 베팅)</text>
+        <text x="585" y="252" fill="#ff5c5c" font-size="9" font-family="IBM Plex Mono" text-anchor="middle" opacity="0.6">숏 (가격 하락 베팅) ▶</text>
+
+        <!-- Axis labels -->
+        <text x="235" y="22" fill="#4a6278" font-size="8" font-family="IBM Plex Mono" text-anchor="middle">-2.0</text>
+        <text x="322" y="22" fill="#4a6278" font-size="8" font-family="IBM Plex Mono" text-anchor="middle">-1.0</text>
+        <text x="410" y="22" fill="#4a6278" font-size="8" font-family="IBM Plex Mono" text-anchor="middle">0</text>
+        <text x="498" y="22" fill="#4a6278" font-size="8" font-family="IBM Plex Mono" text-anchor="middle">+1.0</text>
+        <text x="585" y="22" fill="#4a6278" font-size="8" font-family="IBM Plex Mono" text-anchor="middle">+2.0</text>
+
+        <!-- Reference lines at +/-1, +/-2 -->
+        <line x1="235" y1="10" x2="235" y2="240" stroke="#1e2d42" stroke-width="0.5" stroke-dasharray="2,4"/>
+        <line x1="322" y1="10" x2="322" y2="240" stroke="#1e2d42" stroke-width="0.5" stroke-dasharray="2,4"/>
+        <line x1="498" y1="10" x2="498" y2="240" stroke="#1e2d42" stroke-width="0.5" stroke-dasharray="2,4"/>
+        <line x1="585" y1="10" x2="585" y2="240" stroke="#1e2d42" stroke-width="0.5" stroke-dasharray="2,4"/>
+
+        <!-- Entries: center=410, scale: 1 z-score = 87.5px -->
+        <!-- CFTC: z=2.06 → x=410+2.06*87.5=590.3 → bar from 410 to 590 -->
+        <rect x="410" y="40" width="180" height="26" fill="rgba(255,92,92,0.3)" rx="2"/>
+        <rect x="410" y="40" width="180" height="26" fill="rgba(255,92,92,0.15)" rx="2"/>
+        <line x1="590" y1="40" x2="590" y2="66" stroke="#ff5c5c" stroke-width="2"/>
+        <text x="200" y="57" fill="#e8edf5" font-size="11" font-family="IBM Plex Mono" text-anchor="end">CFTC 비상업 포지션</text>
+        <text x="596" y="57" fill="#ff5c5c" font-size="11" font-family="IBM Plex Mono" font-weight="500">+2.06 ⚠</text>
+
+        <!-- TCS: z=0.21 → x=410+0.21*87.5=428.4 → bar from 410 to 428 -->
+        <rect x="410" y="80" width="18" height="26" fill="rgba(201,168,76,0.3)" rx="2"/>
+        <text x="200" y="97" fill="#e8edf5" font-size="11" font-family="IBM Plex Mono" text-anchor="end">TCS 클라이언트 서베이</text>
+        <text x="434" y="97" fill="#c9a84c" font-size="11" font-family="IBM Plex Mono">+0.21</text>
+
+        <!-- TCS 4w MA: z=-0.54 → x=410-0.54*87.5=362.8 → bar from 363 to 410 -->
+        <rect x="363" y="120" width="47" height="26" fill="rgba(62,207,142,0.15)" rx="2"/>
+        <line x1="363" y1="120" x2="363" y2="146" stroke="#3ecf8e" stroke-width="2"/>
+        <text x="200" y="137" fill="#e8edf5" font-size="11" font-family="IBM Plex Mono" text-anchor="end">TCS 4주 이평 인덱스</text>
+        <text x="316" y="137" fill="#3ecf8e" font-size="11" font-family="IBM Plex Mono" text-anchor="end">-0.54</text>
+
+        <!-- CTA: z=-0.54 → same x -->
+        <rect x="363" y="157" width="47" height="26" fill="rgba(62,207,142,0.12)" rx="2"/>
+        <line x1="363" y1="157" x2="363" y2="183" stroke="#3ecf8e" stroke-width="2"/>
+        <text x="200" y="174" fill="#e8edf5" font-size="11" font-family="IBM Plex Mono" text-anchor="end">CTA 10년물 익스포저</text>
+        <text x="316" y="174" fill="#3ecf8e" font-size="11" font-family="IBM Plex Mono" text-anchor="end">-0.54</text>
+
+        <!-- Active bond fund: z=-1.47 → x=410-1.47*87.5=281.6 → bar from 282 to 410 -->
+        <rect x="282" y="195" width="128" height="26" fill="rgba(62,207,142,0.2)" rx="2"/>
+        <line x1="282" y1="195" x2="282" y2="221" stroke="#3ecf8e" stroke-width="2"/>
+        <text x="200" y="212" fill="#e8edf5" font-size="11" font-family="IBM Plex Mono" text-anchor="end">액티브 코어 채권펀드</text>
+        <text x="274" y="212" fill="#3ecf8e" font-size="11" font-family="IBM Plex Mono" text-anchor="end">-1.47</text>
+
+        <!-- Put/Call: z=1.09 → x=410+1.09*87.5=505.4 -->
+        <!-- This is shown separately in a mini callout -->
+      </svg>
+      <div class="chart-source">Source: CFTC, J.P. Morgan, Bloomberg Finance L.P., HFR · 1Y Z-score 기준</div>
+    </div>
+
+    <div class="pos-grid">
+      <div class="pos-cell">
+        <div class="pos-cell-label">CFTC<br>비상업 포지션</div>
+        <div class="pos-cell-score score-extreme-short">+2.06</div>
+        <div class="pos-cell-desc">극단적 숏 집중 — 반등 시 숏커버링 급발진 리스크</div>
+      </div>
+      <div class="pos-cell">
+        <div class="pos-cell-label">TCS<br>클라이언트 서베이</div>
+        <div class="pos-cell-score score-neutral">+0.21</div>
+        <div class="pos-cell-desc">중립. 4w MA는 -0.54로 소폭 숏</div>
+      </div>
+      <div class="pos-cell">
+        <div class="pos-cell-label">CTA<br>10년물 익스포저</div>
+        <div class="pos-cell-score score-short">-0.54</div>
+        <div class="pos-cell-desc">소폭 숏. 추세 전환 시 재진입 가능성</div>
+      </div>
+      <div class="pos-cell">
+        <div class="pos-cell-label">액티브 코어<br>채권펀드</div>
+        <div class="pos-cell-score score-long">-1.47</div>
+        <div class="pos-cell-desc">유의미한 언더웨이트. 잠재 매수 탄력 내재</div>
+      </div>
+      <div class="pos-cell">
+        <div class="pos-cell-label">매크로<br>헤지펀드</div>
+        <div class="pos-cell-score score-short">-0.87</div>
+        <div class="pos-cell-desc">숏 편향 유지. 방향 전환 수혜 제한적</div>
+      </div>
+      <div class="pos-cell">
+        <div class="pos-cell-label">Put/Call<br>달러가중비율</div>
+        <div class="pos-cell-score score-extreme-short">+1.09</div>
+        <div class="pos-cell-desc">풋 매수 증가. 하방 헤지 수요 상승</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 6: OIL & FED -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-num">06</span>
+      <h2 class="section-title">유가 $125/bbl 시나리오와 Fed 반응 함수</h2>
+    </div>
+
+    <div class="prose">
+      <p>J.P. Morgan 분석의 핵심 아이디어 중 하나는 유가가 <em>$125/bbl</em> 수준으로 추가 상승할 경우 Fed의 반응 함수(reaction function)가 비대칭적으로 전환될 수 있다는 논리다. 이 메커니즘을 이해하기 위해서는 유가 충격이 인플레이션과 성장에 미치는 서로 다른 효과를 동시에 고려해야 한다. 유가 급등은 단기적으로 헤드라인 인플레이션을 끌어올리지만, 동시에 실질 가처분소득을 감소시켜 소비를 억제하고 경기 하강 압력을 가중시킨다.</p>
+
+      <p>현재 $100/bbl대의 유가가 $125까지 올라간다면, Fed는 인플레이션 파이터 역할을 고집하기 어려워지는 딜레마에 직면한다. 성장 둔화가 가시화되는 상황에서 추가 긴축은 불가능에 가깝고, 오히려 실질 경기 침체를 막기 위한 완화적 신호(dovish pivot)를 보낼 수밖에 없다는 것이 JPM의 시각이다. 이것이 바로 <strong>비대칭적 완화 전환(dovish asymmetry)</strong>의 논리다. Fed는 고유가 국면에서 금리를 올리기보다 내릴 가능성이 더 높다는 것이다.</p>
+
+      <p>이 시나리오가 실현된다면, 단기 금리 기대(1y1y OIS)가 하향 조정되면서 2년물 국채가 직접적으로 수혜를 받게 된다. J.P. Morgan이 2년물 롱을 유지하도록 권고하는 근본적인 이유가 여기에 있다. 즉, 현재의 2년물 롱은 단순히 '이미 많이 올랐으니 내릴 것'이라는 평균 회귀 베팅이 아니라, 유가-Fed 반응 함수-단기 금리 경로라는 명확한 인과 논리에 기반한 포지션이다.</p>
+    </div>
+
+    <div class="callout warn">
+      <div class="callout-icon">🛢</div>
+      <div class="callout-body">
+        <div class="callout-title">핵심 모니터링 포인트 — 유가 $125/bbl 임계값</div>
+        <div class="callout-text">브렌트 또는 WTI 유가가 $125/bbl에 접근하면 Fed의 비대칭적 완화 전환(dovish asymmetry) 시나리오 현실화 가능성이 높아진다. 이 경우 1y1y OIS 금리가 하향 조정되며 2년물 국채에 강력한 Rally 신호가 된다. 호르무즈 해협 재개방 여부와 이란 분쟁 협상 진전이 유가의 핵심 변수다.</div>
+      </div>
+    </div>
+
+    <div class="callout bull">
+      <div class="callout-icon">📉</div>
+      <div class="callout-body">
+        <div class="callout-title">노동시장 냉각 — 실업률 4.5% 상향 리스크</div>
+        <div class="callout-text">JOLTS 고용률 3.1%(사이클 저점), Conference Board 노동시장 스프레드 5.7%(2월 수정)·5.8%(3월). 이번 주 공표될 3월 고용보고서에서 실업률이 4.5%로 상승할 경우, 기존 Fed 완화 기대가 더 강화되며 채권 전반의 추가 강세 모멘텀이 형성될 수 있다.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 7: STRATEGY -->
+  <section class="section">
+    <div class="section-header">
+      <span class="section-num">07</span>
+      <h2 class="section-title">전략적 시사점 및 실무 포인트</h2>
+    </div>
+
+    <div class="prose">
+      <p>이번 분석 결과를 종합하면, 미 국채 시장은 중기적 분기점에 위치해 있다. 1개월간의 가파른 금리 급등은 대부분 펀더멘털로 설명되지만, 지정학적 요인과 노동시장 냉각이 동시에 해소 방향으로 작동하고 있다. 이란 분쟁 해소 가능성과 고용 둔화 신호는 단기 국채, 특히 2년물에 우호적인 환경을 조성하는 반면, 유가 불확실성은 여전히 인플레이션 위험을 남겨두어 장기 국채에 대한 매수를 적극적으로 늘리기는 이른 상황이다.</p>
+    </div>
+
+    <div class="strategy-block">
+      <div class="strategy-title">전략 권고 요약</div>
+      <div class="strategy-rows">
+        <div class="strategy-row">
+          <span class="strategy-tag tag-buy">매수 유지</span>
+          <div class="strategy-row-text"><strong>2년물 국채 롱 유지:</strong> 기술적 지지(4.02–4.11%), 고용 냉각, 유가→Fed 비대칭 완화 전환 시나리오 삼박자가 맞아떨어지는 최선의 위험-수익 구조. 3.60–3.65%가 하방 바닥.</div>
+        </div>
+        <div class="strategy-row">
+          <span class="strategy-tag tag-watch">모니터링</span>
+          <div class="strategy-row-text"><strong>이란 협상 및 호르무즈 해협 재개방 여부:</strong> 분쟁 종결 시 단기 금리 기대 급격 하락 → 2년물 추가 랠리 촉매. 협상 결렬 시 반대 시나리오.</div>
+        </div>
+        <div class="strategy-row">
+          <span class="strategy-tag tag-watch">모니터링</span>
+          <div class="strategy-row-text"><strong>3월 고용보고서(금주 공표):</strong> 실업률 4.5% 상승 여부가 핵심. 상방 서프라이즈 시 채권 강세. 예상을 하회하면 4.02% 저항 재시험 가능.</div>
+        </div>
+        <div class="strategy-row">
+          <span class="strategy-tag tag-risk">위험 요인</span>
+          <div class="strategy-row-text"><strong>CFTC 숏 포지션 언와인드 충격:</strong> Z-스코어 2.06의 극단적 숏. 만약 채권이 오히려 약세로 전환될 경우, 숏 커버링 강제 청산이 역방향(금리 하락) 쏠림을 만들 수 있어 변동성 확대 위험.</div>
+        </div>
+        <div class="strategy-row">
+          <span class="strategy-tag tag-risk">위험 요인</span>
+          <div class="strategy-row-text"><strong>잔존 공정가치 괴리(-9bp):</strong> 10년물이 여전히 모형 적정값 대비 약 9bp 저평가 상태. 유가 급등·Fed 매파 서프라이즈 시 이 괴리가 빠르게 해소(금리 상승)되는 리스크 잠재.</div>
+        </div>
+        <div class="strategy-row">
+          <span class="strategy-tag tag-watch">커브 전략</span>
+          <div class="strategy-row-text"><strong>2s/10s 스티프너 잠재력:</strong> 분쟁 해소 + 고용 냉각 시나리오에서 2년물이 10년물보다 큰 폭 하락하여 커브 스티프닝. 현재 51.2bp 수준에서 잠재적 진입 고려 가능. 다만 지정학 불확실성 완전 해소 전까지 보수적 접근 권장.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="callout-icon">📋</div>
+      <div class="callout-body">
+        <div class="callout-title">실무 체크리스트</div>
+        <div class="callout-text">
+          ① 호르무즈 해협 동향 및 유가($125/bbl 임계값) 일일 모니터링<br>
+          ② 금주 3월 고용보고서 실업률·고용률 확인 (시장 컨센서스 대비 편차)<br>
+          ③ 2년물 3.91% 불갭·4.02% 저항 레벨 실시간 트래킹<br>
+          ④ CFTC 주간 포지션 리포트 — 숏 커버링 흐름 여부 확인<br>
+          ⑤ 1y1y OIS 금리 동향 — Fed 기대 재조정의 선행 지표
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="report-footer">
+    <p>본 보고서는 J.P. Morgan Securities LLC의 "US Treasury Market Daily" (2026.03.31, Jay Barry, Jason Hunter, Liam L Wash, Amanda Berke)를 기초로 작성된 한국어 분석 요약본입니다. 원문의 모든 저작권은 JPMorgan Chase & Co.에 귀속됩니다. 본 자료는 투자 권유 목적이 아니며, 투자 결정 시 독립적인 판단과 전문가 조언을 구하시기 바랍니다.</p>
+    <br>
+    <p>Completed: 31 Mar 2026 05:10 PM EDT · Report generated for KakaoBank Corp. internal analysis use</p>
+  </footer>
+
+</div>
+</body>
+</html>
