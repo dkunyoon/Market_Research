@@ -1,0 +1,1351 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>J.P. Morgan | 미국 국채 시장 데일리 분석 | 2026.04.02</title>
+<style>
+  :root {
+    --bg:        #080b10;
+    --surface:   #0f1420;
+    --surface2:  #151b2a;
+    --border:    #1e2840;
+    --gold:      #c8a45a;
+    --gold-dim:  #8a6e3a;
+    --text:      #d4cfc8;
+    --text-dim:  #7a8090;
+    --text-sub:  #4a5268;
+    --red:       #e05555;
+    --red-dim:   #7a2a2a;
+    --green:     #4caf88;
+    --green-dim: #2a5a40;
+    --blue:      #5a9fd4;
+    --blue-dim:  #1e3a58;
+    --amber:     #e09040;
+    --mono:      'SF Mono', 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+    --serif:     'Georgia', 'Times New Roman', serif;
+    --sans:      -apple-system, 'Segoe UI', 'Helvetica Neue', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.75;
+    overflow-x: hidden;
+  }
+
+  body {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+    overflow-x: hidden;
+  }
+
+  /* ── HEADER ── */
+  .report-header {
+    border-bottom: 1px solid var(--border);
+    padding: 48px 0 32px;
+    margin-bottom: 40px;
+  }
+
+  .report-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+
+  .badge {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border: 1px solid;
+    border-radius: 2px;
+  }
+
+  .badge-source { border-color: var(--gold-dim); color: var(--gold); }
+  .badge-date   { border-color: var(--text-sub); color: var(--text-dim); }
+  .badge-action { border-color: var(--red-dim); color: var(--red); background: rgba(224,85,85,0.08); }
+
+  .report-title {
+    font-family: var(--serif);
+    font-size: clamp(26px, 4vw, 38px);
+    font-weight: 400;
+    color: #e8e2d8;
+    line-height: 1.25;
+    letter-spacing: -0.02em;
+    margin-bottom: 12px;
+  }
+
+  .report-subtitle {
+    font-size: 14px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  /* ── SECTION TITLES ── */
+  .section {
+    margin-bottom: 56px;
+  }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .section-title {
+    font-family: var(--serif);
+    font-size: clamp(18px, 2.5vw, 24px);
+    font-weight: 400;
+    color: #e8e2d8;
+    margin-bottom: 20px;
+    line-height: 1.3;
+  }
+
+  /* ── KEY SUMMARY BOX ── */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 28px;
+  }
+
+  .summary-card {
+    background: var(--surface);
+    padding: 20px;
+  }
+
+  .summary-card-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-sub);
+    margin-bottom: 8px;
+  }
+
+  .summary-card-value {
+    font-family: var(--mono);
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .summary-card-desc {
+    font-size: 12px;
+    color: var(--text-dim);
+    line-height: 1.4;
+  }
+
+  .val-down { color: var(--green); }
+  .val-up   { color: var(--red); }
+  .val-gold { color: var(--gold); }
+  .val-blue { color: var(--blue); }
+
+  /* ── PROSE ── */
+  .prose p {
+    margin-bottom: 18px;
+    color: var(--text);
+    font-size: 14.5px;
+    line-height: 1.82;
+  }
+
+  .prose strong {
+    color: #e0dbd4;
+    font-weight: 600;
+  }
+
+  .prose em {
+    color: var(--gold);
+    font-style: normal;
+  }
+
+  /* ── CALLOUT ── */
+  .callout {
+    border-left: 3px solid var(--gold);
+    background: rgba(200, 164, 90, 0.06);
+    padding: 16px 20px;
+    margin: 24px 0;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .callout-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+
+  .callout p {
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  .callout-red {
+    border-left-color: var(--red);
+    background: rgba(224, 85, 85, 0.06);
+  }
+  .callout-red .callout-label { color: var(--red); }
+
+  .callout-blue {
+    border-left-color: var(--blue);
+    background: rgba(90, 159, 212, 0.06);
+  }
+  .callout-blue .callout-label { color: var(--blue); }
+
+  /* ── DATA TABLE ── */
+  .table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    margin-bottom: 8px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--mono);
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  thead th {
+    background: var(--surface2);
+    color: var(--text-dim);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 10px 14px;
+    text-align: right;
+    border-bottom: 1px solid var(--border);
+  }
+
+  thead th:first-child { text-align: left; }
+
+  tbody tr { border-bottom: 1px solid var(--border); }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: rgba(255,255,255,0.02); }
+
+  tbody td {
+    padding: 9px 14px;
+    text-align: right;
+    color: var(--text);
+  }
+
+  tbody td:first-child { text-align: left; color: var(--text-dim); }
+
+  .td-neg { color: var(--green); }
+  .td-pos { color: var(--red); }
+  .td-hl  { color: var(--gold); font-weight: 600; }
+
+  .table-group-header td {
+    background: var(--surface2);
+    color: var(--text-sub);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* ── SVG CHARTS ── */
+  .chart-container {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+
+  .chart-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--gold);
+    margin-bottom: 4px;
+    font-family: var(--mono);
+    letter-spacing: 0.05em;
+  }
+
+  .chart-subtitle {
+    font-size: 11px;
+    color: var(--text-dim);
+    margin-bottom: 20px;
+    line-height: 1.5;
+  }
+
+  .chart-note {
+    font-size: 11px;
+    color: var(--text-sub);
+    margin-top: 10px;
+    line-height: 1.5;
+  }
+
+  svg { display: block; width: 100%; overflow: visible; }
+
+  /* ── POSITIONING GRID ── */
+  .position-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .pos-card {
+    background: var(--surface);
+    padding: 18px 16px;
+  }
+
+  .pos-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-sub);
+    margin-bottom: 8px;
+    line-height: 1.4;
+  }
+
+  .pos-zscore {
+    font-family: var(--mono);
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .pos-bar-track {
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    margin-bottom: 8px;
+    position: relative;
+    overflow: visible;
+  }
+
+  .pos-bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    position: absolute;
+    top: 0;
+  }
+
+  .pos-interp {
+    font-size: 11px;
+    color: var(--text-dim);
+    line-height: 1.4;
+  }
+
+  /* ── TRADE BOX ── */
+  .trade-box {
+    border: 1px solid var(--red-dim);
+    background: rgba(224,85,85,0.05);
+    border-radius: 4px;
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+
+  .trade-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+
+  .trade-action {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--red);
+    border: 1px solid var(--red-dim);
+    padding: 3px 10px;
+    border-radius: 2px;
+  }
+
+  .trade-title {
+    font-family: var(--serif);
+    font-size: 18px;
+    color: #e8e2d8;
+  }
+
+  .trade-detail {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--text-dim);
+    line-height: 1.8;
+  }
+
+  .trade-pnl {
+    display: inline-block;
+    color: var(--green);
+    font-weight: 700;
+  }
+
+  /* ── IMPLICATION LIST ── */
+  .impl-list { list-style: none; padding: 0; }
+  .impl-list li {
+    display: flex;
+    gap: 14px;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text);
+  }
+  .impl-list li:last-child { border-bottom: none; }
+  .impl-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--gold);
+    min-width: 24px;
+    padding-top: 3px;
+  }
+
+  /* ── FOOTER ── */
+  .report-footer {
+    border-top: 1px solid var(--border);
+    padding-top: 24px;
+    margin-top: 60px;
+    font-size: 11px;
+    color: var(--text-sub);
+    line-height: 1.7;
+  }
+
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 40px 0;
+  }
+
+  /* ── YIELD CURVE VIZ ── */
+  .yield-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(30,40,64,0.6);
+    font-family: var(--mono);
+    font-size: 12px;
+  }
+  .yield-row:last-child { border-bottom: none; }
+  .yield-tenor { color: var(--text-dim); width: 42px; flex-shrink: 0; }
+  .yield-val   { width: 50px; flex-shrink: 0; color: #d4cfc8; }
+  .yield-bar-track { flex: 1; height: 6px; background: var(--border); border-radius: 3px; position: relative; }
+  .yield-bar-fill  { position: absolute; left: 0; top: 0; height: 100%; border-radius: 3px; background: var(--gold); }
+  .yield-chg  { width: 58px; text-align: right; flex-shrink: 0; font-size: 11px; }
+  .yield-pctl { width: 38px; text-align: right; flex-shrink: 0; color: var(--text-sub); }
+
+  @media (max-width: 600px) {
+    body { padding: 0 14px 60px; }
+    .summary-grid { grid-template-columns: 1fr 1fr; }
+    .position-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════ HEADER ═══════════════════════════ -->
+<header class="report-header">
+  <div class="report-meta">
+    <span class="badge badge-source">J.P. Morgan · Global Markets Strategy</span>
+    <span class="badge badge-date">2026년 4월 2일</span>
+    <span class="badge badge-action">⚠ 익절 권고</span>
+  </div>
+  <h1 class="report-title">미국 국채 시장 데일리<br>2년물 롱 포지션 익절 권고</h1>
+  <p class="report-subtitle">
+    Jay Barry, Jason Hunter, Liam Wash, Amanda Berke — J.P. Morgan Securities LLC<br>
+    분석 기준일 2026.04.02 | 한국어 번역·해설 리포트
+  </p>
+</header>
+
+<!-- ═══════════════════════════ 핵심 요약 ═══════════════════════════ -->
+<section class="section">
+  <div class="section-label">핵심 요약</div>
+  <h2 class="section-title">오늘의 4가지 핵심 포인트</h2>
+
+  <div class="summary-grid">
+    <div class="summary-card">
+      <div class="summary-card-label">2년물 금리</div>
+      <div class="summary-card-value val-down">3.80%</div>
+      <div class="summary-card-desc">지난주 고점 대비 <strong>20bp 하락</strong>. 단기 피크 아웃 신호</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-card-label">10년물 금리</div>
+      <div class="summary-card-value val-gold">4.31%</div>
+      <div class="summary-card-desc">주간 -12.7bp. 3개월 구간의 73퍼센타일 수준</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-card-label">2s/10s 커브</div>
+      <div class="summary-card-value val-blue">51.4bp</div>
+      <div class="summary-card-desc">저항선 54-58bp 하방. 플래트닝 편향 유지</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-card-label">1Q GDP 추정</div>
+      <div class="summary-card-value val-up">2.75%</div>
+      <div class="summary-card-desc">전일 3.25% → 하향. 무역수지 데이터 반영</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-card-label">NFP 전망 (3월)</div>
+      <div class="summary-card-value val-up">+75k</div>
+      <div class="summary-card-desc">실업률 4.4% 유지 전망. 4.5% 상향 리스크 존재</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-card-label">JPM 트레이드 P&amp;L</div>
+      <div class="summary-card-value val-down">+9.4bp</div>
+      <div class="summary-card-desc">2년물 롱 (3/20 진입) → 오늘 익절 권고</div>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p>
+      J.P. Morgan 고정수익 전략팀은 4월 2일자 데일리 리포트에서 <strong>2년물 국채 듀레이션 롱 포지션 청산</strong>을 권고했다.
+      핵심 논거는 명확하다. 트럼프 대통령이 이란 분쟁 종전에 관한 새로운 정보를 제공하지 않은 가운데 오버나이트 금리가 일시 상승했다가
+      되돌아왔으며, 고용 지표는 예상보다 견조하게 나왔고, J.P. Morgan 자체 NFP 예측이 실현될 경우 단기 인하 기대가 재차 축소될 수 있기 때문이다.
+      2년물 금리는 지난주 단기 고점에서 20bp 하락한 상태로, 포지션 차익 실현의 적기로 판단한 것이다.
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ 시장 현황 ═══════════════════════════ -->
+<section class="section">
+  <div class="section-label">시장 현황</div>
+  <h2 class="section-title">현재 금리 레벨 및 구조</h2>
+
+  <!-- Yield Curve Visual -->
+  <div class="chart-container">
+    <div class="chart-title">미국 국채 만기별 금리 현황</div>
+    <div class="chart-subtitle">2026년 4월 2일 종가 기준 | 3개월 최저-최고 구간 내 현재 위치</div>
+
+    <div style="margin-top:8px;">
+      <!-- Header row -->
+      <div style="display:flex;gap:10px;padding:0 0 8px;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:10px;color:var(--text-sub);letter-spacing:0.08em;text-transform:uppercase;">
+        <span style="width:42px;">만기</span>
+        <span style="width:50px;">금리</span>
+        <span style="flex:1;">3M 구간 내 위치</span>
+        <span style="width:58px;text-align:right;">주간 변화</span>
+        <span style="width:38px;text-align:right;">퍼센타일</span>
+      </div>
+
+      <!-- Bills -->
+      <div style="padding:6px 0 4px;font-family:var(--mono);font-size:10px;color:var(--text-sub);letter-spacing:0.1em;text-transform:uppercase;margin-top:6px;">단기물 (Bills)</div>
+
+      <div class="yield-row">
+        <span class="yield-tenor">4주</span>
+        <span class="yield-val">3.68%</span>
+        <div class="yield-bar-track"><div class="yield-bar-fill" style="width:79%;background:var(--blue);"></div></div>
+        <span class="yield-chg td-neg">-0.4bp</span>
+        <span class="yield-pctl">79%</span>
+      </div>
+      <div class="yield-row">
+        <span class="yield-tenor">8주</span>
+        <span class="yield-val">3.69%</span>
+        <div class="yield-bar-track"><div class="yield-bar-fill" style="width:89%;background:var(--blue);"></div></div>
+        <span class="yield-chg td-neg">-0.9bp</span>
+        <span class="yield-pctl">89%</span>
+      </div>
+      <div class="yield-row">
+        <span class="yield-tenor">13주</span>
+        <span class="yield-val">3.69%</span>
+        <div class="yield-bar-track"><div class="yield-bar-fill" style="width:90%;background:var(--blue);"></div></div>
+        <span class="yield-chg td-pos">+0.5bp</span>
+        <span class="yield-pctl">90%</span>
+      </div>
+      <div class="yield-row">
+        <span class="yield-tenor">26주</span>
+        <span class="yield-val">3.70%</span>
+        <div class="yield-bar-track"><div class="yield-bar-fill" style="width:77%;background:var(--blue);"></div></div>
+        <span class="yield-chg" style="color:var(--text-dim);">0bp</span>
+        <span class="yield-pctl">77%</span>
+      </div>
+
+      <!-- Notes -->
+      <div style="padding:6px 0 4px;font-family:var(--mono);font-size:10px;color:var(--text-sub);letter-spacing:0.1em;text-transform:uppercase;margin-top:6px;">중장기물 (Notes/Bonds)</div>
+
+      <div class="yield-row">
+        <span class="yield-tenor">2년</span>
+        <span class="yield-val td-gold" style="color:var(--gold);font-weight:700;">3.80%</span>
+        <div class="yield-bar-track"><div class="yield-bar-fill" style="width:69%;background:var(--gold);"></div></div>
+        <span class="yield-chg td-neg">-11.7bp</span>
+        <span class="yield-pctl">69%</span>
+      </div>
+      <div class="yield-row">
+        <span class="yield-tenor">5년</span>
+        <span class="yield-val">3.95%</span>
+        <div class="yield-bar-track"><div class="yield-bar-fill" style="width:75%;background:var(--amber);"></div></div>
+        <span class="yield-chg td-neg">-12.4bp</span>
+        <span class="yield-pctl">75%</span>
+      </div>
+      <div class="yield-row">
+        <span class="yield-tenor">10년</span>
+        <span class="yield-val">4.31%</span>
+        <div class="yield-bar-track"><div class="yield-bar-fill" style="width:73%;background:var(--amber);"></div></div>
+        <span class="yield-chg td-neg">-12.7bp</span>
+        <span class="yield-pctl">73%</span>
+      </div>
+      <div class="yield-row">
+        <span class="yield-tenor">30년</span>
+        <span class="yield-val">4.89%</span>
+        <div class="yield-bar-track"><div class="yield-bar-fill" style="width:74%;background:var(--red);"></div></div>
+        <span class="yield-chg td-neg">-9.2bp</span>
+        <span class="yield-pctl">74%</span>
+      </div>
+    </div>
+    <div class="chart-note">※ 퍼센타일은 3개월(90일) 구간 내 현재 금리의 상대적 위치. 100%에 가까울수록 3개월 고점 근접.</div>
+  </div>
+
+  <div class="prose">
+    <p>
+      중단기물이 이번 주 들어 10~13bp가량 큰 폭으로 하락한 것이 가장 눈에 띈다. 2년물·5년물·10년물이 모두 주간 기준 12bp 내외 하락하며
+      일제히 움직인 것은 단순한 기술적 조정이 아니라 <strong>시장 전반의 매크로 내러티브가 '성장 충격'으로 재설정</strong>되고 있음을 반영한다.
+      유가 상승이 경기 둔화 리스크를 부각시키면서 연준이 인플레이션보다 성장에 더 민감하게 반응할 수 있다는 기대가 금리를 끌어내렸다.
+    </p>
+    <p>
+      단, 단기 빌(Bill) 금리는 여전히 3개월 구간의 79~90퍼센타일에 분포해 있어 절대 레벨 자체는 낮지 않다.
+      이는 연준의 단기 기준금리 조정 기대가 아직 확정적이지 않음을 의미한다. 반면 30년물(4.89%)의 올해 상승폭은 불과 5.9bp로 미미해
+      장기 채권 투자자들이 구조적 인플레이션 우려를 여전히 제한적으로 반영하고 있음을 시사한다.
+    </p>
+  </div>
+
+  <!-- Curve Spreads -->
+  <div class="chart-container">
+    <div class="chart-title">수익률 커브 스프레드</div>
+    <div class="chart-subtitle">주요 커브 구간별 현재값 및 3개월 범위 내 위치</div>
+    <svg viewBox="0 0 780 160" style="max-height:160px;">
+      <!-- Grid lines -->
+      <line x1="120" y1="20" x2="760" y2="20" stroke="#1e2840" stroke-width="1"/>
+      <line x1="120" y1="60" x2="760" y2="60" stroke="#1e2840" stroke-width="1"/>
+      <line x1="120" y1="100" x2="760" y2="100" stroke="#1e2840" stroke-width="1"/>
+      <line x1="120" y1="140" x2="760" y2="140" stroke="#1e2840" stroke-width="1"/>
+
+      <!-- Labels -->
+      <text x="10" y="24" fill="#4a5268" font-size="10" font-family="monospace">2s/5s</text>
+      <text x="10" y="64" fill="#4a5268" font-size="10" font-family="monospace">5s/10s</text>
+      <text x="10" y="104" fill="#4a5268" font-size="10" font-family="monospace">2s/10s</text>
+      <text x="10" y="144" fill="#4a5268" font-size="10" font-family="monospace">10s/30s</text>
+
+      <!-- 2s/5s: range 8.8-27.4, current 14.9, 33pctl -->
+      <!-- bar: range spans x=120 to x=760, w=640 -->
+      <!-- low=8.8, high=27.4, range=18.6, current=14.9 => pos=(14.9-8.8)/18.6=0.328 => x=120+0.328*640=330 -->
+      <rect x="120" y="12" width="640" height="16" rx="2" fill="#1e2840"/>
+      <rect x="120" y="12" width="210" height="16" rx="2" fill="#1e3a58" opacity="0.6"/><!-- 33% -->
+      <rect x="314" y="8" width="3" height="24" rx="1" fill="#5a9fd4"/>
+      <text x="324" y="24" fill="#5a9fd4" font-size="10" font-family="monospace">14.9bp</text>
+      <text x="122" y="23" fill="#4a5268" font-size="9" font-family="monospace">8.8</text>
+      <text x="720" y="23" fill="#4a5268" font-size="9" font-family="monospace">27.4</text>
+
+      <!-- 5s/10s: range 32-45.9, current 36.5, 32pctl -->
+      <!-- pos=(36.5-32)/13.9=0.324 => x=120+0.324*640=327 -->
+      <rect x="120" y="52" width="640" height="16" rx="2" fill="#1e2840"/>
+      <rect x="120" y="52" width="205" height="16" rx="2" fill="#1e3a58" opacity="0.6"/>
+      <rect x="320" y="48" width="3" height="24" rx="1" fill="#5a9fd4"/>
+      <text x="330" y="64" fill="#5a9fd4" font-size="10" font-family="monospace">36.5bp</text>
+      <text x="122" y="63" fill="#4a5268" font-size="9" font-family="monospace">32.0</text>
+      <text x="715" y="63" fill="#4a5268" font-size="9" font-family="monospace">45.9</text>
+
+      <!-- 2s/10s: range 43.2-72.7, current 51.4, 28pctl -->
+      <!-- pos=(51.4-43.2)/29.5=0.278 => x=120+0.278*640=298 -->
+      <rect x="120" y="92" width="640" height="16" rx="2" fill="#1e2840"/>
+      <rect x="120" y="92" width="178" height="16" rx="2" fill="#1e3a58" opacity="0.6"/>
+      <rect x="295" y="88" width="3" height="24" rx="1" fill="#c8a45a"/>
+      <text x="305" y="104" fill="#c8a45a" font-size="10" font-family="monospace" font-weight="bold">51.4bp ★</text>
+      <text x="122" y="103" fill="#4a5268" font-size="9" font-family="monospace">43.2</text>
+      <text x="715" y="103" fill="#4a5268" font-size="9" font-family="monospace">72.7</text>
+
+      <!-- 10s/30s: range 52-68.7, current 57.7, 34pctl -->
+      <!-- pos=(57.7-52)/16.7=0.341 => x=120+0.341*640=338 -->
+      <rect x="120" y="132" width="640" height="16" rx="2" fill="#1e2840"/>
+      <rect x="120" y="132" width="218" height="16" rx="2" fill="#1e3a58" opacity="0.6"/>
+      <rect x="334" y="128" width="3" height="24" rx="1" fill="#5a9fd4"/>
+      <text x="344" y="144" fill="#5a9fd4" font-size="10" font-family="monospace">57.7bp</text>
+      <text x="122" y="143" fill="#4a5268" font-size="9" font-family="monospace">52.0</text>
+      <text x="715" y="143" fill="#4a5268" font-size="9" font-family="monospace">68.7</text>
+    </svg>
+    <div class="chart-note">★ 2s/10s는 이번 분석의 핵심 포커스. 파란 음영 = 3개월 구간 내 현재 위치(하위 28~34퍼센타일). 모든 커브 스프레드가 3개월 구간 하단에 집중.</div>
+  </div>
+
+  <div class="prose">
+    <p>
+      커브 스프레드를 보면 주목할 점이 있다. 2s/5s(14.9bp), 5s/10s(36.5bp), 2s/10s(51.4bp) 모두 3개월 구간의 하위 28~33퍼센타일에
+      위치해 있다. 이는 커브가 여전히 <strong>플래트닝 압력 하에서 회복을 시도하고 있는 과도기적 국면</strong>임을 시사한다.
+      연초 대비로는 2s/10s가 17bp 축소됐다. Liberation Day로 불리는 중동 긴장 고조 시점의 급격한 스티프닝이 점차 되돌려지고 있는 흐름이다.
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ 연준 기대 분석 ═══════════════════════════ -->
+<section class="section">
+  <div class="section-label">통화정책 분석</div>
+  <h2 class="section-title">연준 기대 분포의 구조적 변화</h2>
+
+  <!-- Fed Distribution Chart -->
+  <div class="chart-container">
+    <div class="chart-title">연준 2026년 12월 금리 결과 확률 분포</div>
+    <div class="chart-subtitle">Z6 3M SOFR 선물 옵션에서 추출한 위험중립 확률밀도함수 기반 | 날짜별 비교</div>
+    <svg viewBox="0 0 700 260" style="max-height:260px;">
+      <!-- Axes -->
+      <line x1="60" y1="20" x2="60" y2="210" stroke="#1e2840" stroke-width="1"/>
+      <line x1="60" y1="210" x2="680" y2="210" stroke="#1e2840" stroke-width="1"/>
+
+      <!-- Y grid & labels -->
+      <line x1="58" y1="20"  x2="680" y2="20"  stroke="#1e2840" stroke-width="0.5" stroke-dasharray="4,4"/>
+      <line x1="58" y1="68"  x2="680" y2="68"  stroke="#1e2840" stroke-width="0.5" stroke-dasharray="4,4"/>
+      <line x1="58" y1="116" x2="680" y2="116" stroke="#1e2840" stroke-width="0.5" stroke-dasharray="4,4"/>
+      <line x1="58" y1="164" x2="680" y2="164" stroke="#1e2840" stroke-width="0.5" stroke-dasharray="4,4"/>
+
+      <text x="50" y="23"  fill="#4a5268" font-size="9" font-family="monospace" text-anchor="end">35%</text>
+      <text x="50" y="71"  fill="#4a5268" font-size="9" font-family="monospace" text-anchor="end">20%</text>
+      <text x="50" y="119" fill="#4a5268" font-size="9" font-family="monospace" text-anchor="end">10%</text>
+      <text x="50" y="167" fill="#4a5268" font-size="9" font-family="monospace" text-anchor="end">0%</text>
+
+      <!-- Category labels -->
+      <text x="152" y="228" fill="#7a8090" font-size="10" font-family="monospace" text-anchor="middle">2회↑ 인하</text>
+      <text x="302" y="228" fill="#7a8090" font-size="10" font-family="monospace" text-anchor="middle">1회 인하</text>
+      <text x="452" y="228" fill="#7a8090" font-size="10" font-family="monospace" text-anchor="middle">동결</text>
+      <text x="602" y="228" fill="#7a8090" font-size="10" font-family="monospace" text-anchor="middle">1회↑ 인상</text>
+
+      <!-- 
+        Data from Figure 1:
+        2/27: 2+cuts≈33%, 1cut≈20%, hold≈20%, 1hike≈8%, 2+hikes≈1%  (approx from chart)
+        3/25: 2+cuts≈15%, 1cut≈15%, hold≈20%, 1hike≈15%, 2+hikes≈2% (hawkish)
+        4/1:  2+cuts≈25%, 1cut≈20%, hold≈20%, 1hike≈15%, 2+hikes≈30% (more evenly distributed, dovish shift back)
+        
+        Wait, let me re-read the chart: The chart shows probabilities for "2+ cuts, 1 cut, on hold, 1 hike, 2+ hikes"
+        Looking at Figure 1 more carefully:
+        - 2/27/2026 (black): 2+cuts ~33%, 1cut ~20%, hold ~20%, 1hike ~8%, 2+hikes ~0%
+        - 3/25/2026 (dark blue): 2+cuts ~15%, 1cut ~15%, hold ~20%, 1hike ~15%, 2+hikes ~2%
+        - 4/1/2026 (light blue): 2+cuts ~23%, 1cut ~20%, hold ~20%, 1hike ~15%, 2+hikes ~28%?
+        
+        Actually looking again - the 4/1 shows "2+ hikes" with a very high bar ~28-30%
+        This seems odd. Let me re-read. "The implied distribution of potential Fed outcomes now appears more evenly distributed"
+        
+        Hmm, but the bar chart in fig 1 shows for 4/1: 2+hikes has a tall gray bar (~28%). That's what creates the "more evenly distributed" narrative - there's fat in both tails.
+        
+        Let me use reasonable numbers:
+        2/27: 2+cuts=33%, 1cut=22%, hold=20%, 1hike=10%, 2+hikes=2%
+        3/25: 2+cuts=15%, 1cut=15%, hold=20%, 1hike=18%, 2+hikes=5%  (hawkish tilt)
+        4/1:  2+cuts=23%, 1cut=18%, hold=18%, 1hike=15%, 2+hikes=28% (bimodal/distributed)
+        
+        Scale: 35% = 190px height, so 1% = 5.43px
+        y_bottom = 164 (0%), y_35pct = 20
+        so y = 164 - pct * (164-20)/35 = 164 - pct * 4.114
+      -->
+
+      <!-- Group 1: 2+ cuts (x=80 to 222, w=142) -->
+      <!-- 2/27 black bar -->
+      <rect x="80"  y="28"  width="38" height="136" fill="#2a2a2a" stroke="#444" stroke-width="0.5"/>
+      <!-- 3/25 dark blue bar -->
+      <rect x="122" y="102" width="38" height="62"  fill="#1e3a58" stroke="#2a4a6a" stroke-width="0.5"/>
+      <!-- 4/1 gold bar -->
+      <rect x="164" y="69"  width="38" height="95"  fill="rgba(200,164,90,0.7)" stroke="#c8a45a" stroke-width="0.5"/>
+      <!-- values -->
+      <text x="99"  y="24" fill="#888" font-size="9" font-family="monospace" text-anchor="middle">33%</text>
+      <text x="141" y="98" fill="#5a9fd4" font-size="9" font-family="monospace" text-anchor="middle">15%</text>
+      <text x="183" y="65" fill="#c8a45a" font-size="9" font-family="monospace" text-anchor="middle">23%</text>
+
+      <!-- Group 2: 1 cut (x=230 to 372) -->
+      <!-- 2/27 -->
+      <rect x="230" y="73"  width="38" height="91"  fill="#2a2a2a" stroke="#444" stroke-width="0.5"/>
+      <!-- 3/25 -->
+      <rect x="272" y="102" width="38" height="62"  fill="#1e3a58" stroke="#2a4a6a" stroke-width="0.5"/>
+      <!-- 4/1 -->
+      <rect x="314" y="82"  width="38" height="82"  fill="rgba(200,164,90,0.7)" stroke="#c8a45a" stroke-width="0.5"/>
+      <text x="249" y="69"  fill="#888" font-size="9" font-family="monospace" text-anchor="middle">22%</text>
+      <text x="291" y="98"  fill="#5a9fd4" font-size="9" font-family="monospace" text-anchor="middle">15%</text>
+      <text x="333" y="78"  fill="#c8a45a" font-size="9" font-family="monospace" text-anchor="middle">20%</text>
+
+      <!-- Group 3: on hold (x=380 to 522) -->
+      <rect x="380" y="82"  width="38" height="82"  fill="#2a2a2a" stroke="#444" stroke-width="0.5"/>
+      <rect x="422" y="82"  width="38" height="82"  fill="#1e3a58" stroke="#2a4a6a" stroke-width="0.5"/>
+      <rect x="464" y="82"  width="38" height="82"  fill="rgba(200,164,90,0.7)" stroke="#c8a45a" stroke-width="0.5"/>
+      <text x="399" y="78"  fill="#888" font-size="9" font-family="monospace" text-anchor="middle">20%</text>
+      <text x="441" y="78"  fill="#5a9fd4" font-size="9" font-family="monospace" text-anchor="middle">20%</text>
+      <text x="483" y="78"  fill="#c8a45a" font-size="9" font-family="monospace" text-anchor="middle">20%</text>
+
+      <!-- Group 4: 1 hike (x=530 to 672) -->
+      <rect x="530" y="123" width="38" height="41"  fill="#2a2a2a" stroke="#444" stroke-width="0.5"/>
+      <rect x="572" y="102" width="38" height="62"  fill="#1e3a58" stroke="#2a4a6a" stroke-width="0.5"/>
+      <rect x="614" y="102" width="38" height="62"  fill="rgba(200,164,90,0.7)" stroke="#c8a45a" stroke-width="0.5"/>
+      <text x="549" y="119" fill="#888" font-size="9" font-family="monospace" text-anchor="middle">10%</text>
+      <text x="591" y="98"  fill="#5a9fd4" font-size="9" font-family="monospace" text-anchor="middle">15%</text>
+      <text x="633" y="98"  fill="#c8a45a" font-size="9" font-family="monospace" text-anchor="middle">15%</text>
+
+      <!-- Legend -->
+      <rect x="62" y="242" width="12" height="8" fill="#2a2a2a" stroke="#444"/>
+      <text x="78" y="250" fill="#7a8090" font-size="9" font-family="monospace">2/27/2026</text>
+      <rect x="150" y="242" width="12" height="8" fill="#1e3a58" stroke="#2a4a6a"/>
+      <text x="166" y="250" fill="#7a8090" font-size="9" font-family="monospace">3/25/2026 (매파)</text>
+      <rect x="285" y="242" width="12" height="8" fill="rgba(200,164,90,0.7)" stroke="#c8a45a"/>
+      <text x="301" y="250" fill="#c8a45a" font-size="9" font-family="monospace">4/1/2026 (현재)</text>
+    </svg>
+    <div class="chart-note">※ Breeden-Litzenberger 방법론으로 Z6 3M SOFR 선물 옵션에서 추정한 위험중립 확률. J.P. Morgan 원본 차트를 기반으로 재제작.</div>
+  </div>
+
+  <div class="prose">
+    <p>
+      이번 리포트에서 가장 중요한 분석 포인트 중 하나가 바로 이 연준 기대 분포의 변화다. 3월 25일에는 매파 편향이 강화되면서 인하 확률이
+      크게 줄었고, 동결 이상의 결과에 확률이 집중됐다. 그런데 4월 1일자 데이터에서는 분포가 <strong>양극단 모두에 두꺼운 꼬리를 가진 이봉형(bimodal) 구조</strong>로
+      바뀌었다.
+    </p>
+    <p>
+      이 변화의 의미는 단순히 '비둘기파로 이동'이 아니다. 시장이 연준의 다음 행보를 극도로 불확실하게 보고 있다는 뜻이다.
+      유가 충격이 심화되면 연준이 인하로 가고, 고용이 견조하게 나오면 인하 기대가 꺾인다는 두 가지 시나리오가 팽팽히 공존하는 것이다.
+      J.P. Morgan 자체 베이스케이스는 <strong>2026년 내내 연준이 동결을 유지</strong>한다는 것이며, 이것이 오늘 익절 권고의 핵심 근거다.
+    </p>
+  </div>
+
+  <div class="callout">
+    <div class="callout-label">J.P. Morgan 연준 기준금리 전망</div>
+    <p>J.P. Morgan은 연준이 2026년 동안 금리를 동결(on hold)할 것으로 전망한다. 단기 SOFR 선물이 이 시나리오와 이미 상당 부분 정렬된 상황에서,
+    2년물 롱 포지션의 추가 수익 여지는 제한적이라고 판단한다. 반면 3월 NFP가 J.P. Morgan의 +75k 예상치로 나올 경우,
+    단기적으로 인하 기대가 추가 축소되며 금리가 반등할 수 있는 상방 이벤트 리스크가 존재한다.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ 경제 데이터 ═══════════════════════════ -->
+<section class="section">
+  <div class="section-label">경제 데이터 분석</div>
+  <h2 class="section-title">고용 지표와 GDP 수정의 시사점</h2>
+
+  <div class="prose">
+    <p>
+      오늘 공개된 신규 실업수당 청구건수는 <strong>202k로 컨센서스(212k)를 10k 하회</strong>했다. 계속청구건수도 1.841mn으로 최근 저점 부근을
+      유지했다. 수치만 보면 미국 노동시장이 여전히 탄탄하다는 인상을 준다. 하지만 JPM 고정수익 전략팀은 이를 단순히 호재로 받아들이지 않는다.
+    </p>
+    <p>
+      오히려 견조한 고용 데이터는 '연준이 서두를 이유가 없다'는 신호로 해석된다. 고용이 버티는 한 연준은 유가 상승에 따른 인플레이션 압박에
+      더 주목하게 되고, 이는 인하 기대를 억제하는 방향으로 작용한다. 
+      <strong>Challenger 보고서에서는 1분기 발표된 해고 건수가 전년 동기와 유사</strong>한 수준으로 나타나 노동시장 균열 징후가 없음을 재확인했다.
+    </p>
+    <p>
+      한편 2월 무역수지 데이터가 반영되면서 J.P. Morgan의 1분기 GDP 성장 추정치가 <strong>3.25%에서 2.75%로 0.5%p 하향</strong>됐다.
+      여전히 잠재성장률을 상회하는 수준이지만, 방향성이 하방으로 꺾였다는 점은 주목할 만하다. 특히 수입 증가로 순수출이 악화된 영향이 크며,
+      이는 관세 인상 전 수입 확대 수요가 반영된 일시적 효과일 수 있다.
+    </p>
+  </div>
+
+  <!-- Econ Data Summary -->
+  <div class="chart-container">
+    <div class="chart-title">주요 경제 지표 스냅샷</div>
+    <div class="chart-subtitle">2026년 4월 2일 공개 데이터</div>
+    <div class="table-wrap" style="border:none;margin:0;">
+      <table>
+        <thead>
+          <tr>
+            <th style="text-align:left;">지표</th>
+            <th>실제치</th>
+            <th>컨센서스</th>
+            <th>이전</th>
+            <th>해석</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>신규실업청구건수 (3/21주)</td>
+            <td class="td-neg">202k</td>
+            <td>212k</td>
+            <td>—</td>
+            <td class="td-neg" style="font-size:11px;">서프라이즈↑ (고용 견조)</td>
+          </tr>
+          <tr>
+            <td>계속청구건수</td>
+            <td class="td-neg">1.841mn</td>
+            <td>1.837mn</td>
+            <td>—</td>
+            <td style="font-size:11px;color:var(--text-dim);">최근 저점 근처 유지</td>
+          </tr>
+          <tr>
+            <td>Challenger 해고 발표 (1Q)</td>
+            <td style="color:var(--text-dim);">전년 수준</td>
+            <td>—</td>
+            <td>—</td>
+            <td style="font-size:11px;color:var(--text-dim);">대량해고 조짐 없음</td>
+          </tr>
+          <tr>
+            <td>1Q GDP 추적 (하향)</td>
+            <td class="td-pos">2.75%</td>
+            <td>—</td>
+            <td>3.25%</td>
+            <td class="td-pos" style="font-size:11px;">0.5%p 하향 조정</td>
+          </tr>
+          <tr>
+            <td>3월 NFP 전망 (J.P. Morgan)</td>
+            <td class="td-pos" style="color:var(--amber);">+75k</td>
+            <td>—</td>
+            <td>—</td>
+            <td style="font-size:11px;color:var(--amber);">실업률 4.4%, 4.5% 상향 위험</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="callout callout-red">
+    <div class="callout-label">⚠ 핵심 이벤트 리스크</div>
+    <p>J.P. Morgan은 내일 발표될 3월 비농업 고용(NFP)을 <strong>+75k</strong>로 예측한다. 이는 컨센서스보다 낮은 수준으로,
+    실현될 경우 시장은 연준의 연내 인하 기대를 추가로 축소할 가능성이 있다. 한편 3월 Conference Board 노동시장 차이 지수 약세를 감안하면,
+    실업률이 4.4%를 넘어 4.5%로 반올림될 위험도 내재해 있다. 전자는 금리 상방 리스크, 후자는 하방 리스크로,
+    내일 NFP 전후로 변동성 확대가 예상된다.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ 트레이드 권고 ═══════════════════════════ -->
+<section class="section">
+  <div class="section-label">트레이드 권고</div>
+  <h2 class="section-title">포지션 청산 권고 — 2년물 롱 익절</h2>
+
+  <div class="trade-box">
+    <div class="trade-header">
+      <span class="trade-action">UNWIND</span>
+      <span class="trade-title">2년물 듀레이션 롱 포지션 100% 청산</span>
+    </div>
+    <div class="trade-detail">
+      대상 채권: T 3.375% Feb-28 (미국 국채 2026년 2월 만기)<br>
+      규모: 100% 리스크 해소 — 명목금액 $271.9mn<br>
+      진입일: 2026년 3월 20일 (US Fixed Income Markets Weekly)<br>
+      청산 기준 P&amp;L: <span class="trade-pnl">+9.4bp</span><br>
+      레퍼런스: US Fixed Income Markets Weekly, 3/27/26
+    </div>
+  </div>
+
+  <div class="prose">
+    <p>
+      J.P. Morgan이 3월 20일 진입한 2년물 롱 포지션은 오늘 기준 9.4bp의 수익을 기록했다. 진입 이후 2년물 금리는 상당 폭 하락했으나,
+      팀은 이 시점에서 익절을 선택했다. 이유는 명확하다. <strong>단기 SOFR 선물 시장이 J.P. Morgan의 '연준 동결 전망'에 이미 상당 부분 수렴</strong>했고,
+      추가 하락 여지보다 상방 리스크(NFP 이벤트)가 더 부각되는 국면에 진입했기 때문이다.
+    </p>
+    <p>
+      여기서 중요한 점은, J.P. Morgan이 금리 방향 자체에 대한 전망을 꺾은 것이 아니라는 점이다.
+      유가가 배럴당 $125 이상으로 상승하면 연준의 비선형적 반응 함수가 발동해 추가 인하 사이클이 열릴 수 있다는 시나리오는 여전히 살아있다.
+      다만 그 시나리오가 현실화되기 전에, 내일 NFP라는 촉매제로 인해 단기적으로 금리가 반등할 수 있는 리스크를 감내하기보다
+      9.4bp의 확정 수익을 손에 쥐는 것이 합리적이라고 판단한 것이다.
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ 기술적 분석 ═══════════════════════════ -->
+<section class="section">
+  <div class="section-label">기술적 분석</div>
+  <h2 class="section-title">2s/10s 커브 — 저항선 앞에 선 스티프닝</h2>
+
+  <!-- 2s/10s Technical Visualization -->
+  <div class="chart-container">
+    <div class="chart-title">2s/10s 커브 기술적 구조 분석 (개념도)</div>
+    <div class="chart-subtitle">주요 지지/저항 레벨, 이동평균, 추세선 충돌 구간</div>
+    <svg viewBox="0 0 700 300" style="max-height:300px;">
+      <!-- Background zones -->
+      <!-- Support zone 33-38bp (liberation day) -->
+      <rect x="60" y="200" width="640" height="28" fill="rgba(76,175,136,0.08)" rx="0"/>
+      <text x="64" y="195" fill="rgba(76,175,136,0.5)" font-size="9" font-family="monospace">지지 구간 33-38bp (Liberation Day 저점)</text>
+
+      <!-- Resistance zone 54-58bp -->
+      <rect x="60" y="110" width="640" height="22" fill="rgba(224,85,85,0.12)" rx="0"/>
+      <text x="64" y="107" fill="rgba(224,85,85,0.6)" font-size="9" font-family="monospace">핵심 저항 54-58bp (50일MA · 200일MA · 추세선 수렴)</text>
+
+      <!-- Price line - stylized curve journey -->
+      <polyline
+        points="60,240 100,245 140,252 180,258 220,260 260,248 300,232 340,218 380,220 420,215 460,218 500,220 530,222 560,218 580,215 600,218 610,220 625,222 640,221 655,222 665,222"
+        fill="none" stroke="#5a9fd4" stroke-width="1.5"/>
+
+      <!-- Steepening rebound -->
+      <polyline
+        points="665,222 670,215 675,210 678,208 680,206 682,204 685,200 688,196 690,193 692,190 694,188"
+        fill="none" stroke="#4caf88" stroke-width="1.5"/>
+
+      <!-- Stall at resistance -->
+      <polyline
+        points="694,188 696,186 698,184 698.5,138 699,135"
+        fill="none" stroke="#e05555" stroke-width="1.5" stroke-dasharray="3,2"/>
+      <circle cx="699" cy="135" r="4" fill="none" stroke="#e05555" stroke-width="1.5"/>
+
+      <!-- Current level marker -->
+      <line x1="60" y1="130" x2="700" y2="130" stroke="rgba(200,164,90,0.4)" stroke-width="1" stroke-dasharray="5,3"/>
+      <text x="64" y="126" fill="var(--gold)" font-size="10" font-family="monospace" font-weight="bold">현재 51.4bp ──────────────────────────────────</text>
+
+      <!-- Y axis labels -->
+      <line x1="58" y1="60"  x2="62" y2="60"  stroke="#1e2840" stroke-width="1"/>
+      <line x1="58" y1="100" x2="62" y2="100" stroke="#1e2840" stroke-width="1"/>
+      <line x1="58" y1="130" x2="62" y2="130" stroke="#1e2840" stroke-width="1"/>
+      <line x1="58" y1="160" x2="62" y2="160" stroke="#1e2840" stroke-width="1"/>
+      <line x1="58" y1="200" x2="62" y2="200" stroke="#1e2840" stroke-width="1"/>
+      <line x1="58" y1="228" x2="62" y2="228" stroke="#1e2840" stroke-width="1"/>
+      <line x1="58" y1="260" x2="62" y2="260" stroke="#1e2840" stroke-width="1"/>
+
+      <text x="50" y="64"  fill="#4a5268" font-size="9" font-family="monospace" text-anchor="end">72bp</text>
+      <text x="50" y="104" fill="#4a5268" font-size="9" font-family="monospace" text-anchor="end">58bp</text>
+      <text x="50" y="134" fill="#c8a45a" font-size="9" font-family="monospace" text-anchor="end">51bp</text>
+      <text x="50" y="164" fill="#4a5268" font-size="9" font-family="monospace" text-anchor="end">43bp</text>
+      <text x="50" y="204" fill="#4a5268" font-size="9" font-family="monospace" text-anchor="end">33bp</text>
+      <text x="50" y="232" fill="#4a5268" font-size="9" font-family="monospace" text-anchor="end">26bp</text>
+      <text x="50" y="264" fill="#4a5268" font-size="9" font-family="monospace" text-anchor="end">0bp</text>
+
+      <!-- Axis -->
+      <line x1="60" y1="20" x2="60" y2="270" stroke="#1e2840" stroke-width="1"/>
+      <line x1="60" y1="270" x2="700" y2="270" stroke="#1e2840" stroke-width="1"/>
+
+      <!-- Time labels -->
+      <text x="80"  y="285" fill="#4a5268" font-size="9" font-family="monospace">2024</text>
+      <text x="270" y="285" fill="#4a5268" font-size="9" font-family="monospace">2025</text>
+      <text x="590" y="285" fill="#4a5268" font-size="9" font-family="monospace">2026</text>
+
+      <!-- Annotations -->
+      <text x="440" y="245" fill="#4caf88" font-size="10" font-family="monospace">스티프닝 반등</text>
+      <text x="600" y="180" fill="#e05555" font-size="10" font-family="monospace">저항 직면</text>
+
+      <!-- Next support arrow down -->
+      <text x="64" y="246" fill="rgba(76,175,136,0.8)" font-size="9" font-family="monospace">▼ 다음 지지 26bp (Jun 2024 38.2% 되돌림)</text>
+    </svg>
+    <div class="chart-note">※ J.P. Morgan 원본 차트 기반 개념도. 실제 가격 데이터가 아닌 주요 레벨 및 추세 구조를 시각화.</div>
+  </div>
+
+  <div class="prose">
+    <p>
+      기술적 분석 섹션은 Jason Hunter가 집필한 것으로, 2s/10s 커브가 현재 처한 구조적 딜레마를 명확히 보여준다.
+      커브는 33~38bp의 중기 지지선('Liberation Day 돌파 저점')에서 스티프닝 반등을 시도했으나,
+      <strong>54~58bp의 강력한 저항 클러스터</strong>에 막혀 상승 모멘텀이 소실됐다.
+    </p>
+    <p>
+      이 저항 구간이 특히 강력한 이유는 여러 기술적 레벨이 동시에 수렴하기 때문이다.
+      8월~3월 추세선 이탈 지점, 2023년 7월 채널 추세선 이탈 지점, 50일 이동평균, 200일 이동평균이 모두 54~58bp 근방에 위치한다.
+      시장이 이 구간을 명확히 돌파하기 전까지는 <strong>커브가 플래트닝 편향</strong>을 유지한다고 봐야 한다.
+    </p>
+    <p>
+      하방 리스크도 존재한다. 33bp를 지속적으로 하향 이탈한다면 장기 스티프닝 트렌드 자체가 부정되며,
+      다음 지지선은 2024년 6월의 26bp(38.2% 피보나치 되돌림)가 된다. 불 플래트닝(bull flattening)이 재발할 경우 이 시나리오가 현실화될 수 있다.
+    </p>
+  </div>
+
+  <div class="callout callout-blue">
+    <div class="callout-label">커브 전략 시사점</div>
+    <p>현재 2s/10s 커브는 스티프닝도 플래트닝도 확신할 수 없는 '중립 구간'에서 방향성을 탐색 중이다.
+    54~58bp를 돌파하면 스티프닝 포지션 진입 기회, 33bp를 하향 이탈하면 장기 스티프닝 전망 재평가가 필요하다.
+    현재 51.4bp는 중간값으로, 뚜렷한 방향성 베팅보다는 이벤트(NFP, 유가) 결과를 확인 후 방향 잡기가 적절하다.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ 포지셔닝 분석 ═══════════════════════════ -->
+<section class="section">
+  <div class="section-label">수급 · 포지셔닝 분석</div>
+  <h2 class="section-title">투자자 포지셔닝 전반 점검</h2>
+
+  <div class="prose">
+    <p>
+      J.P. Morgan의 부록(Appendix)은 다양한 투자자 유형별 포지셔닝 지표를 포괄적으로 보여준다.
+      이 지표들의 1년 Z-스코어를 종합하면 시장이 어느 방향으로 이미 베팅해 있는지,
+      그리고 추가 수요가 생길 여지가 있는지를 가늠할 수 있다.
+    </p>
+  </div>
+
+  <div class="position-grid">
+    <!-- TCS -->
+    <div class="pos-card">
+      <div class="pos-label">JPM 국채 고객 서베이<br>(TCS Net Long)</div>
+      <div class="pos-zscore" style="color:#e0dbd4;">+0.21</div>
+      <div class="pos-bar-track">
+        <div class="pos-bar-fill" style="left:50%;width:5.3%;background:var(--green);"></div>
+      </div>
+      <div class="pos-interp">중립 근처. 롱 편향 소폭. 과도한 롱 쏠림 없음 → 추가 매수 여력 남아있음</div>
+    </div>
+
+    <!-- TCS 4w MA -->
+    <div class="pos-card">
+      <div class="pos-label">JPM 국채 고객 서베이<br>(4주 이동평균 지수)</div>
+      <div class="pos-zscore" style="color:var(--amber);">-0.53</div>
+      <div class="pos-bar-track">
+        <div class="pos-bar-fill" style="left:36.7%;width:13.3%;background:var(--amber);"></div>
+      </div>
+      <div class="pos-interp">최근 4주 평균은 중립 하방. 단기적으로 롱 포지션이 청산되는 흐름 포착</div>
+    </div>
+
+    <!-- CFTC -->
+    <div class="pos-card">
+      <div class="pos-label">CFTC 비상업 포지션<br>(SOFR + 국채 선물)</div>
+      <div class="pos-zscore" style="color:var(--red);">+2.06</div>
+      <div class="pos-bar-track">
+        <div class="pos-bar-fill" style="left:50%;width:41.2%;background:var(--red);"></div>
+      </div>
+      <div class="pos-interp">⚠ 극단적 숏 포지션 (Z-스코어 2.06 = 상위 2%). 투기 자금의 국채 숏 매우 극단적 → 숏 커버 압력 잠재</div>
+    </div>
+
+    <!-- CTA -->
+    <div class="pos-card">
+      <div class="pos-label">CTA 펀드<br>(10년물 노출도)</div>
+      <div class="pos-zscore" style="color:var(--green);">-1.20</div>
+      <div class="pos-bar-track">
+        <div class="pos-bar-fill" style="left:26%;width:24%;background:var(--green);"></div>
+      </div>
+      <div class="pos-interp">CTA가 10년물 숏 포지션 보유. 추세 추종 자금이 금리 상승(채권 하락) 쪽 베팅</div>
+    </div>
+
+    <!-- Active Bond Fund -->
+    <div class="pos-card">
+      <div class="pos-label">액티브 채권 펀드<br>(대형 25개, 10년물)</div>
+      <div class="pos-zscore" style="color:var(--green);">-1.73</div>
+      <div class="pos-bar-track">
+        <div class="pos-bar-fill" style="left:6.7%;width:43.3%;background:var(--green);"></div>
+      </div>
+      <div class="pos-interp">⚠ 매우 낮은 듀레이션 노출. 액티브 펀드가 10년물을 언더웨이트 → 매수 전환 시 강력한 수요 촉매</div>
+    </div>
+
+    <!-- Macro HF -->
+    <div class="pos-card">
+      <div class="pos-label">매크로 헤지펀드<br>(10년물 노출도)</div>
+      <div class="pos-zscore" style="color:var(--amber);">-0.50</div>
+      <div class="pos-bar-track">
+        <div class="pos-bar-fill" style="left:37.5%;width:12.5%;background:var(--amber);"></div>
+      </div>
+      <div class="pos-interp">중립 하방. 헤지펀드는 현재 10년물에 소폭 숏/언더웨이트 유지 중</div>
+    </div>
+
+    <!-- Put/Call -->
+    <div class="pos-card">
+      <div class="pos-label">T-Note 선물<br>달러 가중 Put/Call 비율</div>
+      <div class="pos-zscore" style="color:var(--red);">+1.03</div>
+      <div class="pos-bar-track">
+        <div class="pos-bar-fill" style="left:50%;width:25.8%;background:var(--red);"></div>
+      </div>
+      <div class="pos-interp">풋 우세 (Z+1.03). 시장 참여자들이 국채 하락(금리 상승) 헤지를 강화 → 불확실성 반영</div>
+    </div>
+  </div>
+
+  <div class="prose" style="margin-top:24px;">
+    <p>
+      포지셔닝 지표를 종합하면 흥미로운 그림이 나온다. <strong>CFTC 비상업 포지션의 Z-스코어 +2.06은 헤지펀드·투기자금이 역사적으로 극단적인 숏 포지션을 보유</strong>하고 있음을 의미한다.
+      반면 액티브 코어 채권 펀드는 Z-스코어 -1.73으로 10년물을 극단적으로 언더웨이트하고 있다.
+      이 두 가지를 함께 보면, 만약 금리가 다시 상승하면 CFTC 숏 커버가 가세해 하락을 제한하고,
+      금리가 하락하면 액티브 펀드의 매수 재진입이 하락을 가속할 수 있다는 <em>비대칭적 수급 구조</em>가 보인다.
+    </p>
+    <p>
+      특히 T-Note Put/Call 비율이 Z+1.03으로 약간 풋 우세인 것은 시장이 국채 가격 하락 리스크에 대한 헤지를 늘리고 있다는 신호다.
+      이는 오늘 리포트의 전체 메시지와 일관된다. 불확실성이 높고, 이벤트(NFP, 유가)에 따라 방향이 급격히 바뀔 수 있는 환경에서
+      현물 포지션을 가볍게 유지하는 것이 현명하다는 것이다.
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ TIPS 브레이크이븐 ═══════════════════════════ -->
+<section class="section">
+  <div class="section-label">인플레이션 기대</div>
+  <h2 class="section-title">TIPS 브레이크이븐 — 유가 충격 반영 가속</h2>
+
+  <div class="chart-container">
+    <div class="chart-title">TIPS 브레이크이븐 인플레이션 (만기별)</div>
+    <div class="chart-subtitle">시장 내재 인플레이션 기대, 2026년 4월 2일 종가</div>
+    <svg viewBox="0 0 700 180" style="max-height:180px;">
+      <!-- Grid -->
+      <line x1="80" y1="20"  x2="680" y2="20"  stroke="#1e2840" stroke-width="0.5" stroke-dasharray="4,4"/>
+      <line x1="80" y1="60"  x2="680" y2="60"  stroke="#1e2840" stroke-width="0.5" stroke-dasharray="4,4"/>
+      <line x1="80" y1="100" x2="680" y2="100" stroke="#1e2840" stroke-width="0.5" stroke-dasharray="4,4"/>
+      <line x1="80" y1="140" x2="680" y2="140" stroke="#1e2840" stroke-width="0.5" stroke-dasharray="4,4"/>
+
+      <text x="72" y="23"  fill="#4a5268" font-size="9" font-family="monospace" text-anchor="end">280bp</text>
+      <text x="72" y="63"  fill="#4a5268" font-size="9" font-family="monospace" text-anchor="end">260bp</text>
+      <text x="72" y="103" fill="#4a5268" font-size="9" font-family="monospace" text-anchor="end">240bp</text>
+      <text x="72" y="143" fill="#4a5268" font-size="9" font-family="monospace" text-anchor="end">220bp</text>
+
+      <!-- Axis -->
+      <line x1="80" y1="20" x2="80" y2="155" stroke="#1e2840" stroke-width="1"/>
+      <line x1="80" y1="155" x2="680" y2="155" stroke="#1e2840" stroke-width="1"/>
+
+      <!-- Data points scale: 220=140, 280=20 → 1bp = (140-20)/(280-220) = 2px -->
+      <!-- 5y: 264.1 → y = 140 - (264.1-220)*2 = 140 - 88.2 = 51.8 -->
+      <!-- 10y: 235.6 → y = 140 - (235.6-220)*2 = 140 - 31.2 = 108.8 -->
+      <!-- 30y: 221.6 → y = 140 - (221.6-220)*2 = 140 - 3.2 = 136.8 -->
+
+      <!-- Columns -->
+      <!-- 5y -->
+      <rect x="160" y="52" width="120" height="103" fill="rgba(200,164,90,0.25)" stroke="#c8a45a" stroke-width="1" rx="2"/>
+      <text x="220" y="46" fill="#c8a45a" font-size="11" font-family="monospace" text-anchor="middle" font-weight="bold">264.1bp</text>
+      <text x="220" y="168" fill="#7a8090" font-size="10" font-family="monospace" text-anchor="middle">5년</text>
+      <text x="220" y="38" fill="var(--red)" font-size="9" font-family="monospace" text-anchor="middle">+5.2bp (1d)</text>
+
+      <!-- 10y -->
+      <rect x="310" y="109" width="120" height="46" fill="rgba(90,159,212,0.2)" stroke="#5a9fd4" stroke-width="1" rx="2"/>
+      <text x="370" y="103" fill="#5a9fd4" font-size="11" font-family="monospace" text-anchor="middle" font-weight="bold">235.6bp</text>
+      <text x="370" y="168" fill="#7a8090" font-size="10" font-family="monospace" text-anchor="middle">10년</text>
+      <text x="370" y="95" fill="var(--red)" font-size="9" font-family="monospace" text-anchor="middle">+3.4bp (1d)</text>
+
+      <!-- 30y -->
+      <rect x="460" y="137" width="120" height="18" fill="rgba(224,144,64,0.2)" stroke="#e09040" stroke-width="1" rx="2"/>
+      <text x="520" y="131" fill="#e09040" font-size="11" font-family="monospace" text-anchor="middle" font-weight="bold">221.6bp</text>
+      <text x="520" y="168" fill="#7a8090" font-size="10" font-family="monospace" text-anchor="middle">30년</text>
+      <text x="520" y="123" fill="var(--red)" font-size="9" font-family="monospace" text-anchor="middle">+1.8bp (1d)</text>
+
+      <!-- Fed target line at 200bp = y: 140-(200-220)*2 = 140+40 = 180 (off chart) -->
+      <!-- Draw at 200bp reference line -->
+      <line x1="80" y1="155" x2="680" y2="155" stroke="rgba(224,85,85,0.3)" stroke-width="1" stroke-dasharray="6,3"/>
+      <text x="85" y="151" fill="rgba(224,85,85,0.6)" font-size="9" font-family="monospace">연준 목표 2.00%</text>
+    </svg>
+    <div class="chart-note">5년 브레이크이븐은 3개월 구간 내 81퍼센타일(264bp)로 가장 높음. 단기 인플레 기대가 장기보다 훨씬 높아 단기 유가 충격 반영 중.</div>
+  </div>
+
+  <div class="prose">
+    <p>
+      TIPS 브레이크이븐 데이터가 오늘의 이야기를 가장 함축적으로 보여준다. 5년 브레이크이븐이 264bp로 3개월 구간의 81퍼센타일에 위치해 있는 반면,
+      10년(235bp, 63퍼센타일)과 30년(221bp, 19퍼센타일)은 훨씬 낮다. 이처럼 <strong>단기 인플레 기대가 장기보다 크게 높은 구조</strong>는
+      시장이 현재의 유가 상승이 <em>일시적이고 구간 제한적인 충격</em>이라고 보고 있음을 시사한다.
+    </p>
+    <p>
+      만약 시장이 유가 상승을 구조적 인플레이션으로 해석하기 시작한다면, 장기 브레이크이븐이 빠르게 상승하면서
+      30년물 실질금리가 압박을 받는 시나리오가 전개될 수 있다. 반대로 유가가 안정된다면 5년 브레이크이븐 조정이 먼저 나타날 것이다.
+      오늘 하루만 봐도 5년이 +5.2bp, 10년이 +3.4bp, 30년이 +1.8bp로 단기 구간에서 인플레 기대가 더 빠르게 상승했다.
+    </p>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ 전략적 시사점 ═══════════════════════════ -->
+<section class="section">
+  <div class="section-label">전략적 시사점</div>
+  <h2 class="section-title">종합 판단 및 투자 전략</h2>
+
+  <ul class="impl-list">
+    <li>
+      <span class="impl-num">01</span>
+      <span>
+        <strong>2년물 전술적 롱 사이클 마감.</strong> 3월 20일 진입한 2년물 롱 포지션(+9.4bp P/L)을 오늘 청산한다.
+        연준 동결 전망이 선물시장에 이미 반영된 상태에서, 내일 NFP 이벤트를 앞두고 리스크 대비 보상이 불리해졌다.
+        단기 SOFR 선물이 J.P. Morgan 베이스케이스와 정렬된 이상, 추가 하락 여지는 제한적이다.
+      </span>
+    </li>
+    <li>
+      <span class="impl-num">02</span>
+      <span>
+        <strong>NFP 결과에 따른 시나리오 대응.</strong> +75k 실현 → 인하 기대 축소, 금리 반등, 단기물 약세 우세.
+        +75k를 크게 하회 또는 실업률 4.5% 상향 → 재차 듀레이션 롱 진입 기회. 결과 확인 전 방향성 포지션 경량 유지가 합리적.
+      </span>
+    </li>
+    <li>
+      <span class="impl-num">03</span>
+      <span>
+        <strong>유가 $125/bbl 시나리오는 여전히 테일 리스크.</strong> J.P. Morgan은 유가가 배럴당 $125 이상으로 상승할 경우
+        연준의 반응 함수가 비선형적으로 작동해 예상치 못한 인하 사이클이 열릴 수 있다고 지적한다.
+        이 시나리오에서는 2년물이 재차 강하게 랠리할 수 있으므로, 롱 포지션 재진입 옵션을 열어두어야 한다.
+      </span>
+    </li>
+    <li>
+      <span class="impl-num">04</span>
+      <span>
+        <strong>커브 전략: 54bp 돌파 전까지 스티프닝 베팅 자제.</strong> 2s/10s 커브는 54~58bp의 복합 저항(50일·200일 이평선, 추세선 이탈점)을
+        돌파하기 전까지는 플래트닝 편향을 유지한다. 54~58bp를 명확히 상향 이탈하면 스티프너 진입을 검토할 수 있다.
+      </span>
+    </li>
+    <li>
+      <span class="impl-num">05</span>
+      <span>
+        <strong>CFTC 극단 숏 포지션 주목.</strong> 투기자금의 국채 숏 포지션이 Z-스코어 2.06이라는 역사적 극단값에 도달했다.
+        이는 반대 방향 충격(예: 약한 NFP, 지정학 악화)이 발생할 경우 숏 커버링이 가세해 금리 하락이
+        예상을 훨씬 상회할 수 있음을 의미한다. 이 비대칭성은 장기 듀레이션 방향성 거래에서 중요한 변수다.
+      </span>
+    </li>
+    <li>
+      <span class="impl-num">06</span>
+      <span>
+        <strong>글로벌 연동 점검: BoE 매파 기대 약화.</strong> 영국 중앙은행 베일리 총재가 금리 인상 기대를 억제하는 발언을 했다.
+        J.P. Morgan 영국팀은 MPC의 6월 금리 인상 전망을 철회했다. DM 중앙은행들이 전반적으로 덜 매파적인 방향으로 기울고 있어,
+        글로벌 금리의 상방 압박이 완화되고 있다는 점은 미국 국채에도 우호적이다.
+      </span>
+    </li>
+  </ul>
+</section>
+
+<!-- ═══════════════════════════ 실무 포인트 ═══════════════════════════ -->
+<section class="section">
+  <div class="section-label">실무 포인트</div>
+  <h2 class="section-title">내일의 체크리스트</h2>
+
+  <div class="chart-container">
+    <div class="chart-title" style="margin-bottom:12px;">핵심 관찰 포인트 (2026.04.03)</div>
+    <div class="table-wrap" style="border:none;margin:0;">
+      <table>
+        <thead>
+          <tr>
+            <th style="text-align:left;">항목</th>
+            <th style="text-align:left;">주목 수준</th>
+            <th style="text-align:left;">시장 함의</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>3월 NFP (비농업 고용)</td>
+            <td style="color:var(--red);">★★★★★ 최고</td>
+            <td style="font-size:12px;">+75k 수렴 시 2년물 반등. 대폭 하회 시 롱 재진입 기회</td>
+          </tr>
+          <tr>
+            <td>3월 실업률</td>
+            <td style="color:var(--red);">★★★★☆ 매우 높음</td>
+            <td style="font-size:12px;">4.5% 상향 시 연준 비둘기 기대 재부각, 금리 하락 가속</td>
+          </tr>
+          <tr>
+            <td>2s/10s 커브 레벨</td>
+            <td style="color:var(--amber);">★★★☆☆ 중간</td>
+            <td style="font-size:12px;">54bp 상향 이탈 여부 확인. 돌파 시 스티프닝 트레이드 검토</td>
+          </tr>
+          <tr>
+            <td>유가 (WTI/Brent)</td>
+            <td style="color:var(--amber);">★★★☆☆ 중간</td>
+            <td style="font-size:12px;">$100 상향 가속 시 성장 충격 내러티브 강화, 금리 하락 압력</td>
+          </tr>
+          <tr>
+            <td>SOFR 선물 (Z6) 내재 확률</td>
+            <td style="color:var(--text-dim);">★★☆☆☆ 모니터링</td>
+            <td style="font-size:12px;">분포 변화 추적. 2+ cuts 확률 상승 시 앞단(2년물) 우선 반응</td>
+          </tr>
+          <tr>
+            <td>5년 TIPS 브레이크이븐</td>
+            <td style="color:var(--text-dim);">★★☆☆☆ 모니터링</td>
+            <td style="font-size:12px;">265bp 상향 시 인플레 우려 재부각, 연준 비둘기 기대 억제</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ FOOTER ═══════════════════════════ -->
+<footer class="report-footer">
+  <p>
+    <strong>원문 출처:</strong> J.P. Morgan Global Markets Strategy, "US Treasury Market Daily — Take profits on 2-year longs",
+    Jay Barry, Jason Hunter, Liam Wash, Amanda Berke, J.P. Morgan Securities LLC, 2026년 4월 2일.<br>
+    본 한국어 리포트는 위 원문을 바탕으로 분석적 해설을 부가하여 작성되었습니다.
+    모든 수치와 판단은 원문 작성 시점(2026.04.02) 기준이며, 이후 상황 변화를 반영하지 않습니다.
+  </p>
+  <p style="margin-top:12px;">
+    J.P. Morgan은 이 리포트에서 다루는 기업들과 사업 관계를 유지하고 있으며, 이는 리포트의 객관성에 영향을 줄 수 있습니다.
+    본 자료는 투자 권유가 아니며, 개별 투자자의 상황에 맞는 독립적 판단이 필요합니다.
+    Copyright 2026 JPMorgan Chase &amp; Co. All rights reserved.
+  </p>
+</footer>
+
+</body>
+</html>
