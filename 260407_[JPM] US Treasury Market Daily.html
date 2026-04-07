@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>미국 국채시장 데일리 | 2026.04.07</title>
+<style>
+  :root {
+    --bg: #07090f;
+    --bg2: #0d1120;
+    --bg3: #111827;
+    --border: #1e2a3a;
+    --gold: #c8a45a;
+    --gold2: #e8c87a;
+    --gold-dim: rgba(200,164,90,0.12);
+    --red: #e05555;
+    --green: #4caf82;
+    --blue: #4a9eff;
+    --muted: #8899aa;
+    --text: #d4dce8;
+    --text2: #a8b8cc;
+    --heading: #eef3fa;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    overflow-x: hidden;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Georgia', 'Batang', serif;
+    font-size: 15px;
+    line-height: 1.8;
+  }
+  .page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 24px 80px;
+    width: 100%;
+  }
+
+  /* ── HEADER ── */
+  .report-header {
+    border-bottom: 1px solid var(--border);
+    padding: 48px 0 32px;
+    position: relative;
+  }
+  .report-header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: -24px; right: -24px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold) 0%, var(--gold2) 50%, transparent 100%);
+  }
+  .label-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+  .source-badge {
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    padding: 3px 10px;
+    text-transform: uppercase;
+  }
+  .date-badge {
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 1px;
+  }
+  .report-title {
+    font-family: 'Georgia', serif;
+    font-size: 32px;
+    font-weight: normal;
+    color: var(--heading);
+    letter-spacing: -0.5px;
+    line-height: 1.25;
+    margin-bottom: 10px;
+  }
+  .report-subtitle {
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    color: var(--gold);
+    letter-spacing: 1px;
+  }
+
+  /* ── SECTIONS ── */
+  section { margin-top: 52px; }
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .section-num {
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    color: var(--gold);
+    letter-spacing: 2px;
+    min-width: 28px;
+  }
+  .section-title {
+    font-family: 'Georgia', serif;
+    font-size: 20px;
+    color: var(--heading);
+    font-weight: normal;
+    letter-spacing: 0.3px;
+  }
+  .section-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── SUMMARY CARDS ── */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  .sum-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 18px 16px;
+    position: relative;
+  }
+  .sum-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--gold-dim);
+  }
+  .sum-card.alert::before { background: rgba(224,85,85,0.5); }
+  .sum-card.positive::before { background: rgba(76,175,130,0.5); }
+  .sum-card-label {
+    font-family: 'Courier New', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .sum-card-value {
+    font-family: 'Courier New', monospace;
+    font-size: 22px;
+    color: var(--gold);
+    font-weight: bold;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .sum-card-desc {
+    font-size: 12px;
+    color: var(--text2);
+    line-height: 1.5;
+  }
+  .sum-card.alert .sum-card-value { color: var(--red); }
+  .sum-card.positive .sum-card-value { color: var(--green); }
+
+  /* ── PROSE ── */
+  p {
+    color: var(--text);
+    margin-bottom: 16px;
+    line-height: 1.85;
+  }
+  p:last-child { margin-bottom: 0; }
+  .highlight {
+    color: var(--gold);
+    font-style: normal;
+  }
+  .hl-red { color: var(--red); }
+  .hl-green { color: var(--green); }
+  .hl-blue { color: var(--blue); }
+
+  /* ── YIELD TABLE ── */
+  .table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    margin: 24px 0;
+    -webkit-overflow-scrolling: touch;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  thead tr {
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+  }
+  th {
+    padding: 10px 14px;
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    text-align: right;
+    font-weight: normal;
+  }
+  th:first-child { text-align: left; }
+  td {
+    padding: 9px 14px;
+    text-align: right;
+    border-bottom: 1px solid rgba(30,42,58,0.6);
+    color: var(--text2);
+  }
+  td:first-child { text-align: left; color: var(--text); }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(200,164,90,0.04); }
+  .cat-row td {
+    background: var(--bg3);
+    color: var(--muted);
+    font-size: 9px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 5px 14px;
+  }
+  .td-pos { color: var(--red); }
+  .td-neg { color: var(--green); }
+  .td-gold { color: var(--gold); }
+  .td-pctl { color: var(--blue); }
+
+  /* ── CHART CONTAINERS ── */
+  .chart-block {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 24px 20px 16px;
+    margin: 24px 0;
+  }
+  .chart-title {
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .chart-sub {
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 18px;
+    line-height: 1.5;
+  }
+  svg { display: block; }
+
+  /* ── POSITIONING GRID ── */
+  .pos-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 24px 0;
+  }
+  .pos-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 18px 16px;
+  }
+  .pos-card-label {
+    font-family: 'Courier New', monospace;
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .pos-card-title {
+    font-size: 13px;
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+  .zscore-bar-wrap {
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    margin-bottom: 6px;
+    position: relative;
+  }
+  .zscore-center {
+    position: absolute;
+    left: 50%;
+    top: -2px;
+    width: 1px;
+    height: 10px;
+    background: var(--muted);
+  }
+  .zscore-fill {
+    height: 100%;
+    border-radius: 3px;
+    position: absolute;
+  }
+  .pos-card-zscore {
+    font-family: 'Courier New', monospace;
+    font-size: 16px;
+    font-weight: bold;
+  }
+  .pos-card-interp {
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* ── BLOCKQUOTE / INSIGHT ── */
+  .insight-box {
+    border-left: 2px solid var(--gold);
+    background: var(--gold-dim);
+    padding: 16px 20px;
+    margin: 24px 0;
+  }
+  .insight-box p {
+    margin-bottom: 0;
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.7;
+  }
+
+  .warn-box {
+    border-left: 2px solid var(--red);
+    background: rgba(224,85,85,0.06);
+    padding: 16px 20px;
+    margin: 24px 0;
+  }
+  .warn-box p {
+    margin-bottom: 0;
+    font-size: 14px;
+    color: var(--text);
+    line-height: 1.7;
+  }
+
+  /* ── TECH LEVELS ── */
+  .level-map {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 20px;
+    margin: 24px 0;
+  }
+
+  /* ── FOOTER ── */
+  .report-footer {
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.5px;
+    line-height: 1.8;
+  }
+
+  @media (max-width: 600px) {
+    .summary-grid { grid-template-columns: 1fr 1fr; }
+    .pos-grid { grid-template-columns: 1fr; }
+    .report-title { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- ══════════════════════ HEADER ══════════════════════ -->
+<header class="report-header">
+  <div class="label-row">
+    <span class="source-badge">J.P. Morgan</span>
+    <span class="date-badge">2026.04.07 EDT</span>
+  </div>
+  <h1 class="report-title">미국 국채시장 데일리<br>10년물 입찰 프리뷰</h1>
+  <div class="report-subtitle">US TREASURY MARKET DAILY · FIXED INCOME STRATEGY</div>
+</header>
+
+<!-- ══════════════════════ 1. 핵심 요약 ══════════════════════ -->
+<section>
+  <div class="section-label">
+    <span class="section-num">01</span>
+    <h2 class="section-title">핵심 요약</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="summary-grid">
+    <div class="sum-card">
+      <div class="sum-card-label">10년물 금리</div>
+      <div class="sum-card-value">4.34%</div>
+      <div class="sum-card-desc">전일 대비 +0.8bp<br>6개월 레인지 상단 근접</div>
+    </div>
+    <div class="sum-card alert">
+      <div class="sum-card-label">30년물 금리</div>
+      <div class="sum-card-value">4.92%</div>
+      <div class="sum-card-desc">전일 대비 +3.2bp<br>장기물 주도 트위스트 스티프닝</div>
+    </div>
+    <div class="sum-card positive">
+      <div class="sum-card-label">내일 입찰 규모</div>
+      <div class="sum-card-value">$39bn</div>
+      <div class="sum-card-desc">10년물 리오프닝<br>전월과 동일 규모</div>
+    </div>
+    <div class="sum-card">
+      <div class="sum-card-label">2s/10s 스프레드</div>
+      <div class="sum-card-value">50.9bp</div>
+      <div class="sum-card-desc">전일 대비 +2.4bp<br>3개월 26th 퍼센타일</div>
+    </div>
+    <div class="sum-card positive">
+      <div class="sum-card-label">내구재 수주 (ex-운송)</div>
+      <div class="sum-card-value">+0.8%</div>
+      <div class="sum-card-desc">컨센서스 +0.5% 상회<br>설비투자 모멘텀 견조</div>
+    </div>
+    <div class="sum-card alert">
+      <div class="sum-card-label">지정학 리스크</div>
+      <div class="sum-card-value">고조</div>
+      <div class="sum-card-desc">트럼프 대이란 협상<br>8pm 데드라인 설정</div>
+    </div>
+  </div>
+
+  <p>4월 7일(화) 미국 국채시장은 <span class="highlight">트위스트 스티프닝(twist steepening)</span>이 약 5bp 나타났다. 단기물 금리는 소폭 하락한 반면 장기물 금리, 특히 30년물이 +3.2bp 상승하면서 수익률 곡선의 기울기가 가팔라졌다. 트럼프 행정부가 이란과의 협상 시한을 현지시간 오후 8시로 설정한 가운데, 지정학적 헤드라인이 금리 변동성을 끌어올린 하루였다. 다만 경제지표는 엇갈린 모습을 보였다. 2월 내구재 수주 중 비운송 부문과 핵심 자본재(core capital goods) 주문이 모두 컨센서스를 상회하며 기업 설비투자의 견고함을 재확인시켜 준 반면, 뉴욕 연준 조사 기준 1년 기대인플레이션은 3.42%로 시장 예상(3.50%)을 밑돌았다.</p>
+
+  <p>이날 진행된 3년물 입찰은 낙찰 수익률이 사전(pre-auction) 수준 대비 1.1bp 강하게(rich) 마감되며 원활한 소화를 기록했고, 최종 사용자(end-user) 비중이 전월 대비 6.2%p 증가한 86.7%를 기록했다. 특히 간접 입찰자(indirect bidder) 비중이 15.0%p 급증해 74.8%에 달하며 2024년 9월 이후 최고치를 경신했다. 이는 향후 10년물 입찰에 대한 신호로도 해석 가능하며, JPMorgan은 내일 입찰이 무난히 소화될 가능성을 긍정적으로 평가하면서도 오늘 밤 지정학 헤드라인이 내일 장 초반 가격 흐름을 좌우할 핵심 변수가 될 것임을 경고했다.</p>
+</section>
+
+<!-- ══════════════════════ 2. 금리 및 커브 현황 ══════════════════════ -->
+<section>
+  <div class="section-label">
+    <span class="section-num">02</span>
+    <h2 class="section-title">금리·커브·BEI 현황</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>만기</th>
+          <th>현재 (%)</th>
+          <th>1일</th>
+          <th>WTD</th>
+          <th>QTD</th>
+          <th>YTD</th>
+          <th>3M 평균</th>
+          <th>3M 저점</th>
+          <th>3M 고점</th>
+          <th>3M Pctl.</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="cat-row"><td colspan="10">단기물 (Yields %)</td></tr>
+        <tr><td>4주</td><td class="td-gold">3.65</td><td class="td-neg">-3.1</td><td class="td-neg">-3.6</td><td class="td-neg">-4.1</td><td class="td-pos">+8.6</td><td>3.68</td><td>3.59</td><td>3.70</td><td class="td-pctl">54%</td></tr>
+        <tr><td>13주</td><td class="td-gold">3.69</td><td class="td-neg">-1.6</td><td class="td-neg">-0.3</td><td class="td-pos">+2.1</td><td class="td-pos">+5.9</td><td>3.70</td><td>3.59</td><td>3.71</td><td class="td-pctl">86%</td></tr>
+        <tr><td>26주</td><td class="td-gold">3.72</td><td class="td-neg">-1.6</td><td class="td-pos">+0.7</td><td class="td-pos">+2.1</td><td class="td-pos">+10.7</td><td>3.65</td><td>3.60</td><td>3.74</td><td class="td-pctl">82%</td></tr>
+        <tr class="cat-row"><td colspan="10">중장기물 (Yields %)</td></tr>
+        <tr><td>2년</td><td class="td-gold">3.83</td><td class="td-neg">-1.6</td><td class="td-neg">-1.7</td><td class="td-pos">+3.4</td><td class="td-pos">+36.4</td><td>3.61</td><td>3.38</td><td>3.98</td><td class="td-pctl">75%</td></tr>
+        <tr><td>5년</td><td class="td-gold">3.98</td><td class="td-neg">-0.6</td><td class="td-neg">-1.5</td><td class="td-pos">+3.2</td><td class="td-pos">+26.5</td><td>3.79</td><td>3.51</td><td>4.09</td><td class="td-pctl">79%</td></tr>
+        <tr><td>10년</td><td class="td-gold">4.34</td><td class="td-pos">+0.8</td><td class="td-neg">-0.3</td><td class="td-pos">+3.2</td><td class="td-pos">+18.9</td><td>4.20</td><td>3.96</td><td>4.44</td><td class="td-pctl">80%</td></tr>
+        <tr><td>30년</td><td class="td-gold">4.92</td><td class="td-pos">+3.2</td><td class="td-pos">+1.6</td><td class="td-pos">+3.0</td><td class="td-pos">+9.1</td><td>4.82</td><td>4.63</td><td>4.98</td><td class="td-pctl">83%</td></tr>
+        <tr class="cat-row"><td colspan="10">커브 스프레드 (bp)</td></tr>
+        <tr><td>2s/5s</td><td class="td-gold">14.3</td><td class="td-pos">+1.0</td><td class="td-pos">+0.2</td><td class="td-neg">-0.3</td><td class="td-neg">-9.9</td><td>18.1</td><td>8.8</td><td>27.4</td><td class="td-pctl">30%</td></tr>
+        <tr><td>5s/10s</td><td class="td-gold">36.6</td><td class="td-pos">+1.4</td><td class="td-pos">+1.2</td><td>0.0</td><td class="td-neg">-7.6</td><td>41.1</td><td>32.0</td><td>45.8</td><td class="td-pctl">34%</td></tr>
+        <tr><td>2s/10s</td><td class="td-gold">50.9</td><td class="td-pos">+2.4</td><td class="td-pos">+1.4</td><td class="td-neg">-0.2</td><td class="td-neg">-17.5</td><td>59.1</td><td>43.2</td><td>72.7</td><td class="td-pctl">26%</td></tr>
+        <tr><td>10s/30s</td><td class="td-gold">57.9</td><td class="td-pos">+2.4</td><td class="td-pos">+1.9</td><td class="td-neg">-0.2</td><td class="td-neg">-9.8</td><td>61.8</td><td>52.0</td><td>67.1</td><td class="td-pctl">39%</td></tr>
+        <tr class="cat-row"><td colspan="10">BEI 브레이크이븐 (bp)</td></tr>
+        <tr><td>5년 BEI</td><td class="td-gold">268.5</td><td class="td-pos">+2.2</td><td class="td-pos">+1.7</td><td class="td-pos">+7.8</td><td class="td-pos">+41.2</td><td>253.4</td><td>234.2</td><td>271.7</td><td class="td-pctl">91%</td></tr>
+        <tr><td>10년 BEI</td><td class="td-gold">238.3</td><td class="td-pos">+1.6</td><td class="td-pos">+1.1</td><td class="td-pos">+7.3</td><td class="td-pos">+13.6</td><td>232.7</td><td>226.2</td><td>241.2</td><td class="td-pctl">81%</td></tr>
+        <tr><td>30년 BEI</td><td class="td-gold">223.1</td><td class="td-pos">+0.6</td><td class="td-pos">+0.4</td><td class="td-pos">+5.1</td><td class="td-pos">+0.8</td><td>224.0</td><td>218.1</td><td>236.3</td><td class="td-pctl">28%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>오늘 수익률 곡선 움직임의 핵심은 <span class="highlight">트위스트 스티프닝</span>이다. 단기물은 연준 인하 기대가 완전히 소멸되지 않은 가운데 소폭 랠리한 반면, 10년물은 보합권에서 마감하고 30년물은 3.2bp 급등하며 장단기 금리 격차가 확대됐다. 2s/10s 스프레드는 50.9bp로 3개월 하위 26th 퍼센타일에 머물러 있어 커브 정상화가 아직 진행 중임을 나타내지만, 이번 주 들어 꾸준히 스티프닝 방향으로 이동하는 흐름이 감지된다.</p>
+
+  <p>브레이크이븐 측면에서 5년 BEI가 268.5bp로 3개월 91st 퍼센타일에 달하는 점은 주목할 필요가 있다. 관세 정책 불확실성이 단기 인플레이션 기대를 끌어올리고 있으며, 이는 실질금리보다는 명목금리를 통해 중단기 구간에 상방 압력을 가중시키는 요인으로 작용한다. 10년 BEI 238.3bp 역시 81st 퍼센타일로 상당히 높은 수준이다.</p>
+
+  <!-- 커브 Bar Chart (SVG) -->
+  <div class="chart-block">
+    <div class="chart-title">수익률 커브 스냅샷</div>
+    <div class="chart-sub">주요 만기별 금리 수준 (2026.04.07 종가 기준, %)</div>
+    <svg viewBox="0 0 840 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:840px;">
+      <!-- grid lines -->
+      <line x1="60" y1="20" x2="820" y2="20" stroke="#1e2a3a" stroke-width="1"/>
+      <line x1="60" y1="60" x2="820" y2="60" stroke="#1e2a3a" stroke-width="1"/>
+      <line x1="60" y1="100" x2="820" y2="100" stroke="#1e2a3a" stroke-width="1"/>
+      <line x1="60" y1="140" x2="820" y2="140" stroke="#1e2a3a" stroke-width="1"/>
+      <line x1="60" y1="180" x2="820" y2="180" stroke="#1e2a3a" stroke-width="1"/>
+      <!-- y-axis labels -->
+      <text x="50" y="23" text-anchor="end" fill="#8899aa" font-size="10" font-family="Courier New">5.50</text>
+      <text x="50" y="63" text-anchor="end" fill="#8899aa" font-size="10" font-family="Courier New">5.00</text>
+      <text x="50" y="103" text-anchor="end" fill="#8899aa" font-size="10" font-family="Courier New">4.50</text>
+      <text x="50" y="143" text-anchor="end" fill="#8899aa" font-size="10" font-family="Courier New">4.00</text>
+      <text x="50" y="183" text-anchor="end" fill="#8899aa" font-size="10" font-family="Courier New">3.50</text>
+      <!-- curve line: tenors mapped: 4wk=3.65, 13wk=3.69, 26wk=3.72, 52wk=3.71, 2y=3.83, 5y=3.98, 10y=4.34, 30y=4.92 -->
+      <!-- x positions: 70,145,215,285,355,435,580,800 -->
+      <!-- y: (5.5 - val) / (5.5-3.5) * 160 + 20 -->
+      <!-- 3.65 -> (1.85/2)*160+20=168; 3.69->166.4; 3.72->165.6; 3.71->166; 3.83->157.6; 3.98->148; 4.34->125.2; 4.92->86.4 -->
+      <polyline
+        points="70,168 145,166 215,165 285,166 355,158 435,148 580,125 800,86"
+        fill="none" stroke="#c8a45a" stroke-width="2.5" stroke-linejoin="round"/>
+      <!-- area fill -->
+      <polygon
+        points="70,168 145,166 215,165 285,166 355,158 435,148 580,125 800,86 800,180 70,180"
+        fill="rgba(200,164,90,0.08)"/>
+      <!-- dots -->
+      <circle cx="70" cy="168" r="4" fill="#c8a45a"/>
+      <circle cx="145" cy="166" r="4" fill="#c8a45a"/>
+      <circle cx="215" cy="165" r="4" fill="#c8a45a"/>
+      <circle cx="285" cy="166" r="4" fill="#c8a45a"/>
+      <circle cx="355" cy="158" r="4" fill="#c8a45a"/>
+      <circle cx="435" cy="148" r="4" fill="#c8a45a"/>
+      <circle cx="580" cy="125" r="4" fill="#e05555"/>
+      <circle cx="800" cy="86" r="4" fill="#e05555"/>
+      <!-- labels -->
+      <text x="70" y="185" text-anchor="middle" fill="#8899aa" font-size="10" font-family="Courier New">4W</text>
+      <text x="145" y="185" text-anchor="middle" fill="#8899aa" font-size="10" font-family="Courier New">13W</text>
+      <text x="215" y="185" text-anchor="middle" fill="#8899aa" font-size="10" font-family="Courier New">26W</text>
+      <text x="285" y="185" text-anchor="middle" fill="#8899aa" font-size="10" font-family="Courier New">52W</text>
+      <text x="355" y="185" text-anchor="middle" fill="#8899aa" font-size="10" font-family="Courier New">2Y</text>
+      <text x="435" y="185" text-anchor="middle" fill="#8899aa" font-size="10" font-family="Courier New">5Y</text>
+      <text x="580" y="185" text-anchor="middle" fill="#8899aa" font-size="10" font-family="Courier New">10Y</text>
+      <text x="800" y="185" text-anchor="middle" fill="#8899aa" font-size="10" font-family="Courier New">30Y</text>
+      <!-- value labels -->
+      <text x="70" y="160" text-anchor="middle" fill="#c8a45a" font-size="9.5" font-family="Courier New">3.65</text>
+      <text x="435" y="140" text-anchor="middle" fill="#c8a45a" font-size="9.5" font-family="Courier New">3.98</text>
+      <text x="580" y="117" text-anchor="middle" fill="#e05555" font-size="9.5" font-family="Courier New">4.34</text>
+      <text x="800" y="78" text-anchor="middle" fill="#e05555" font-size="9.5" font-family="Courier New">4.92</text>
+    </svg>
+  </div>
+</section>
+
+<!-- ══════════════════════ 3. 10년물 입찰 분석 ══════════════════════ -->
+<section>
+  <div class="section-label">
+    <span class="section-num">03</span>
+    <h2 class="section-title">10년물 입찰 프리뷰 및 수급 분석</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <p>재무부는 4월 8일(수) 오후 1시(EDT) 리오프닝(reopened) 방식으로 <span class="highlight">$390억 규모의 10년물 국채</span>를 입찰할 예정이다. 규모는 3월 리오프닝과 동일하다. 현재 10년물 금리 수준은 지난 입찰 이후 12bp 상승해 있어 수급 측면에서 어느 정도의 가격 매력이 형성돼 있다. 그러나 JPMorgan 모델상 펀더멘털 대비 여전히 약 14bp 낮은 수준(즉, 금리가 저평가)이라는 구조적 부담이 남아 있으며, 플라이(fly) 상에서도 중간 구간이 약 1표준편차 수준으로 고평가돼 있다.</p>
+
+  <div class="insight-box">
+    <p><strong style="color:var(--gold)">JPM 결론:</strong> 밸류에이션이 풍부(rich)하지만, ① 절대 금리 수준의 상승, ② 개선된 포지션 기술적 여건의 조합이 내일 입찰의 원활한 소화를 지지한다. 단, 오늘 밤 지정학 헤드라인에 따른 리스크는 인정한다.</p>
+  </div>
+
+  <!-- 입찰 히스토리 테이블 -->
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>일자</th>
+          <th>낙찰금리(%)</th>
+          <th>규모($bn)</th>
+          <th>Tail(bp)</th>
+          <th>B/C</th>
+          <th>직접(%)</th>
+          <th>간접(%)</th>
+          <th>최종사용자(%)</th>
+          <th>외국인(%)</th>
+          <th>투자매니저(%)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>25-Oct</td><td>4.111</td><td>39</td><td class="td-pos">+0.6</td><td>2.48</td><td>24.1</td><td>66.8</td><td>90.9</td><td>17.6</td><td>70.9</td></tr>
+        <tr><td>25-Nov</td><td>4.074</td><td>42</td><td class="td-pos">+0.5</td><td>2.43</td><td>22.6</td><td>67.0</td><td>89.5</td><td>20.6</td><td>66.3</td></tr>
+        <tr><td>25-Dec</td><td>4.175</td><td>39</td><td>0.0</td><td>2.55</td><td>21.0</td><td>70.2</td><td>91.2</td><td>20.1</td><td>68.8</td></tr>
+        <tr><td>26-Jan</td><td>4.173</td><td>39</td><td class="td-neg">-0.6</td><td>2.55</td><td>24.5</td><td>69.6</td><td class="td-green">94.2</td><td>22.1</td><td>69.7</td></tr>
+        <tr><td>26-Feb</td><td>4.177</td><td>42</td><td class="td-pos">+1.7</td><td>2.39</td><td>22.1</td><td>64.5</td><td class="td-pos">86.6</td><td>21.2</td><td>61.5</td></tr>
+        <tr><td>26-Mar</td><td>4.217</td><td>39</td><td class="td-pos">+0.8</td><td>2.45</td><td>12.8</td><td class="td-green">74.5</td><td>87.3</td><td class="td-pos">17.8</td><td class="td-green">65.5</td></tr>
+        <tr class="cat-row"><td>3회 평균</td><td>4.189</td><td>40</td><td>+0.6</td><td>2.46</td><td>19.8</td><td>69.5</td><td>89.4</td><td>20.3</td><td>65.6</td></tr>
+        <tr class="cat-row"><td>6회 평균</td><td>4.155</td><td>40</td><td>+0.5</td><td>2.48</td><td>21.2</td><td>68.8</td><td>90.0</td><td>19.9</td><td>67.1</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>3월 입찰 결과를 살펴보면 몇 가지 주목할 특이점이 있다. 직접 입찰자(Direct) 비중이 12.8%로 6회 평균(21.2%) 대비 크게 줄어든 대신, 간접 입찰자(Indirect)가 74.5%로 6회 최고치를 기록했다. 이는 외국 중앙은행 및 외국계 기관의 수요가 상당히 회복됐음을 의미하며, 전략적으로 긍정적인 신호다. 반면 외국인(Foreign) 직접 분류는 17.8%로 3월 기준 다소 낮았고, 투자매니저(Inv. Mgr.)는 65.5%로 선방했다. Tail(낙찰금리와 when-issued 금리 간 차이)은 +0.8bp로 다소 밀렸으나 2월의 +1.7bp 대비 크게 개선된 수치다.</p>
+
+  <!-- 입찰 결과 시각화: Tail + End-user bar chart -->
+  <div class="chart-block">
+    <div class="chart-title">최근 10년물 입찰 히스토리 비교</div>
+    <div class="chart-sub">Tail(bp) 및 최종사용자 비중(%) — 최근 6회</div>
+    <svg viewBox="0 0 840 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:840px;">
+      <!-- 배경 -->
+      <defs>
+        <linearGradient id="barGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#c8a45a" stop-opacity="0.9"/>
+          <stop offset="100%" stop-color="#c8a45a" stop-opacity="0.4"/>
+        </linearGradient>
+        <linearGradient id="barGradR" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#e05555" stop-opacity="0.9"/>
+          <stop offset="100%" stop-color="#e05555" stop-opacity="0.4"/>
+        </linearGradient>
+        <linearGradient id="lineGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#4a9eff" stop-opacity="0.9"/>
+          <stop offset="100%" stop-color="#4a9eff" stop-opacity="0.3"/>
+        </linearGradient>
+      </defs>
+      <!-- grid -->
+      <line x1="70" y1="20" x2="830" y2="20" stroke="#1e2a3a" stroke-width="1"/>
+      <line x1="70" y1="70" x2="830" y2="70" stroke="#1e2a3a" stroke-width="1"/>
+      <line x1="70" y1="120" x2="830" y2="120" stroke="#1e2a3a" stroke-width="1"/>
+      <line x1="70" y1="155" x2="830" y2="155" stroke="#1e2a3a" stroke-width="1" stroke-dasharray="3,3"/>
+      <!-- 왼쪽 y축: End-user % (80~96) -->
+      <text x="55" y="23" text-anchor="end" fill="#4a9eff" font-size="9" font-family="Courier New">96%</text>
+      <text x="55" y="73" text-anchor="end" fill="#4a9eff" font-size="9" font-family="Courier New">91%</text>
+      <text x="55" y="123" text-anchor="end" fill="#4a9eff" font-size="9" font-family="Courier New">86%</text>
+      <!-- 오른쪽 y축: Tail -->
+      <text x="840" y="23" text-anchor="start" fill="#c8a45a" font-size="9" font-family="Courier New">2.0bp</text>
+      <text x="840" y="73" text-anchor="start" fill="#c8a45a" font-size="9" font-family="Courier New">1.0bp</text>
+      <text x="840" y="123" text-anchor="start" fill="#c8a45a" font-size="9" font-family="Courier New">0.0bp</text>
+      <!-- x labels -->
+      <text x="120" y="210" text-anchor="middle" fill="#8899aa" font-size="10" font-family="Courier New">Oct</text>
+      <text x="240" y="210" text-anchor="middle" fill="#8899aa" font-size="10" font-family="Courier New">Nov</text>
+      <text x="360" y="210" text-anchor="middle" fill="#8899aa" font-size="10" font-family="Courier New">Dec</text>
+      <text x="480" y="210" text-anchor="middle" fill="#8899aa" font-size="10" font-family="Courier New">Jan</text>
+      <text x="600" y="210" text-anchor="middle" fill="#8899aa" font-size="10" font-family="Courier New">Feb</text>
+      <text x="720" y="210" text-anchor="middle" fill="#8899aa" font-size="10" font-family="Courier New">Mar</text>
+      <!-- End-user line (right scale): 90.9, 89.5, 91.2, 94.2, 86.6, 87.3 -->
+      <!-- 범위: 84~96 => 84->155, 96->20, per 1% = (155-20)/12 = 11.25px -->
+      <!-- 90.9 -> 155-(90.9-84)*11.25=155-77.6=77.4 -->
+      <!-- 89.5->155-61.9=93.1; 91.2->155-81=74; 94.2->155-114.75=40.25; 86.6->155-29.25=125.75; 87.3->155-37.1=117.9 -->
+      <polyline points="120,77 240,93 360,74 480,40 600,126 720,118"
+        fill="none" stroke="#4a9eff" stroke-width="2" stroke-linejoin="round"/>
+      <circle cx="120" cy="77" r="4" fill="#4a9eff"/>
+      <circle cx="240" cy="93" r="4" fill="#4a9eff"/>
+      <circle cx="360" cy="74" r="4" fill="#4a9eff"/>
+      <circle cx="480" cy="40" r="4" fill="#4a9eff"/>
+      <circle cx="600" cy="126" r="4" fill="#e05555"/>
+      <circle cx="720" cy="118" r="4" fill="#4a9eff"/>
+      <!-- End-user labels -->
+      <text x="120" y="68" text-anchor="middle" fill="#4a9eff" font-size="9" font-family="Courier New">90.9%</text>
+      <text x="480" y="32" text-anchor="middle" fill="#4a9eff" font-size="9" font-family="Courier New">94.2%</text>
+      <text x="600" y="118" text-anchor="middle" fill="#e05555" font-size="9" font-family="Courier New">86.6%</text>
+      <text x="720" y="110" text-anchor="middle" fill="#4a9eff" font-size="9" font-family="Courier New">87.3%</text>
+      <!-- Tail bars: scale: -0.6~1.7 => 0 = y=120, +1=y 50px up, -0.6=30px down -->
+      <!-- Oct: 0.6 -> bar from 120 upward 30px -> rect y=90 h=30 -->
+      <rect x="100" y="90" width="40" height="30" fill="url(#barGrad)" opacity="0.7"/>
+      <!-- Nov: 0.5 -> h=25 -->
+      <rect x="220" y="95" width="40" height="25" fill="url(#barGrad)" opacity="0.7"/>
+      <!-- Dec: 0.0 -> h=2 -->
+      <rect x="340" y="119" width="40" height="2" fill="#8899aa" opacity="0.7"/>
+      <!-- Jan: -0.6 -> bar downward from 120, h=30 -->
+      <rect x="460" y="120" width="40" height="30" fill="url(#lineGrad)" opacity="0.7"/>
+      <!-- Feb: 1.7 -> h=85 -->
+      <rect x="580" y="35" width="40" height="85" fill="url(#barGradR)" opacity="0.7"/>
+      <!-- Mar: 0.8 -> h=40 -->
+      <rect x="700" y="80" width="40" height="40" fill="url(#barGrad)" opacity="0.7"/>
+      <!-- Tail value labels -->
+      <text x="120" y="85" text-anchor="middle" fill="#c8a45a" font-size="9" font-family="Courier New">+0.6</text>
+      <text x="240" y="90" text-anchor="middle" fill="#c8a45a" font-size="9" font-family="Courier New">+0.5</text>
+      <text x="360" y="113" text-anchor="middle" fill="#8899aa" font-size="9" font-family="Courier New">0.0</text>
+      <text x="480" y="157" text-anchor="middle" fill="#4a9eff" font-size="9" font-family="Courier New">-0.6</text>
+      <text x="600" y="29" text-anchor="middle" fill="#e05555" font-size="9" font-family="Courier New">+1.7</text>
+      <text x="720" y="74" text-anchor="middle" fill="#c8a45a" font-size="9" font-family="Courier New">+0.8</text>
+      <!-- legend -->
+      <line x1="200" y1="195" x2="225" y2="195" stroke="#4a9eff" stroke-width="2"/>
+      <circle cx="212" cy="195" r="3" fill="#4a9eff"/>
+      <text x="230" y="199" fill="#8899aa" font-size="9" font-family="Courier New">End-user %</text>
+      <rect x="340" y="188" width="14" height="10" fill="#c8a45a" opacity="0.7"/>
+      <text x="360" y="199" fill="#8899aa" font-size="9" font-family="Courier New">Tail (bp)</text>
+    </svg>
+  </div>
+
+  <!-- 거래량 차트 -->
+  <div class="chart-block">
+    <div class="chart-title">입찰일 vs 일반일 10년물 거래량</div>
+    <div class="chart-sub">On-the-run(검정) vs Off-the-run(회색) 거래량 ($bn) — 입찰일 기준 최근 6개월</div>
+    <svg viewBox="0 0 840 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:840px;">
+      <!-- grid -->
+      <line x1="70" y1="20" x2="820" y2="20" stroke="#1e2a3a" stroke-width="1"/>
+      <line x1="70" y1="70" x2="820" y2="70" stroke="#1e2a3a" stroke-width="1"/>
+      <line x1="70" y1="120" x2="820" y2="120" stroke="#1e2a3a" stroke-width="1"/>
+      <line x1="70" y1="160" x2="820" y2="160" stroke="#1e2a3a" stroke-width="1"/>
+      <!-- y axis -->
+      <text x="58" y="23" text-anchor="end" fill="#8899aa" font-size="10" font-family="Courier New">250</text>
+      <text x="58" y="73" text-anchor="end" fill="#8899aa" font-size="10" font-family="Courier New">175</text>
+      <text x="58" y="123" text-anchor="end" fill="#8899aa" font-size="10" font-family="Courier New">100</text>
+      <text x="58" y="163" text-anchor="end" fill="#8899aa" font-size="10" font-family="Courier New">50</text>
+      <!-- scale: 0=180, 250=20. 1$bn = 0.64px -->
+      <!-- Oct: OTR 141, OFR 9 -->
+      <!-- 141 -> 180-141*0.64=180-90.2=89.8 h=90.2 -->
+      <!-- bars: On-the-run (gold), off-the-run (muted) side by side in each group -->
+      <!-- Group x positions: Oct=100, Nov=210, Dec=320, Jan=430, Feb=540, Mar=650, Other=760 -->
+      <!-- On-the-run bars -->
+      <rect x="88" y="90" width="22" height="90" fill="#c8a45a" opacity="0.85"/>
+      <rect x="198" y="75" width="22" height="105" fill="#c8a45a" opacity="0.85"/>
+      <rect x="308" y="90" width="22" height="90" fill="#c8a45a" opacity="0.85"/>
+      <rect x="418" y="85" width="22" height="95" fill="#c8a45a" opacity="0.85"/>
+      <rect x="528" y="30" width="22" height="150" fill="#e05555" opacity="0.85"/>
+      <rect x="638" y="44" width="22" height="136" fill="#c8a45a" opacity="0.85"/>
+      <rect x="748" y="87" width="22" height="93" fill="#6688aa" opacity="0.85"/>
+      <!-- Off-the-run bars (much smaller) -->
+      <rect x="112" y="174" width="16" height="6" fill="#4a7090" opacity="0.7"/>
+      <rect x="222" y="172" width="16" height="8" fill="#4a7090" opacity="0.7"/>
+      <rect x="332" y="170" width="16" height="10" fill="#4a7090" opacity="0.7"/>
+      <rect x="442" y="169" width="16" height="11" fill="#4a7090" opacity="0.7"/>
+      <rect x="552" y="170" width="16" height="10" fill="#4a7090" opacity="0.7"/>
+      <rect x="662" y="165" width="16" height="15" fill="#4a7090" opacity="0.7"/>
+      <rect x="762" y="167" width="16" height="13" fill="#4a7090" opacity="0.7"/>
+      <!-- value labels -->
+      <text x="99" y="85" text-anchor="middle" fill="#c8a45a" font-size="9" font-family="Courier New">141</text>
+      <text x="209" y="70" text-anchor="middle" fill="#c8a45a" font-size="9" font-family="Courier New">164</text>
+      <text x="319" y="85" text-anchor="middle" fill="#c8a45a" font-size="9" font-family="Courier New">140</text>
+      <text x="429" y="80" text-anchor="middle" fill="#c8a45a" font-size="9" font-family="Courier New">148</text>
+      <text x="539" y="25" text-anchor="middle" fill="#e05555" font-size="9" font-family="Courier New">234</text>
+      <text x="649" y="39" text-anchor="middle" fill="#c8a45a" font-size="9" font-family="Courier New">212</text>
+      <text x="759" y="82" text-anchor="middle" fill="#6688aa" font-size="9" font-family="Courier New">145</text>
+      <!-- x labels -->
+      <text x="105" y="195" text-anchor="middle" fill="#8899aa" font-size="10" font-family="Courier New">Oct</text>
+      <text x="215" y="195" text-anchor="middle" fill="#8899aa" font-size="10" font-family="Courier New">Nov</text>
+      <text x="325" y="195" text-anchor="middle" fill="#8899aa" font-size="10" font-family="Courier New">Dec</text>
+      <text x="435" y="195" text-anchor="middle" fill="#8899aa" font-size="10" font-family="Courier New">Jan</text>
+      <text x="545" y="195" text-anchor="middle" fill="#8899aa" font-size="10" font-family="Courier New">Feb</text>
+      <text x="655" y="195" text-anchor="middle" fill="#8899aa" font-size="10" font-family="Courier New">Mar</text>
+      <text x="762" y="195" text-anchor="middle" fill="#8899aa" font-size="10" font-family="Courier New">평일</text>
+      <!-- legend -->
+      <rect x="200" y="3" width="12" height="10" fill="#c8a45a" opacity="0.85"/>
+      <text x="217" y="12" fill="#8899aa" font-size="9" font-family="Courier New">On-the-run</text>
+      <rect x="320" y="3" width="12" height="10" fill="#4a7090" opacity="0.7"/>
+      <text x="337" y="12" fill="#8899aa" font-size="9" font-family="Courier New">Off-the-run</text>
+    </svg>
+  </div>
+
+  <p>거래량 패턴을 보면 입찰일에는 On-the-run 거래가 평균 20% 증가하는 반면, Off-the-run은 오히려 20% 감소하는 구조가 뚜렷하다. 특히 신규 발행(new issue) 입찰일에는 On-the-run 거래량이 평일 대비 50% 급증하는 경향이 있다. 이번 리오프닝 입찰은 신규 발행 대비 소폭 낮은 40% 증가가 예상된다. 이는 입찰 전후로 시장 유동성이 특정 구간에 집중되는 현상을 의미하며, 포지션 진출입 시 비용이 낮아지는 시점으로도 해석할 수 있다.</p>
+</section>
+
+<!-- ══════════════════════ 4. 기술적 분석 ══════════════════════ -->
+<section>
+  <div class="section-label">
+    <span class="section-num">04</span>
+    <h2 class="section-title">기술적 분석: 10년물 주요 레벨</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <p>10년물 금리는 지난 4.475% 근방(2025년 5월 78.6% 되돌림 레벨)에서의 반등이 <span class="hl-red">4.29~4.305%</span>(3월 하락 이탈 구간) 및 <span class="hl-red">4.27%</span>(3월 38.2% 피보나치 되돌림) 벽에 막혀 횡보 중이다. JPMorgan의 모멘텀 다이버전스 신호와 TY 프리미엄 가중 Put/Call 비율 신호 등 여러 체계적 매수 신호가 발현됐음에도 불구하고, 기술적 추세의 하방 모멘텀을 완전히 무력화하려면 <span class="highlight">4.20%대로의 지속적 진입</span>이 필요하다는 게 JPM 기술 팀의 견해다.</p>
+
+  <!-- 기술적 레벨 맵 -->
+  <div class="level-map">
+    <div class="chart-title" style="margin-bottom:18px;">10년물 금리 기술적 레벨 맵</div>
+    <svg viewBox="0 0 820 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:820px;">
+      <!-- 수직 금리 축 역방향 (위=고금리) -->
+      <!-- 범위: 3.90~4.60, 높이 240px, y_base=260, 1bp=240/70=3.43px -->
+      <!-- 현재가: 4.34 -> y = 260 - (4.34-3.90)*240/0.70 = 260 - 0.44*342.9 = 260-150.9=109 -->
+
+      <!-- 배경 구간 색칠 -->
+      <!-- 저항 구간 4.29~4.305 -> y: 260-(4.305-3.9)*342.9=260-138.9=121 ~ 260-(4.29-3.9)*342.9=260-137.2=123 -->
+      <rect x="100" y="119" width="680" height="8" fill="rgba(224,85,85,0.15)" rx="2"/>
+      <!-- 저항2: 4.19~4.20 ->  260-(4.20-3.9)*342.9=260-102.9=157 ~ 260-(4.19-3.9)*342.9=260-99.4=160 -->
+      <rect x="100" y="155" width="680" height="9" fill="rgba(224,85,85,0.1)" rx="2"/>
+      <!-- 지지: 4.475 -> 260-(4.475-3.9)*342.9=260-197.2=63 -->
+      <!-- ceiling -->
+      <rect x="100" y="55" width="680" height="6" fill="rgba(200,164,90,0.12)" rx="2"/>
+
+      <!-- 금리 눈금 라벨 y축 -->
+      <!-- 4.60: y=260-(4.60-3.90)*342.9=260-240=20 -->
+      <!-- 4.50: y=260-(4.50-3.90)*342.9=260-205.7=54 -->
+      <!-- 4.40: y=260-(4.40-3.90)*342.9=260-171.4=89 -->
+      <!-- 4.30: y=260-(4.30-3.90)*342.9=260-137.1=123 -->
+      <!-- 4.20: y=260-(4.20-3.90)*342.9=260-102.9=157 -->
+      <!-- 4.10: y=260-(4.10-3.90)*342.9=260-68.6=191 -->
+      <!-- 4.00: y=260-(4.00-3.90)*342.9=260-34.3=226 -->
+      <line x1="95" y1="20" x2="800" y2="20" stroke="#1e2a3a" stroke-width="1" stroke-dasharray="2,4"/>
+      <line x1="95" y1="54" x2="800" y2="54" stroke="#1e2a3a" stroke-width="1" stroke-dasharray="2,4"/>
+      <line x1="95" y1="89" x2="800" y2="89" stroke="#1e2a3a" stroke-width="1" stroke-dasharray="2,4"/>
+      <line x1="95" y1="123" x2="800" y2="123" stroke="#1e2a3a" stroke-width="1" stroke-dasharray="2,4"/>
+      <line x1="95" y1="157" x2="800" y2="157" stroke="#1e2a3a" stroke-width="1" stroke-dasharray="2,4"/>
+      <line x1="95" y1="191" x2="800" y2="191" stroke="#1e2a3a" stroke-width="1" stroke-dasharray="2,4"/>
+      <line x1="95" y1="226" x2="800" y2="226" stroke="#1e2a3a" stroke-width="1" stroke-dasharray="2,4"/>
+      <text x="88" y="23" text-anchor="end" fill="#8899aa" font-size="9" font-family="Courier New">4.60</text>
+      <text x="88" y="57" text-anchor="end" fill="#8899aa" font-size="9" font-family="Courier New">4.50</text>
+      <text x="88" y="92" text-anchor="end" fill="#8899aa" font-size="9" font-family="Courier New">4.40</text>
+      <text x="88" y="126" text-anchor="end" fill="#8899aa" font-size="9" font-family="Courier New">4.30</text>
+      <text x="88" y="160" text-anchor="end" fill="#8899aa" font-size="9" font-family="Courier New">4.20</text>
+      <text x="88" y="194" text-anchor="end" fill="#8899aa" font-size="9" font-family="Courier New">4.10</text>
+      <text x="88" y="229" text-anchor="end" fill="#8899aa" font-size="9" font-family="Courier New">4.00</text>
+
+      <!-- 현재가 라인: 4.34 y=109 -->
+      <line x1="100" y1="109" x2="800" y2="109" stroke="#e8c87a" stroke-width="2" stroke-dasharray="5,3"/>
+      <text x="806" y="113" fill="#e8c87a" font-size="10" font-family="Courier New" font-weight="bold">현재 4.34</text>
+
+      <!-- CEILING 4.50: y=54 -->
+      <text x="106" y="50" fill="#c8a45a" font-size="9.5" font-family="Courier New">▲ CEILING 4.50% — 상단 저항 한도</text>
+
+      <!-- 저항 구간 1: 4.475 (반등 실패 고점) -->
+      <line x1="100" y1="63" x2="800" y2="63" stroke="#e05555" stroke-width="1" stroke-dasharray="3,3" opacity="0.6"/>
+      <text x="106" y="76" fill="#e05555" font-size="9" font-family="Courier New">4.475% — 5월 78.6% 되돌림 (반등 출발점)</text>
+
+      <!-- 저항 구간 2: 4.29~4.305 -->
+      <text x="106" y="116" fill="#e05555" font-size="9.5" font-family="Courier New" font-weight="bold">▶ 4.29~4.305% — 3월 하락 이탈 구간 / 38.2% 되돌림 → 현재 막힌 구간</text>
+
+      <!-- 강한 저항: 4.19~4.20 -->
+      <text x="106" y="152" fill="#e05555" font-size="9.5" font-family="Courier New" font-weight="bold">▶ 4.19~4.20% — 50d/200d MA + 1월 추세선 + 50% 되돌림 (다중 저항 집중)</text>
+
+      <!-- 하단 지지 -->
+      <line x1="100" y1="226" x2="800" y2="226" stroke="#4caf82" stroke-width="1" stroke-dasharray="3,3" opacity="0.5"/>
+      <text x="106" y="240" fill="#4caf82" font-size="9" font-family="Courier New">4.00% — 심리적 지지 / 하단 기준선</text>
+
+      <!-- 현재 포지션 화살표 -->
+      <polygon points="450,100 445,95 455,95" fill="#e8c87a"/>
+
+      <!-- 예상 범위 박스 -->
+      <rect x="700" y="58" width="12" height="62" fill="rgba(200,164,90,0.15)" stroke="#c8a45a" stroke-width="1" rx="2"/>
+      <text x="714" y="67" fill="#c8a45a" font-size="8" font-family="Courier New">예상</text>
+      <text x="714" y="77" fill="#c8a45a" font-size="8" font-family="Courier New">레인지</text>
+      <text x="714" y="87" fill="#c8a45a" font-size="8" font-family="Courier New">4.20~</text>
+      <text x="714" y="97" fill="#c8a45a" font-size="8" font-family="Courier New">4.50%</text>
+    </svg>
+  </div>
+
+  <p>JPMorgan 기술 팀이 제시하는 시나리오는 명확하다. <span class="highlight">4.20~4.50% 범위 내 등락이 향후 수 주간 지속될 가능성이 높다.</span> 만약 4.20% 아래로 진입하더라도 50일 이동평균선(4.19%), 200일 이동평균선(4.20%), 2025년 1월 내부 추세선, 그리고 3월 50% 피보나치 되돌림이 겹치는 강력한 다중 저항이 기다리고 있다. 반대로 상단의 4.50% 근방은 당분간 금리 상단 한도(ceiling) 역할을 할 것으로 본다. 이 범위는 현재 보유자에게 캐리 수익을 제공하면서도, 방향성 포지션을 취하기엔 상하 모두 리스크가 존재하는 구간이다.</p>
+</section>
+
+<!-- ══════════════════════ 5. 포지셔닝 분석 ══════════════════════ -->
+<section>
+  <div class="section-label">
+    <span class="section-num">05</span>
+    <h2 class="section-title">투자자 포지셔닝 분석</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <p>포지셔닝 지표를 종합하면 전반적으로 <span class="highlight">국채 롱 포지션이 얇은 상태</span>임을 알 수 있다. 이는 역설적으로 입찰 수요의 지지 요인이자, 향후 숏 스퀴즈(short squeeze) 가능성의 원천으로 작용할 수 있다.</p>
+
+  <div class="pos-grid">
+    <!-- TCS -->
+    <div class="pos-card">
+      <div class="pos-card-label">JPM Treasury Client Survey</div>
+      <div class="pos-card-title">국채 고객 설문 순 롱</div>
+      <div class="pos-card-zscore" style="color:#4a9eff;">-0.54 <span style="font-size:11px;color:var(--muted)">z-score</span></div>
+      <div class="zscore-bar-wrap" style="margin-top:8px;">
+        <div class="zscore-center"></div>
+        <div class="zscore-fill" style="width:23%;right:50%;background:#4a9eff;opacity:0.7;"></div>
+      </div>
+      <div class="pos-card-interp">순 롱이 3/16 이후 최저 수준. 롱 포지션 소화됨 → 공급 흡수에 유리</div>
+    </div>
+    <!-- CFTC -->
+    <div class="pos-card">
+      <div class="pos-card-label">CFTC 비상업적 포지션</div>
+      <div class="pos-card-title">SOFR·국채 선물 순 롱</div>
+      <div class="pos-card-zscore" style="color:#e05555;">+1.15 <span style="font-size:11px;color:var(--muted)">z-score</span></div>
+      <div class="zscore-bar-wrap" style="margin-top:8px;">
+        <div class="zscore-center"></div>
+        <div class="zscore-fill" style="width:58%;left:50%;background:#e05555;opacity:0.7;"></div>
+      </div>
+      <div class="pos-card-interp">투기세력 선물 포지션 대규모 순 숏. 숏 스퀴즈 잠재력 내재</div>
+    </div>
+    <!-- CTA -->
+    <div class="pos-card">
+      <div class="pos-card-label">CTA (트렌드 추종형 펀드)</div>
+      <div class="pos-card-title">7-10Y 익스포저</div>
+      <div class="pos-card-zscore" style="color:#4a9eff;">-0.79 <span style="font-size:11px;color:var(--muted)">z-score</span></div>
+      <div class="zscore-bar-wrap" style="margin-top:8px;">
+        <div class="zscore-center"></div>
+        <div class="zscore-fill" style="width:40%;right:50%;background:#4a9eff;opacity:0.7;"></div>
+      </div>
+      <div class="pos-card-interp">CTA 10년물 언더웨이트. 추세 매수 진입 시 추가 수요 가능</div>
+    </div>
+    <!-- Active Core Bond -->
+    <div class="pos-card">
+      <div class="pos-card-label">Active Core Bond Managers</div>
+      <div class="pos-card-title">10Y 듀레이션 익스포저</div>
+      <div class="pos-card-zscore" style="color:#4a9eff;">-1.80 <span style="font-size:11px;color:var(--muted)">z-score</span></div>
+      <div class="zscore-bar-wrap" style="margin-top:8px;">
+        <div class="zscore-center"></div>
+        <div class="zscore-fill" style="width:90%;right:50%;background:#4a9eff;opacity:0.7;"></div>
+      </div>
+      <div class="pos-card-interp">핵심 채권 펀드 유의미한 언더웨이트 → 가장 강력한 잠재 수요</div>
+    </div>
+    <!-- Macro HF -->
+    <div class="pos-card">
+      <div class="pos-card-label">매크로 헤지펀드</div>
+      <div class="pos-card-title">7-10Y 익스포저</div>
+      <div class="pos-card-zscore" style="color:#8899aa;">-0.21 <span style="font-size:11px;color:var(--muted)">z-score</span></div>
+      <div class="zscore-bar-wrap" style="margin-top:8px;">
+        <div class="zscore-center"></div>
+        <div class="zscore-fill" style="width:10%;right:50%;background:#8899aa;opacity:0.5;"></div>
+      </div>
+      <div class="pos-card-interp">매크로 HF는 중립에 가깝고, 유의미한 방향성 베팅 부재</div>
+    </div>
+    <!-- Put/Call -->
+    <div class="pos-card">
+      <div class="pos-card-label">T-Note 풋/콜 비율</div>
+      <div class="pos-card-title">달러 가중 Put/Call Ratio</div>
+      <div class="pos-card-zscore" style="color:#e05555;">+1.20 <span style="font-size:11px;color:var(--muted)">z-score</span></div>
+      <div class="zscore-bar-wrap" style="margin-top:8px;">
+        <div class="zscore-center"></div>
+        <div class="zscore-fill" style="width:60%;left:50%;background:#e05555;opacity:0.7;"></div>
+      </div>
+      <div class="pos-card-interp">풋 비중 우세 → 헤지 수요 높음. 금리 상승 방어 옵션 쌓임</div>
+    </div>
+  </div>
+
+  <p>포지셔닝 그림을 종합하면 이렇다. 가장 눈에 띄는 신호는 <span class="highlight">액티브 코어 채권 펀드의 z-score가 -1.80</span>으로, 이는 운용사들이 벤치마크 대비 10년물 듀레이션을 역사적으로 유의미하게 줄여 놓았음을 의미한다. 달리 말하면, 이들이 향후 롱 포지션을 복원하기 시작할 경우 입찰 수요에 상당한 힘이 실릴 수 있다. CFTC 투기적 포지션의 z-score +1.15는 선물 시장에서 숏이 쌓여 있음을 보여주는데, 이는 숏 커버링 트리거 시 금리 하락 가속을 유발할 수 있는 구조다. Put/Call z-score +1.20 역시 옵션 시장에서 금리 상승 헤지 수요가 강하게 반영되어 있음을 나타낸다.</p>
+
+  <!-- 포지셔닝 레이더 SVG -->
+  <div class="chart-block">
+    <div class="chart-title">포지셔닝 Z-Score 요약</div>
+    <div class="chart-sub">+: 숏/풋 우세 / 금리 상승 기대 &nbsp;|&nbsp; -: 롱 언더웨이트 / 잠재 수요</div>
+    <svg viewBox="0 0 840 80" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;max-width:840px;">
+      <!-- 범위: -2 ~ +2, 중앙=420, 1단위=105px -->
+      <!-- 배경 바 -->
+      <rect x="100" y="20" width="640" height="40" fill="#0d1120" rx="3"/>
+      <!-- 눈금 -->
+      <line x1="100" y1="15" x2="100" y2="65" stroke="#1e2a3a" stroke-width="1"/>
+      <line x1="207" y1="15" x2="207" y2="65" stroke="#1e2a3a" stroke-width="1"/>
+      <line x1="314" y1="15" x2="314" y2="65" stroke="#1e2a3a" stroke-width="1"/>
+      <line x1="420" y1="12" x2="420" y2="68" stroke="#8899aa" stroke-width="1.5"/>
+      <line x1="527" y1="15" x2="527" y2="65" stroke="#1e2a3a" stroke-width="1"/>
+      <line x1="634" y1="15" x2="634" y2="65" stroke="#1e2a3a" stroke-width="1"/>
+      <line x1="740" y1="15" x2="740" y2="65" stroke="#1e2a3a" stroke-width="1"/>
+      <text x="100" y="12" text-anchor="middle" fill="#8899aa" font-size="9" font-family="Courier New">-3</text>
+      <text x="207" y="12" text-anchor="middle" fill="#8899aa" font-size="9" font-family="Courier New">-2</text>
+      <text x="314" y="12" text-anchor="middle" fill="#8899aa" font-size="9" font-family="Courier New">-1</text>
+      <text x="420" y="10" text-anchor="middle" fill="#8899aa" font-size="10" font-family="Courier New">0</text>
+      <text x="527" y="12" text-anchor="middle" fill="#8899aa" font-size="9" font-family="Courier New">+1</text>
+      <text x="634" y="12" text-anchor="middle" fill="#8899aa" font-size="9" font-family="Courier New">+2</text>
+      <!-- 각 지표 점: x = 420 + z*107 -->
+      <!-- TCS: -0.54 -> 420-57.8=362 -->
+      <circle cx="362" cy="28" r="6" fill="#4a9eff"/>
+      <text x="362" y="22" text-anchor="middle" fill="#4a9eff" font-size="8" font-family="Courier New">TCS</text>
+      <!-- CFTC: +1.15 -> 420+123=543 -->
+      <circle cx="543" cy="38" r="6" fill="#e05555"/>
+      <text x="543" y="32" text-anchor="middle" fill="#e05555" font-size="8" font-family="Courier New">CFTC</text>
+      <!-- CTA: -0.79 -> 420-84.5=335.5 -->
+      <circle cx="335" cy="50" r="6" fill="#4a9eff"/>
+      <text x="335" y="44" text-anchor="middle" fill="#4a9eff" font-size="8" font-family="Courier New">CTA</text>
+      <!-- Core bond: -1.80 -> 420-192.6=227.4 -->
+      <circle cx="227" cy="28" r="6" fill="#4a9eff"/>
+      <text x="227" y="22" text-anchor="middle" fill="#4a9eff" font-size="8" font-family="Courier New">CBF</text>
+      <!-- Macro HF: -0.21 -> 420-22.5=397.5 -->
+      <circle cx="397" cy="50" r="6" fill="#8899aa"/>
+      <text x="397" y="44" text-anchor="middle" fill="#8899aa" font-size="8" font-family="Courier New">MHF</text>
+      <!-- Put/Call: +1.20 -> 420+128.4=548 -->
+      <circle cx="549" cy="55" r="6" fill="#e05555"/>
+      <text x="549" y="68" text-anchor="middle" fill="#e05555" font-size="8" font-family="Courier New">P/C</text>
+      <!-- legend -->
+      <circle cx="160" cy="75" r="5" fill="#4a9eff"/>
+      <text x="170" y="78" fill="#8899aa" font-size="8.5" font-family="Courier New">언더웨이트(롱 복원 잠재력)</text>
+      <circle cx="480" cy="75" r="5" fill="#e05555"/>
+      <text x="490" y="78" fill="#8899aa" font-size="8.5" font-family="Courier New">오버웨이트(숏 스퀴즈 리스크)</text>
+    </svg>
+  </div>
+</section>
+
+<!-- ══════════════════════ 6. 전략적 시사점 ══════════════════════ -->
+<section>
+  <div class="section-label">
+    <span class="section-num">06</span>
+    <h2 class="section-title">전략적 시사점</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <p><strong style="color:var(--heading)">1. 10년물 입찰의 소화 가능성 vs 꼬리 리스크</strong><br>
+  JPMorgan은 밸류에이션의 고평가에도 불구하고 내일 입찰이 원활히 소화될 것이라는 조건부 낙관론을 유지하고 있다. 그 근거는 세 가지다. 첫째, 10년물 금리가 지난 입찰 대비 12bp 높아 절대적인 매력이 커졌다. 둘째, 포지셔닝 지표들이 전반적으로 롱이 줄어든 상태를 가리키며, 이는 공급을 흡수할 잠재 수요층이 형성돼 있음을 의미한다. 셋째, 3년물 입찰에서 간접 입찰자가 강하게 참여한 점이 외국인 수요 복원의 선행 신호가 될 수 있다. 그러나 변수는 <span class="hl-red">오늘 밤 지정학 헤드라인</span>이다. 트럼프 행정부의 대이란 협상 마감 시한이 현지시간 오후 8시로 설정된 가운데, 협상 결렬 또는 긴장 고조 시나리오는 리스크 오프(risk-off) 랠리를 유발해 입찰 환경을 급변시킬 수 있다.</p>
+
+  <p><strong style="color:var(--heading)">2. 중기 금리 전망: 4.20~4.50% 레인지</strong><br>
+  JPMorgan 기술 팀은 향후 수 주간 10년물 금리가 4.20~4.50% 범위에서 등락할 것으로 예상한다. 4.50%가 명확한 상단 한도로 작용하는 한편, 4.20% 아래에서는 다중 기술적 저항(이동평균선, 추세선, 피보나치)이 분산 기회를 제공할 가능성이 높다. 펀더멘털 모델상으로는 여전히 금리가 약 14bp 낮게 평가돼 있어, 구조적으로는 금리 하락보다는 상승 리스크가 상대적으로 더 크다.</p>
+
+  <div class="warn-box">
+    <p><strong style="color:var(--red)">주요 꼬리 리스크:</strong> 이란 지정학 갈등 재점화 시 단기 급등(flight-to-quality)이 기술적 저항을 일시 돌파할 수 있으나, 이후의 되돌림 역시 빠를 것으로 예상된다. 4.19% 이하 안착에는 연준 입장 선회 또는 경기침체 우려 심화가 필요하다.</p>
+  </div>
+
+  <p><strong style="color:var(--heading)">3. 브레이크이븐과 인플레이션 기대의 이분법</strong><br>
+  5년 BEI가 268.5bp(91st 퍼센타일)로 치솟아 있는 것은 관세 정책 불확실성이 단기 인플레이션 기대를 끌어올리고 있음을 반영한다. 이와 달리 뉴욕 연준 1년 기대인플레이션이 3.42%로 예상보다 낮게 나온 점은 소비자 심리가 아직 완전히 꺾이지 않았음을 보여준다. 이 두 지표의 간극은 시장 참여자와 일반 소비자 사이의 인플레이션 기대 격차를 나타내며, 연준이 선뜻 인하로 돌아서기 어려운 환경을 조성하고 있다.</p>
+
+  <p><strong style="color:var(--heading)">4. 액티브 매니저의 언더웨이트 해소 시나리오</strong><br>
+  핵심 채권 펀드 매니저들의 10년물 언더웨이트(z-score -1.80)는 벤치마크 추적 압박이 발생할 경우 강제 매수로 이어질 수 있다. 특히 경기침체 우려 심화 또는 연준의 인하 신호가 명확해질 경우, 이들이 동시에 듀레이션을 회복하는 과정에서 금리 하락 속도가 예상보다 빠를 수 있다. 이는 역으로 현 수준에서 선제적으로 듀레이션을 추가할 만한 비대칭 수익 기회를 제공할 수도 있다.</p>
+</section>
+
+<!-- ══════════════════════ 7. 실무 포인트 ══════════════════════ -->
+<section>
+  <div class="section-label">
+    <span class="section-num">07</span>
+    <h2 class="section-title">실무 포인트</h2>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="chart-block" style="padding:20px;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+      <div>
+        <div class="chart-title" style="margin-bottom:10px;">📋 입찰 관련</div>
+        <p style="font-size:13px;margin-bottom:8px;">· 입찰 시간: 4/8(수) 오후 1시 EDT</p>
+        <p style="font-size:13px;margin-bottom:8px;">· 규모: $390억 (10년물 리오프닝)</p>
+        <p style="font-size:13px;margin-bottom:8px;">· When-issued 기준 주시: 입찰 전 tail 방향 확인</p>
+        <p style="font-size:13px;margin-bottom:8px;">· 간접 입찰자 비중 모니터: 74% 이상이면 강한 외국 수요 신호</p>
+        <p style="font-size:13px;">· 입찰일 OTR 거래량 +20% 상승 패턴 활용 가능</p>
+      </div>
+      <div>
+        <div class="chart-title" style="margin-bottom:10px;">🎯 기술적 레벨</div>
+        <p style="font-size:13px;margin-bottom:8px;">· <span class="hl-red">저항:</span> 4.29~4.305% (근접 저항)</p>
+        <p style="font-size:13px;margin-bottom:8px;">· <span class="hl-red">강한 저항:</span> 4.19~4.20% (다중 집중)</p>
+        <p style="font-size:13px;margin-bottom:8px;">· <span class="highlight">상단 한도:</span> 4.50%</p>
+        <p style="font-size:13px;margin-bottom:8px;">· 예상 레인지: <span class="highlight">4.20~4.50%</span></p>
+        <p style="font-size:13px;">· 4.20% 이하 진입 시 분산 압력 강화 예상</p>
+      </div>
+      <div>
+        <div class="chart-title" style="margin-bottom:10px;">📊 포지셔닝 체크</div>
+        <p style="font-size:13px;margin-bottom:8px;">· 코어 채권 펀드 듀레이션 언더웨이트: -1.80 σ</p>
+        <p style="font-size:13px;margin-bottom:8px;">· CFTC 선물 투기 포지션 숏 누적: +1.15 σ</p>
+        <p style="font-size:13px;margin-bottom:8px;">· CTA 7-10Y 익스포저 낮음: -0.79 σ</p>
+        <p style="font-size:13px;">· 전반적 언더웨이트 → 입찰 수요 지지 기대</p>
+      </div>
+      <div>
+        <div class="chart-title" style="margin-bottom:10px;">⚠️ 리스크 변수</div>
+        <p style="font-size:13px;margin-bottom:8px;">· 지정학: 대이란 협상 결과 (4/7 오후 8시)</p>
+        <p style="font-size:13px;margin-bottom:8px;">· 연준: 관세 불확실성하 인하 타이밍 지연</p>
+        <p style="font-size:13px;margin-bottom:8px;">· 5Y BEI 268.5bp — 인플레이션 기대 고점 리스크</p>
+        <p style="font-size:13px;">· 펀더멘털 대비 여전히 14bp 저평가 → 상방 바이어스</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════ FOOTER ══════════════════════ -->
+<footer class="report-footer">
+  <p>출처: J.P. Morgan Global Markets Strategy — US Treasury Market Daily (2026.04.07) | Jay Barry, Jason Hunter, Liam L Wash, Amanda Berke</p>
+  <p style="margin-top:4px;">본 리포트는 J.P. Morgan 리서치 자료를 바탕으로 한국어로 재구성한 분석 자료입니다. 투자 권유 목적이 아니며, 최종 투자 판단은 본인의 책임입니다.</p>
+  <p style="margin-top:4px;">Completed: 07 Apr 2026 17:10 EDT &nbsp;|&nbsp; Report compiled for KakaoBank Fixed Income Research</p>
+</footer>
+
+</div>
+</body>
+</html>
