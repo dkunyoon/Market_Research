@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>미래에셋증권 5개년 재무 요약 (2021–2025)</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f5f3;color:#1a1a18;font-size:14px;line-height:1.6}
+  a{color:#185FA5;text-decoration:none}
+
+  /* ── Layout ── */
+  .page{max-width:1060px;margin:0 auto;padding:32px 20px 60px}
+  header{margin-bottom:32px}
+  header h1{font-size:22px;font-weight:600;color:#111;margin-bottom:4px}
+  header p{font-size:13px;color:#666}
+  .badge{display:inline-block;font-size:11px;padding:2px 8px;border-radius:4px;background:#e6f1fb;color:#0c447c;margin-right:6px;font-weight:500}
+  .badge.est{background:#faeeda;color:#633806}
+
+  /* ── Section ── */
+  .section{margin-bottom:40px}
+  .section-title{font-size:15px;font-weight:600;color:#111;margin-bottom:14px;padding-bottom:6px;border-bottom:1.5px solid #d3d1c7}
+
+  /* ── KPI Cards ── */
+  .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:36px}
+  @media(max-width:700px){.kpi-grid{grid-template-columns:repeat(2,1fr)}}
+  .kpi{background:#fff;border:0.5px solid #d3d1c7;border-radius:10px;padding:16px 18px}
+  .kpi .lbl{font-size:11px;color:#888;margin-bottom:4px;font-weight:500;text-transform:uppercase;letter-spacing:.03em}
+  .kpi .val{font-size:24px;font-weight:600;color:#111;letter-spacing:-.02em}
+  .kpi .sub{font-size:12px;color:#1D9E75;margin-top:3px;font-weight:500}
+  .kpi .sub.neg{color:#D85A30}
+
+  /* ── Tabs ── */
+  .tabs{display:flex;gap:6px;margin-bottom:18px;flex-wrap:wrap}
+  .tab{padding:6px 18px;font-size:13px;border:0.5px solid #b4b2a9;border-radius:6px;cursor:pointer;background:#fff;color:#5f5e5a;font-weight:500;transition:all .15s}
+  .tab:hover{background:#f1efe8}
+  .tab.active{background:#185FA5;border-color:#185FA5;color:#fff}
+  .pane{display:none}
+  .pane.active{display:block}
+
+  /* ── Tables ── */
+  .tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th{font-weight:600;font-size:12px;padding:10px 12px;text-align:right;background:#f1efe8;color:#444;white-space:nowrap;border-bottom:1px solid #d3d1c7}
+  th:first-child{text-align:left;border-radius:8px 0 0 0}
+  th:last-child{border-radius:0 8px 0 0}
+  td{padding:9px 12px;text-align:right;border-bottom:0.5px solid #e8e7e2;color:#1a1a18;white-space:nowrap}
+  td:first-child{text-align:left;font-weight:500;color:#111}
+  tbody tr:hover td{background:#f7f6f2}
+  tbody tr:last-child td{border-bottom:none}
+  .est{color:#8b8b80;font-style:italic}
+  .pos{color:#1D9E75;font-weight:600}
+  .neg{color:#D85A30;font-weight:600}
+  .highlight td{background:#e6f1fb!important;font-weight:600}
+  .section-row td{background:#f1efe8!important;font-weight:600;font-size:12px;text-transform:uppercase;color:#444;letter-spacing:.03em}
+
+  /* ── Charts ── */
+  .chart-row{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px}
+  @media(max-width:640px){.chart-row{grid-template-columns:1fr}}
+  .chart-box{background:#fff;border:0.5px solid #d3d1c7;border-radius:10px;padding:18px 20px}
+  .chart-title{font-size:13px;font-weight:600;color:#111;margin-bottom:4px}
+  .chart-sub{font-size:11px;color:#888;margin-bottom:14px}
+  .chart-wrap{position:relative;height:220px}
+
+  /* ── Legend ── */
+  .legend{display:flex;flex-wrap:wrap;gap:14px;font-size:11px;color:#666;margin-bottom:12px}
+  .legend span{display:flex;align-items:center;gap:5px}
+  .legend b{width:12px;height:12px;border-radius:2px;flex-shrink:0}
+
+  /* ── Notes ── */
+  .note{font-size:11px;color:#888;margin-top:10px;line-height:1.6;padding:10px 14px;background:#f7f6f2;border-radius:6px;border-left:3px solid #d3d1c7}
+  .note strong{color:#555}
+
+  /* ── Segment cards ── */
+  .seg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+  @media(max-width:700px){.seg-grid{grid-template-columns:1fr 1fr}}
+  .seg-card{background:#fff;border:0.5px solid #d3d1c7;border-radius:10px;padding:14px 16px}
+  .seg-card .seg-name{font-size:12px;font-weight:600;color:#185FA5;margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em}
+  .seg-card .seg-val{font-size:19px;font-weight:600;color:#111}
+  .seg-card .seg-yr{font-size:11px;color:#1D9E75;margin-top:2px}
+  .seg-card .seg-prev{font-size:11px;color:#888;margin-top:1px}
+
+  /* ── Footer ── */
+  footer{margin-top:40px;padding-top:16px;border-top:0.5px solid #d3d1c7;font-size:11px;color:#999;line-height:1.7}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <h1>미래에셋증권 (006800) — 최근 5개년 재무 요약</h1>
+    <p>연결 기준 · 회계연도 2021 ~ 2025 · 단위: 억원</p>
+    <div style="margin-top:10px">
+      <span class="badge">공식 실적발표 기준</span>
+      <span class="badge est">이탤릭 = 추정·역산치</span>
+    </div>
+  </header>
+
+  <!-- KPI Cards: 2025 -->
+  <div class="kpi-grid">
+    <div class="kpi">
+      <div class="lbl">2025 영업이익</div>
+      <div class="val">1조 9,150억</div>
+      <div class="sub">▲ 61.2% YoY · 사상 최대</div>
+    </div>
+    <div class="kpi">
+      <div class="lbl">2025 당기순이익</div>
+      <div class="val">1조 5,936억</div>
+      <div class="sub">▲ 72.2% YoY · 4년 만에 1조 회복</div>
+    </div>
+    <div class="kpi">
+      <div class="lbl">2025 자기자본</div>
+      <div class="val">13조 4,782억</div>
+      <div class="sub">▲ 10.5% YoY · 업계 최대</div>
+    </div>
+    <div class="kpi">
+      <div class="lbl">2025 ROE</div>
+      <div class="val">12.4%</div>
+      <div class="sub">3분기 연속 10%대 유지</div>
+    </div>
+  </div>
+
+  <!-- Tab nav -->
+  <div class="tabs" id="tabRow">
+    <button class="tab active" onclick="switchTab('overview')">📊 종합 재무</button>
+    <button class="tab" onclick="switchTab('bs')">🏦 재무상태표</button>
+    <button class="tab" onclick="switchTab('segment')">📂 부문별 실적</button>
+    <button class="tab" onclick="switchTab('charts')">📈 시각화</button>
+  </div>
+
+  <!-- ═══════════════════════ PANE 1: Overview ═══════════════════════ -->
+  <div class="pane active" id="pane-overview">
+
+    <div class="section">
+      <div class="section-title">손익계산서 주요 항목</div>
+      <div class="tbl-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th style="text-align:left;min-width:160px">항목</th>
+              <th>2021</th><th>2022</th><th>2023</th><th>2024</th><th>2025</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="section-row"><td colspan="6">손익</td></tr>
+            <tr>
+              <td>매출액</td>
+              <td class="est">118,129</td>
+              <td class="est">167,614</td>
+              <td>—</td>
+              <td>222,086</td>
+              <td>292,839</td>
+            </tr>
+            <tr class="highlight">
+              <td>영업이익</td>
+              <td>14,855</td>
+              <td class="est">~4,950</td>
+              <td class="est">~3,740</td>
+              <td>11,881</td>
+              <td>19,150</td>
+            </tr>
+            <tr>
+              <td>세전이익</td>
+              <td>—</td>
+              <td>—</td>
+              <td class="est">~3,738</td>
+              <td>11,845</td>
+              <td>20,800</td>
+            </tr>
+            <tr class="highlight">
+              <td>당기순이익 (연결)</td>
+              <td class="est">&gt;10,000</td>
+              <td class="est">~4,500</td>
+              <td class="est">~3,340</td>
+              <td>9,255</td>
+              <td>15,936</td>
+            </tr>
+            <tr>
+              <td>순이익 YoY 증감률</td>
+              <td>—</td>
+              <td class="neg">▼ 큰 폭</td>
+              <td class="neg">▼ 소폭</td>
+              <td class="pos">▲ +168%</td>
+              <td class="pos">▲ +72%</td>
+            </tr>
+            <tr class="section-row"><td colspan="6">주요 지표</td></tr>
+            <tr>
+              <td>ROE (%)</td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td class="est">~7%대</td>
+              <td><strong>12.4%</strong></td>
+            </tr>
+            <tr>
+              <td>EPS (원)</td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td>1,222</td>
+              <td>2,157</td>
+            </tr>
+            <tr>
+              <td>BPS (원)</td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td>16,267</td>
+              <td>18,421</td>
+            </tr>
+            <tr>
+              <td>DPS – 보통주 (원)</td>
+              <td>—</td>
+              <td>—</td>
+              <td>—</td>
+              <td>250</td>
+              <td>298</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note">
+        <strong>수치 신뢰도:</strong> 2024~2025 = 공식 실적발표 기준 확정치 · 2021 영업이익 = 한국경제 2025/02/07 보도 확인 · 2022 영업이익 = "전년 대비 약 1/3 수준" 역산 · 2023 세전·순이익 = FY2024 "217%, 168% 증가" 역산 추정 · <em>이탤릭·~표기는 추정치</em>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ═══════════════════════ PANE 2: Balance Sheet ═══════════════════════ -->
+  <div class="pane" id="pane-bs">
+    <div class="section">
+      <div class="section-title">재무상태표 (연결 기준, 단위: 억원)</div>
+      <div class="tbl-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th style="text-align:left;min-width:200px">항목</th>
+              <th>2021</th><th>2022</th><th>2023</th><th>2024</th><th>2025</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="section-row"><td colspan="6">자산</td></tr>
+            <tr class="highlight">
+              <td>자산 총계</td>
+              <td>1,086,418</td>
+              <td>1,069,522</td>
+              <td>1,282,069</td>
+              <td>1,371,770</td>
+              <td>1,502,839</td>
+            </tr>
+            <tr>
+              <td>현금 및 예치금</td>
+              <td>209,556</td>
+              <td>165,686</td>
+              <td>147,597</td>
+              <td>179,291</td>
+              <td>217,108</td>
+            </tr>
+            <tr>
+              <td>당기손익-공정가치 금융자산</td>
+              <td>295,572</td>
+              <td>279,992</td>
+              <td>353,895</td>
+              <td>433,993</td>
+              <td>525,566</td>
+            </tr>
+            <tr>
+              <td>기타포괄손익-공정가치 금융자산</td>
+              <td>133,061</td>
+              <td>159,130</td>
+              <td>160,877</td>
+              <td>175,784</td>
+              <td>140,163</td>
+            </tr>
+            <tr>
+              <td>대출채권</td>
+              <td>283,229</td>
+              <td>289,814</td>
+              <td>403,861</td>
+              <td>372,865</td>
+              <td>389,390</td>
+            </tr>
+            <tr>
+              <td>투자부동산</td>
+              <td>40,008</td>
+              <td>39,101</td>
+              <td>37,245</td>
+              <td>36,801</td>
+              <td>18,011</td>
+            </tr>
+            <tr>
+              <td>기타자산</td>
+              <td>82,559</td>
+              <td>67,984</td>
+              <td>126,292</td>
+              <td>110,138</td>
+              <td>160,293</td>
+            </tr>
+            <tr class="section-row"><td colspan="6">자본</td></tr>
+            <tr class="highlight">
+              <td>자기자본 (지배주주)</td>
+              <td class="est">~100,000</td>
+              <td class="est">~105,000</td>
+              <td class="est">~110,000</td>
+              <td>122,000</td>
+              <td>134,782</td>
+            </tr>
+            <tr class="section-row"><td colspan="6">주요 비율</td></tr>
+            <tr>
+              <td>레버리지 (총자산/자기자본)</td>
+              <td class="est">~10.9x</td>
+              <td class="est">~10.2x</td>
+              <td class="est">~11.7x</td>
+              <td>~11.2x</td>
+              <td>~11.2x</td>
+            </tr>
+            <tr>
+              <td>ROA (순이익/총자산)</td>
+              <td class="est">~0.92%</td>
+              <td class="est">~0.42%</td>
+              <td class="est">~0.26%</td>
+              <td>0.67%</td>
+              <td>1.06%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note">
+        <strong>출처:</strong> 총자산·자산 세부 항목 = valueline.co.kr (DART 공시 기반, 연결 IFRS) · 자기자본은 2024~2025 공식 발표 기준, 2021~2023은 공개 보도 기반 근사치
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════ PANE 3: Segment ═══════════════════════ -->
+  <div class="pane" id="pane-segment">
+
+    <div class="section">
+      <div class="section-title">2025 핵심 부문 실적 (별도 기준)</div>
+      <div class="seg-grid">
+        <div class="seg-card">
+          <div class="seg-name">브로커리지</div>
+          <div class="seg-val">1조 110억</div>
+          <div class="seg-yr pos">▲ +43% YoY · 업계 최초 1조 클럽</div>
+          <div class="seg-prev">전년: 7,049억</div>
+        </div>
+        <div class="seg-card">
+          <div class="seg-name">WM 금융상품 수수료</div>
+          <div class="seg-val">3,421억</div>
+          <div class="seg-yr pos">▲ +21% YoY · 사상 최대</div>
+          <div class="seg-prev">전년: 2,818억</div>
+        </div>
+        <div class="seg-card">
+          <div class="seg-name">트레이딩 · 기타 금융</div>
+          <div class="seg-val">1조 2,657억</div>
+          <div class="seg-yr pos">▲ +14% YoY</div>
+          <div class="seg-prev">전년: 1조 1,262억</div>
+        </div>
+        <div class="seg-card">
+          <div class="seg-name">해외법인 세전이익</div>
+          <div class="seg-val">4,981억</div>
+          <div class="seg-yr pos">▲ +200% YoY · 전체의 24%</div>
+          <div class="seg-prev">전년: 1,661억</div>
+        </div>
+        <div class="seg-card">
+          <div class="seg-name">PI 투자 평가이익</div>
+          <div class="seg-val">6,450억</div>
+          <div class="seg-yr pos">4분기 연속 흑자</div>
+          <div class="seg-prev">SpaceX·xAI 평가이익 반영</div>
+        </div>
+        <div class="seg-card">
+          <div class="seg-name">연금자산 AUM</div>
+          <div class="seg-val">57.8조</div>
+          <div class="seg-yr pos">▲ +35% YoY · DC부문 업권 1위</div>
+          <div class="seg-prev">전년: 42.8조</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">부문별 수익 추이</div>
+      <div class="tbl-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th style="text-align:left;min-width:180px">부문</th>
+              <th>2021</th><th>2022</th><th>2023</th><th>2024</th><th>2025</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="section-row"><td colspan="6">수익 (별도 기준, 억원)</td></tr>
+            <tr>
+              <td>브로커리지 수수료</td>
+              <td>—</td><td>—</td><td>—</td>
+              <td>7,049</td>
+              <td><strong>10,110</strong></td>
+            </tr>
+            <tr>
+              <td>WM 금융상품 판매 수수료</td>
+              <td>—</td><td>—</td><td>—</td>
+              <td>2,818</td>
+              <td><strong>3,421</strong></td>
+            </tr>
+            <tr>
+              <td>트레이딩 운용손익</td>
+              <td>—</td><td>—</td>
+              <td class="est">~8,404</td>
+              <td>11,262</td>
+              <td><strong>12,657</strong></td>
+            </tr>
+            <tr class="section-row"><td colspan="6">해외 (연결 기준, 억원)</td></tr>
+            <tr>
+              <td>해외법인 세전이익</td>
+              <td>2,432</td>
+              <td>1,428</td>
+              <td>485</td>
+              <td>1,661</td>
+              <td><strong>4,981</strong></td>
+            </tr>
+            <tr>
+              <td>　선진국 (미·홍콩·런던·싱가포르)</td>
+              <td>—</td><td>—</td><td>—</td>
+              <td>1,033</td>
+              <td><strong>3,315</strong></td>
+            </tr>
+            <tr>
+              <td>　이머징 (인도·인니·베트남·브라질)</td>
+              <td>—</td><td>—</td><td>—</td>
+              <td>628</td>
+              <td><strong>1,666</strong></td>
+            </tr>
+            <tr>
+              <td>　뉴욕법인 세전이익</td>
+              <td>—</td><td>—</td><td>—</td>
+              <td>945</td>
+              <td><strong>2,142</strong></td>
+            </tr>
+            <tr class="section-row"><td colspan="6">고객 자산 규모 (조원)</td></tr>
+            <tr>
+              <td>총 고객자산 (AUM)</td>
+              <td>—</td><td>—</td><td>—</td>
+              <td>482</td>
+              <td><strong>602</strong></td>
+            </tr>
+            <tr>
+              <td>　국내</td>
+              <td>—</td><td>—</td><td>—</td>
+              <td>407</td>
+              <td><strong>518</strong></td>
+            </tr>
+            <tr>
+              <td>　해외</td>
+              <td>—</td><td>—</td><td>—</td>
+              <td>75</td>
+              <td><strong>84</strong></td>
+            </tr>
+            <tr>
+              <td>연금자산</td>
+              <td>—</td><td>—</td><td>—</td>
+              <td>42.8</td>
+              <td><strong>57.8</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note">
+        <strong>브로커리지·WM:</strong> 별도 기준 (연결과 소폭 차이 있음) · <strong>해외법인:</strong> 연결 기준 · 트레이딩 2024 = 2025 실적발표의 "34% 증가" 역산 · 이탤릭 = 추정
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════ PANE 4: Charts ═══════════════════════ -->
+  <div class="pane" id="pane-charts">
+
+    <!-- Chart row 1 -->
+    <div class="chart-row">
+      <div class="chart-box">
+        <div class="chart-title">영업이익 · 당기순이익 추이</div>
+        <div class="chart-sub">연결 기준 (억원) · 옅은 색 = 추정</div>
+        <div class="legend">
+          <span><b style="background:#185FA5"></b>영업이익</span>
+          <span><b style="background:#1D9E75"></b>당기순이익</span>
+        </div>
+        <div class="chart-wrap"><canvas id="c1" role="img" aria-label="영업이익 당기순이익 추이 2021-2025"></canvas></div>
+      </div>
+      <div class="chart-box">
+        <div class="chart-title">총자산 · 자기자본 추이</div>
+        <div class="chart-sub">연결 기준 (조원)</div>
+        <div class="legend">
+          <span><b style="background:#7F77DD"></b>총자산</span>
+          <span><b style="background:#D85A30"></b>자기자본</span>
+        </div>
+        <div class="chart-wrap"><canvas id="c2" role="img" aria-label="총자산 자기자본 추이 2021-2025"></canvas></div>
+      </div>
+    </div>
+
+    <!-- Chart row 2 -->
+    <div class="chart-row">
+      <div class="chart-box">
+        <div class="chart-title">해외법인 세전이익 추이</div>
+        <div class="chart-sub">연결 기준 (억원) · 선진국 · 이머징 구분</div>
+        <div class="legend">
+          <span><b style="background:#185FA5"></b>선진국</span>
+          <span><b style="background:#1D9E75"></b>이머징</span>
+        </div>
+        <div class="chart-wrap"><canvas id="c3" role="img" aria-label="해외법인 세전이익 추이"></canvas></div>
+      </div>
+      <div class="chart-box">
+        <div class="chart-title">2025 부문별 수익 구성</div>
+        <div class="chart-sub">브로커리지·WM·트레이딩 (억원)</div>
+        <div class="chart-wrap"><canvas id="c4" role="img" aria-label="2025 부문별 수익 구성 도넛 차트"></canvas></div>
+      </div>
+    </div>
+
+    <!-- Chart row 3 -->
+    <div class="chart-row">
+      <div class="chart-box">
+        <div class="chart-title">고객자산 AUM · 연금자산 성장</div>
+        <div class="chart-sub">별도 기준 (조원) · 2024–2025</div>
+        <div class="legend">
+          <span><b style="background:#7F77DD"></b>총 AUM</span>
+          <span><b style="background:#EF9F27"></b>연금자산</span>
+        </div>
+        <div class="chart-wrap"><canvas id="c5" role="img" aria-label="AUM 연금자산 성장"></canvas></div>
+      </div>
+      <div class="chart-box">
+        <div class="chart-title">순이익 vs ROE 변화</div>
+        <div class="chart-sub">순이익(막대, 억원) / ROE(선, %) · 2024~2025</div>
+        <div class="legend">
+          <span><b style="background:#1D9E75"></b>순이익</span>
+          <span style="display:flex;align-items:center;gap:5px"><span style="width:18px;height:2px;background:#D85A30;display:inline-block"></span>ROE (%)</span>
+        </div>
+        <div class="chart-wrap"><canvas id="c6" role="img" aria-label="순이익 ROE 변화"></canvas></div>
+      </div>
+    </div>
+
+  </div><!-- /pane-charts -->
+
+  <footer>
+    <strong>데이터 출처</strong><br>
+    · 재무상태표(총자산·자산 세부): valueline.co.kr – DART 공시 기반 (2021–2025, 연결 IFRS)<br>
+    · 손익 실적 (2024 확정): 미래에셋증권 공식 IR 발표 (2025/02/07), 한국경제·인사이트코리아 보도<br>
+    · 손익 실적 (2025 확정): 미래에셋증권 2025년 경영실적 발표 (2026/02/09), 주주총회 확정 (2026/03/24)<br>
+    · 부문별 실적 (2025): 미래에셋증권 실적발표자료, 한국금융신문 (2026/04/06) 보도<br>
+    · 2021 영업이익 14,855억: 한국경제 2025/02/07 "2021년 이후 3년 만에 1조 회복" 보도 역산 확인<br>
+    · 2022–2023 추정치: 공개 보도의 YoY 증감률 역산 (이탤릭·~ 표기)<br>
+    · EPS·BPS: valueline.co.kr 투자지표 (지배주주 기준)
+  </footer>
+
+</div><!-- /page -->
+
+<script>
+function switchTab(name) {
+  document.querySelectorAll('.pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('pane-' + name).classList.add('active');
+  event.target.classList.add('active');
+  if (name === 'charts') initCharts();
+}
+
+let chartsInited = false;
+function initCharts() {
+  if (chartsInited) return;
+  chartsInited = true;
+
+  const yrs = ['2021', '2022', '2023', '2024', '2025'];
+  const est = [true, true, true, false, false];
+  const gridColor = 'rgba(0,0,0,0.06)';
+
+  // Helper: alpha color based on estimated
+  function barColors(hex, alphaEst = 0.35) {
+    return est.map(e => e ? hex + Math.round(alphaEst * 255).toString(16).padStart(2,'0') : hex);
+  }
+
+  // C1: 영업이익 · 순이익
+  new Chart(document.getElementById('c1'), {
+    type: 'bar',
+    data: {
+      labels: yrs,
+      datasets: [
+        { label: '영업이익', data: [14855, 4950, 3740, 11881, 19150],
+          backgroundColor: barColors('#185FA5'), borderRadius: 4 },
+        { label: '당기순이익', data: [10000, 4500, 3340, 9255, 15936],
+          backgroundColor: barColors('#1D9E75'), borderRadius: 4 }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false },
+        tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + ctx.raw.toLocaleString() + '억' + (est[ctx.dataIndex] ? ' (추정)' : '') } }
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { size: 11 } } },
+        y: { grid: { color: gridColor }, ticks: { font: { size: 10 },
+          callback: v => v === 0 ? '0' : (v / 10000).toFixed(1) + '조' }, min: 0 }
+      }
+    }
+  });
+
+  // C2: 총자산 · 자기자본
+  new Chart(document.getElementById('c2'), {
+    type: 'bar',
+    data: {
+      labels: yrs,
+      datasets: [
+        { label: '총자산', data: [108.6, 107.0, 128.2, 137.2, 150.3],
+          backgroundColor: '#7F77DD66', borderColor: '#7F77DD', borderWidth: 1.5, borderRadius: 4 },
+        { label: '자기자본', data: [10.0, 10.5, 11.0, 12.2, 13.5],
+          backgroundColor: barColors('#D85A30'), borderRadius: 4, yAxisID: 'y1' }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false },
+        tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + ctx.raw.toFixed(1) + '조원' } }
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { size: 11 } } },
+        y: { grid: { color: gridColor }, ticks: { font: { size: 10 }, callback: v => v + '조' }, title: { display: true, text: '총자산 (조)', font: { size: 10 } } },
+        y1: { position: 'right', grid: { display: false }, ticks: { font: { size: 10 }, callback: v => v + '조' }, title: { display: true, text: '자기자본 (조)', font: { size: 10 } } }
+      }
+    }
+  });
+
+  // C3: 해외법인 세전이익 stacked
+  new Chart(document.getElementById('c3'), {
+    type: 'bar',
+    data: {
+      labels: yrs,
+      datasets: [
+        { label: '선진국', data: [null, null, null, 1033, 3315],
+          backgroundColor: '#185FA5', borderRadius: 3 },
+        { label: '이머징', data: [null, null, null, 628, 1666],
+          backgroundColor: '#1D9E75', borderRadius: 3 },
+        { label: '합계 (2021–2023)', data: [2432, 1428, 485, null, null],
+          backgroundColor: '#B5D4F4', borderRadius: 3 }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false },
+        tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + (ctx.raw || 0).toLocaleString() + '억' } }
+      },
+      scales: {
+        x: { stacked: true, grid: { display: false }, ticks: { font: { size: 11 } } },
+        y: { stacked: true, grid: { color: gridColor }, ticks: { font: { size: 10 }, callback: v => v.toLocaleString() } }
+      }
+    }
+  });
+
+  // C4: 도넛 – 2025 부문별
+  new Chart(document.getElementById('c4'), {
+    type: 'doughnut',
+    data: {
+      labels: ['브로커리지', 'WM 수수료', '트레이딩', '해외법인'],
+      datasets: [{
+        data: [10110, 3421, 12657, 4981],
+        backgroundColor: ['#185FA5', '#1D9E75', '#7F77DD', '#EF9F27'],
+        borderWidth: 2, borderColor: '#fff'
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'right', labels: { font: { size: 11 }, padding: 8 } },
+        tooltip: { callbacks: { label: ctx => ctx.label + ': ' + ctx.raw.toLocaleString() + '억' } }
+      }
+    }
+  });
+
+  // C5: AUM + 연금
+  new Chart(document.getElementById('c5'), {
+    type: 'bar',
+    data: {
+      labels: ['2024', '2025'],
+      datasets: [
+        { label: '총 AUM', data: [482, 602], backgroundColor: '#7F77DD', borderRadius: 4, yAxisID: 'y' },
+        { label: '연금자산', data: [42.8, 57.8], backgroundColor: '#EF9F27', borderRadius: 4, yAxisID: 'y1' }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false },
+        tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': ' + ctx.raw.toFixed(1) + '조' } }
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { size: 12 } } },
+        y: { grid: { color: gridColor }, ticks: { font: { size: 10 }, callback: v => v + '조' }, title: { display: true, text: 'AUM (조)', font: { size: 10 } } },
+        y1: { position: 'right', grid: { display: false }, ticks: { font: { size: 10 }, callback: v => v + '조' }, title: { display: true, text: '연금 (조)', font: { size: 10 } } }
+      }
+    }
+  });
+
+  // C6: 순이익 + ROE
+  new Chart(document.getElementById('c6'), {
+    type: 'bar',
+    data: {
+      labels: ['2024', '2025'],
+      datasets: [
+        { type: 'bar', label: '순이익', data: [9255, 15936],
+          backgroundColor: ['#1D9E7588', '#1D9E75'], borderRadius: 4, yAxisID: 'y' },
+        { type: 'line', label: 'ROE (%)', data: [7.2, 12.4],
+          borderColor: '#D85A30', pointBackgroundColor: '#D85A30',
+          pointRadius: 5, lineWidth: 2, yAxisID: 'y1', tension: 0.3 }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false },
+        tooltip: { callbacks: {
+          label: ctx => ctx.dataset.type === 'line'
+            ? 'ROE: ' + ctx.raw + '%'
+            : '순이익: ' + ctx.raw.toLocaleString() + '억'
+        } }
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { size: 12 } } },
+        y: { grid: { color: gridColor }, ticks: { font: { size: 10 }, callback: v => v.toLocaleString() + '억' } },
+        y1: { position: 'right', grid: { display: false }, ticks: { font: { size: 10 }, callback: v => v + '%' }, min: 0, max: 16 }
+      }
+    }
+  });
+}
+</script>
+
+</body>
+</html>
