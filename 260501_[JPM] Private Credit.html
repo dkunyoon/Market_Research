@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>프라이빗 크레딧, 공공의 문제인가 — KakaoBank 채권리서치</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;400;500;600&family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080b10;
+    --bg-card: #0e1318;
+    --bg-card2: #111820;
+    --border: #1e2a35;
+    --border-bright: #2a3d4f;
+    --gold: #c8a45a;
+    --gold-dim: #8a6f3a;
+    --gold-bright: #e0ba72;
+    --teal: #3a9fa8;
+    --teal-dim: #1e5a60;
+    --red: #c0544a;
+    --red-dim: #7a3530;
+    --green: #4a9e6f;
+    --green-dim: #2a6044;
+    --text-primary: #e8e0d0;
+    --text-secondary: #8a9aaa;
+    --text-muted: #4a5a6a;
+    --text-accent: #c8a45a;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'IBM Plex Sans KR', sans-serif;
+    --serif: 'DM Serif Display', serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.75;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page-wrap {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 48px 32px 80px;
+  }
+
+  /* ── HEADER ── */
+  .report-header {
+    border-bottom: 1px solid var(--border-bright);
+    padding-bottom: 32px;
+    margin-bottom: 40px;
+  }
+
+  .report-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .report-meta .dot { color: var(--gold-dim); }
+
+  .report-source {
+    display: inline-block;
+    background: var(--gold-dim);
+    color: var(--bg);
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    padding: 2px 8px;
+    border-radius: 2px;
+    text-transform: uppercase;
+  }
+
+  .report-title {
+    font-family: var(--serif);
+    font-size: 2.4rem;
+    line-height: 1.2;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+  }
+
+  .report-title em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .report-subtitle {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    font-weight: 300;
+    letter-spacing: 0.01em;
+  }
+
+  /* ── KPI CARDS ── */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    margin-bottom: 40px;
+  }
+
+  .kpi-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--gold-dim);
+    padding: 18px 16px 16px;
+  }
+
+  .kpi-label {
+    font-family: var(--mono);
+    font-size: 9.5px;
+    color: var(--text-muted);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    line-height: 1.4;
+  }
+
+  .kpi-value {
+    font-family: var(--mono);
+    font-size: 1.65rem;
+    font-weight: 500;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .kpi-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.3;
+  }
+
+  /* ── VERDICT BANNER ── */
+  .verdict-banner {
+    background: linear-gradient(135deg, #0a1a10 0%, #0d1510 100%);
+    border: 1px solid #2a4a30;
+    border-left: 3px solid var(--green);
+    padding: 20px 24px;
+    margin-bottom: 40px;
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .verdict-icon {
+    font-size: 1.4rem;
+    line-height: 1;
+    margin-top: 2px;
+    flex-shrink: 0;
+  }
+
+  .verdict-text {
+    font-size: 0.95rem;
+    color: var(--text-primary);
+    line-height: 1.65;
+  }
+
+  .verdict-text strong { color: #6fd494; }
+
+  /* ── SECTION ── */
+  .section { margin-bottom: 52px; }
+
+  .section-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--gold-dim);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .section-title {
+    font-family: var(--serif);
+    font-size: 1.5rem;
+    color: var(--gold-bright);
+    margin-bottom: 18px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 10px;
+  }
+
+  .prose {
+    font-size: 0.94rem;
+    color: var(--text-primary);
+    line-height: 1.85;
+    font-weight: 300;
+  }
+
+  .prose + .prose { margin-top: 16px; }
+
+  .prose strong { color: var(--gold); font-weight: 500; }
+
+  .prose em { color: var(--teal); font-style: normal; }
+
+  /* ── DATA TABLE ── */
+  .table-wrap {
+    overflow-x: auto;
+    margin: 24px 0;
+    border: 1px solid var(--border);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    min-width: 500px;
+  }
+
+  thead tr {
+    background: #0f1c26;
+    border-bottom: 1px solid var(--border-bright);
+  }
+
+  th {
+    text-align: left;
+    padding: 10px 14px;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    font-weight: 400;
+  }
+
+  td {
+    padding: 9px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-primary);
+  }
+
+  tr:last-child td { border-bottom: none; }
+
+  tr:hover td { background: rgba(200,164,90,0.03); }
+
+  .td-num {
+    text-align: right;
+    color: var(--gold);
+    font-weight: 500;
+  }
+
+  .td-total td {
+    border-top: 1px solid var(--border-bright);
+    color: var(--gold-bright);
+    font-weight: 500;
+  }
+
+  .td-note { color: var(--text-muted) !important; font-size: 11px; }
+
+  /* ── SVG CHARTS ── */
+  .chart-container {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 24px 20px 16px;
+    margin: 24px 0;
+  }
+
+  .chart-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text-secondary);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .chart-source {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    margin-top: 10px;
+  }
+
+  svg { max-width: 100%; height: auto; display: block; }
+
+  /* ── RISK MATRIX ── */
+  .risk-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 24px 0;
+  }
+
+  .risk-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 18px 20px;
+  }
+
+  .risk-card.low { border-left: 3px solid var(--green); }
+  .risk-card.medium { border-left: 3px solid var(--gold-dim); }
+  .risk-card.high { border-left: 3px solid var(--red); }
+
+  .risk-title {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .risk-card.low .risk-title { color: var(--green); }
+  .risk-card.medium .risk-title { color: var(--gold); }
+  .risk-card.high .risk-title { color: var(--red); }
+
+  .risk-body {
+    font-size: 0.87rem;
+    color: var(--text-secondary);
+    line-height: 1.65;
+  }
+
+  /* ── FLOW DIAGRAM ── */
+  .flow-wrap {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 24px;
+    margin: 24px 0;
+    overflow-x: auto;
+  }
+
+  /* ── IMPLICATION CARDS ── */
+  .impl-list { display: flex; flex-direction: column; gap: 14px; margin-top: 20px; }
+
+  .impl-item {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 16px 18px;
+  }
+
+  .impl-num {
+    font-family: var(--mono);
+    font-size: 1.1rem;
+    color: var(--gold-dim);
+    font-weight: 500;
+    flex-shrink: 0;
+    width: 24px;
+    line-height: 1.5;
+  }
+
+  .impl-body { font-size: 0.91rem; color: var(--text-primary); line-height: 1.7; font-weight: 300; }
+  .impl-body strong { color: var(--gold); font-weight: 500; }
+
+  /* ── HIGHLIGHT BOX ── */
+  .highlight-box {
+    background: #0d1520;
+    border: 1px solid var(--border-bright);
+    border-left: 3px solid var(--teal);
+    padding: 18px 22px;
+    margin: 24px 0;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+  }
+
+  .highlight-box strong { color: var(--teal); font-weight: 500; }
+
+  /* ── FOOTER ── */
+  .report-footer {
+    border-top: 1px solid var(--border);
+    padding-top: 24px;
+    margin-top: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .footer-left { font-family: var(--mono); font-size: 11px; color: var(--text-muted); line-height: 1.7; }
+  .footer-right { font-family: var(--mono); font-size: 10px; color: var(--text-muted); text-align: right; line-height: 1.7; }
+  .footer-brand { color: var(--gold-dim); font-weight: 500; }
+
+  /* ── LEGEND DOT ── */
+  .legend { display: flex; gap: 20px; flex-wrap: wrap; margin-top: 12px; }
+  .legend-item { display: flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: 10.5px; color: var(--text-muted); }
+  .legend-dot { width: 10px; height: 10px; border-radius: 1px; flex-shrink: 0; }
+
+  @media (max-width: 640px) {
+    .page-wrap { padding: 28px 16px 60px; }
+    .kpi-grid { grid-template-columns: repeat(2,1fr); }
+    .risk-grid { grid-template-columns: 1fr; }
+    .report-title { font-size: 1.8rem; }
+  }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <!-- ── HEADER ── -->
+  <header class="report-header">
+    <div class="report-meta">
+      <span class="report-source">KakaoBank 채권리서치</span>
+      <span class="dot">◆</span>
+      <span>2026년 5월 1일</span>
+      <span class="dot">◆</span>
+      <span>북미 크레딧 / 거시 분석</span>
+    </div>
+    <h1 class="report-title">프라이빗 크레딧 위기론,<br><em>과연 공공의 문제인가</em></h1>
+    <p class="report-subtitle">J.P. Morgan North America Economic Research — "US: Private credit isn't a public problem" (2026.05.01) 분석</p>
+  </header>
+
+  <!-- ── KPI CARDS ── -->
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">글로벌 다이렉트<br>렌딩 자산 (투자)</div>
+      <div class="kpi-value">$1.75<span style="font-size:1rem">tr</span></div>
+      <div class="kpi-sub">드라이파우더 포함 시 $2.07tr</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">미국 기업 부채 중<br>프라이빗 크레딧 비중</div>
+      <div class="kpi-value">~10<span style="font-size:1rem">%</span></div>
+      <div class="kpi-sub">미국 비금융 기업채 $13.5tr 대비</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">BDC 총자산<br>(2019→현재 성장)</div>
+      <div class="kpi-value">$570<span style="font-size:1rem">bn</span></div>
+      <div class="kpi-sub">2019년 $100bn → 약 5.7배 성장</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">스트레스 시나리오<br>은행 CET1 영향</div>
+      <div class="kpi-value" style="color:var(--green)">−2<span style="font-size:1rem">bp</span></div>
+      <div class="kpi-sub">전액 인출 가정 시 최대 손실</div>
+    </div>
+  </div>
+
+  <!-- ── VERDICT ── -->
+  <div class="verdict-banner">
+    <div class="verdict-icon">✔</div>
+    <div class="verdict-text">
+      <strong>핵심 결론:</strong> J.P. Morgan은 프라이빗 크레딧 시장의 스트레스가 투자자 손실로 이어질 수 있음을 인정하면서도, 이것이 <strong>거시경제적 신용공급 위기나 금융안정 위협으로 확대될 가능성은 제한적</strong>이라고 판단한다. 프라이빗 크레딧의 기업 대출 내 점유율이 낮고, 은행 시스템의 여신 여력이 충분하며, 만기불일치 위험도 구조적으로 억제되어 있다는 이유에서다.
+    </div>
+  </div>
+
+  <!-- ── SECTION 1: 배경 ── -->
+  <section class="section">
+    <div class="section-label">§ 01</div>
+    <h2 class="section-title">프라이빗 크레딧이란 무엇인가 — 시장 구조와 규모</h2>
+
+    <p class="prose">프라이빗 크레딧(Private Credit)은 은행 외 비금융 기업 대출 중 광범위 신디케이트 론(BSL)이나 채권을 제외한 영역을 통칭한다. 그 중 가장 큰 비중을 차지하는 것은 <strong>다이렉트 렌딩(Direct Lending)</strong>으로, J.P. Morgan 추산 글로벌 투자 자산 기준 약 <strong>$1.75tr</strong>에 달한다. 여기에 아직 집행되지 않은 드라이파우더 $315bn을 더하면 총 약정 규모는 $2.07tr에 이른다.</p>
+
+    <p class="prose">자금 조달 구조는 크게 두 가지로 나뉜다. 기관투자자 중심의 <strong>드로우다운 펀드</strong>는 장기 락업(lock-up) 구조로 운용되며 글로벌 자산 $966bn을 관리한다. 반면 <strong>BDC(Business Development Company)</strong>는 소매 투자자 접근성이 높은 구조로, 2019년 불과 $100bn에서 2026년 말 $570bn까지 폭발적으로 성장했다. 이 중 프라이빗 BDC는 월 단위 NAV 기준 환매를 제공하지만 분기당 NAV의 5%로 환매 규모를 제한한다.</p>
+
+    <p class="prose">지역별 분포를 보면 전체 직접 대출 자산의 상당 부분인 약 <strong>$1.3~1.4tr</strong>이 미국 차주 대상이며, 이는 미국 비금융 기업 부채 $13.5tr의 약 10%에 해당한다. 다이렉트 렌딩 이외에도 부실채권(Distressed), 메자닌(Mezzanine), 부동산·인프라·원자재 담보의 자산담보대출(ABL) 등이 포함되며, 이들의 미국 자산도 추가로 약 $400bn에 달할 것으로 추산된다.</p>
+
+    <!-- TABLE: 자산 구성 -->
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>항목</th>
+            <th style="text-align:right">금액 ($bn)</th>
+            <th style="text-align:right">비중</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>드로우다운 펀드 총자산</td><td class="td-num">966</td><td class="td-num">—</td></tr>
+          <tr><td class="td-note" style="padding-left:24px">└ 다이렉트 렌딩 (투자)</td><td class="td-num td-note">666</td><td class="td-num td-note">—</td></tr>
+          <tr><td class="td-note" style="padding-left:24px">└ 추산 레버리지</td><td class="td-num td-note">300</td><td class="td-num td-note">—</td></tr>
+          <tr><td>BDC 총자산</td><td class="td-num">570</td><td class="td-num">—</td></tr>
+          <tr><td>기타 펀드 (인터벌 등)</td><td class="td-num">114</td><td class="td-num">—</td></tr>
+          <tr><td>프라이빗 CLO</td><td class="td-num">203</td><td class="td-num">—</td></tr>
+          <tr><td class="td-note">조정: BSL 및 중복 자산 제거</td><td class="td-num td-note">(100)</td><td class="td-num td-note">—</td></tr>
+          <tr class="td-total"><td><strong>투자 다이렉트 렌딩 합계</strong></td><td class="td-num"><strong>1,753</strong></td><td class="td-num"><strong>~10%</strong></td></tr>
+          <tr><td>드라이파우더</td><td class="td-num">315</td><td class="td-num">—</td></tr>
+          <tr class="td-total"><td><strong>드라이파우더 포함 합계</strong></td><td class="td-num"><strong>2,068</strong></td><td class="td-num"><strong>—</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="font-family:var(--mono);font-size:10px;color:var(--text-muted);margin-top:4px">출처: Preqin, BDC Collateral, J.P. Morgan</div>
+  </section>
+
+  <!-- ── SECTION 2: BDC 성장 차트 ── -->
+  <section class="section">
+    <div class="section-label">§ 02</div>
+    <h2 class="section-title">BDC의 폭발적 성장 — 소매화가 이끈 확장</h2>
+
+    <p class="prose">프라이빗 크레딧 시장에서 최근 가장 눈에 띄는 변화는 <strong>BDC 자산의 급팽창</strong>이다. 2000년대 초반부터 존재했던 BDC는 오랜 기간 틈새시장에 머물렀지만, 2019년 이후 소매 투자자 접근이 확대되며 불과 7년 만에 자산이 약 5.7배 증가했다. 기관 중심의 드로우다운 펀드가 최근 성장세가 정체된 것과 대비되는 모습이다.</p>
+
+    <p class="prose">이러한 구조적 변화는 양날의 검으로 작용한다. 한편으로는 프라이빗 크레딧에 대한 자본 공급 기반이 다변화되는 긍정적 측면이 있으나, 다른 한편으로는 기관 중심 운용에 비해 <strong>환매 요청에 더 민감하게 노출</strong>되는 구조적 취약성이 내재한다. 최근 급증한 프라이빗 BDC 환매 요청이 시장 불안의 진원지로 부각된 것도 이러한 맥락에서다.</p>
+
+    <!-- SVG: BDC 성장 차트 -->
+    <div class="chart-container">
+      <div class="chart-title">글로벌 다이렉트 렌딩 자산 구성 추이 ($bn, 연말 기준)</div>
+      <svg viewBox="0 0 820 320" xmlns="http://www.w3.org/2000/svg">
+        <!-- background -->
+        <rect width="820" height="320" fill="#0e1318"/>
+        <!-- grid lines -->
+        <line x1="80" y1="40" x2="80" y2="270" stroke="#1e2a35" stroke-width="1"/>
+        <line x1="80" y1="270" x2="790" y2="270" stroke="#1e2a35" stroke-width="1"/>
+        <line x1="80" y1="40" x2="790" y2="40" stroke="#1e2a35" stroke-dasharray="4,4" stroke-width="0.5"/>
+        <line x1="80" y1="107" x2="790" y2="107" stroke="#1e2a35" stroke-dasharray="4,4" stroke-width="0.5"/>
+        <line x1="80" y1="174" x2="790" y2="174" stroke="#1e2a35" stroke-dasharray="4,4" stroke-width="0.5"/>
+        <!-- y-axis labels -->
+        <text x="70" y="44" fill="#4a5a6a" font-family="IBM Plex Mono" font-size="11" text-anchor="end">2,000</text>
+        <text x="70" y="111" fill="#4a5a6a" font-family="IBM Plex Mono" font-size="11" text-anchor="end">1,500</text>
+        <text x="70" y="178" fill="#4a5a6a" font-family="IBM Plex Mono" font-size="11" text-anchor="end">1,000</text>
+        <text x="70" y="244" fill="#4a5a6a" font-family="IBM Plex Mono" font-size="11" text-anchor="end">500</text>
+        <text x="70" y="274" fill="#4a5a6a" font-family="IBM Plex Mono" font-size="11" text-anchor="end">0</text>
+
+        <!-- Data: years mapped to x positions. 2000→2025: 25 years, 710px / 5 steps = 142px -->
+        <!-- x positions: 2000=80, 2005=222, 2010=364, 2015=506, 2020=648, 2025=790 -->
+        <!-- scale: 2000px = 230px height, so 1bn = 0.115px -->
+        <!-- Approximate data from chart description: 
+             Drawdown invested: 2000~0, 2005~50, 2010~150, 2015~450, 2020~550, 2025~666
+             Drawdown dry powder: 2000~0, 2005~20, 2010~60, 2015~120, 2020~200, 2025~300
+             BDC: 2000~5, 2005~20, 2010~60, 2015~120, 2020~200, 2025~570
+        -->
+
+        <!-- BAR GROUPS: 5 groups at x=150,250,350,450,550,650,760 -->
+        <!-- Simple stacked bars for key years -->
+        <!-- 2000 -->
+        <g transform="translate(108,0)">
+          <rect x="-14" y="268" width="28" height="2" fill="#2a6044"/>
+          <rect x="-14" y="266" width="28" height="2" fill="#3a9fa8" opacity="0.5"/>
+          <rect x="-14" y="264" width="28" height="2" fill="#8a6f3a"/>
+          <text x="0" y="286" fill="#4a5a6a" font-family="IBM Plex Mono" font-size="10" text-anchor="middle">'00</text>
+        </g>
+        <!-- 2005 -->
+        <g transform="translate(248,0)">
+          <!-- BDC: 20bn → 2.3px -->
+          <rect x="-16" y="268" width="32" height="2" fill="#2a6044"/>
+          <!-- Drawdown invested: 50bn → 5.75px -->
+          <rect x="-16" y="262" width="32" height="6" fill="#2a3d4f"/>
+          <!-- Drawdown dry: 20bn → 2.3px -->
+          <rect x="-16" y="259" width="32" height="3" fill="#3a6070"/>
+          <text x="0" y="286" fill="#4a5a6a" font-family="IBM Plex Mono" font-size="10" text-anchor="middle">'05</text>
+        </g>
+        <!-- 2010 -->
+        <g transform="translate(388,0)">
+          <!-- BDC: 60bn → 6.9px -->
+          <rect x="-16" y="263" width="32" height="7" fill="#2a6044"/>
+          <!-- Drawdown invested: 150bn → 17.25px -->
+          <rect x="-16" y="246" width="32" height="17" fill="#2a3d4f"/>
+          <!-- Drawdown dry: 60bn → 6.9px -->
+          <rect x="-16" y="239" width="32" height="7" fill="#3a6070"/>
+          <text x="0" y="286" fill="#4a5a6a" font-family="IBM Plex Mono" font-size="10" text-anchor="middle">'10</text>
+        </g>
+        <!-- 2015 -->
+        <g transform="translate(528,0)">
+          <!-- BDC: 200bn → 23px -->
+          <rect x="-18" y="247" width="36" height="23" fill="#2a6044"/>
+          <!-- Drawdown invested: 450bn → 51.75px -->
+          <rect x="-18" y="195" width="36" height="52" fill="#2a3d4f"/>
+          <!-- Drawdown dry: 150bn → 17.25px -->
+          <rect x="-18" y="178" width="36" height="17" fill="#3a6070"/>
+          <text x="0" y="286" fill="#4a5a6a" font-family="IBM Plex Mono" font-size="10" text-anchor="middle">'15</text>
+        </g>
+        <!-- 2020 -->
+        <g transform="translate(668,0)">
+          <!-- BDC: 100bn (2019 val) → growing rapidly; ~200bn 2020 → 23px -->
+          <rect x="-18" y="247" width="36" height="23" fill="#2a6044"/>
+          <!-- Drawdown invested: 550bn → 63.25px -->
+          <rect x="-18" y="184" width="36" height="63" fill="#2a3d4f"/>
+          <!-- Drawdown dry: 200bn → 23px -->
+          <rect x="-18" y="161" width="36" height="23" fill="#3a6070"/>
+          <text x="0" y="286" fill="#4a5a6a" font-family="IBM Plex Mono" font-size="10" text-anchor="middle">'20</text>
+        </g>
+        <!-- 2025/2026 -->
+        <g transform="translate(762,0)">
+          <!-- BDC: 570bn → 65.55px -->
+          <rect x="-20" y="205" width="40" height="65" fill="#4a9e6f"/>
+          <!-- Drawdown invested: 666bn → 76.59px -->
+          <rect x="-20" y="128" width="40" height="77" fill="#1e5a80"/>
+          <!-- Drawdown dry: 300bn → 34.5px -->
+          <rect x="-20" y="94" width="40" height="34" fill="#2a5060"/>
+          <!-- annotations -->
+          <text x="0" y="286" fill="#c8a45a" font-family="IBM Plex Mono" font-size="10" text-anchor="middle" font-weight="500">'25</text>
+          <!-- value label -->
+          <text x="30" y="85" fill="#4a9e6f" font-family="IBM Plex Mono" font-size="9.5" text-anchor="start">$1,966bn</text>
+        </g>
+
+        <!-- LEGEND -->
+        <rect x="95" y="296" width="12" height="10" fill="#4a9e6f"/>
+        <text x="112" y="305" fill="#8a9aaa" font-family="IBM Plex Mono" font-size="10">BDC</text>
+        <rect x="175" y="296" width="12" height="10" fill="#1e5a80"/>
+        <text x="192" y="305" fill="#8a9aaa" font-family="IBM Plex Mono" font-size="10">드로우다운 펀드 (투자)</text>
+        <rect x="360" y="296" width="12" height="10" fill="#2a5060"/>
+        <text x="377" y="305" fill="#8a9aaa" font-family="IBM Plex Mono" font-size="10">드라이파우더</text>
+      </svg>
+      <div class="chart-source">출처: Preqin, BDC Collateral, J.P. Morgan</div>
+    </div>
+  </section>
+
+  <!-- ── SECTION 3: 신용 공급 위험 ── -->
+  <section class="section">
+    <div class="section-label">§ 03</div>
+    <h2 class="section-title">신용 공급 위험 — 대체 가능한 공백인가</h2>
+
+    <p class="prose">현재 프라이빗 크레딧이 받고 있는 시장 스트레스가 신용 공급 축소로 이어질 가능성을 평가하려면, 세 가지 요소를 종합적으로 살펴야 한다. <strong>① 전체 기업 대출 내 비중</strong>, <strong>② 조달 비용 변화</strong>, <strong>③ 공백 발생 시 대체 가능한 공급원의 존재</strong>다.</p>
+
+    <p class="prose">규모 측면에서 다이렉트 렌딩은 미국 비금융 기업 대출의 최대 약 10%에 해당한다. 하이일드 채권과 레버리지론이 합산 21%를 차지하는 것에 비하면 상대적으로 작은 수치다. 이 정도의 비중은 만약 신규 여신이 갑작스럽게 중단된다면 거시경제에 유의미한 충격을 줄 수는 있지만, 단독으로 신용 위기를 촉발할 규모는 아니라는 뜻이다.</p>
+
+    <p class="prose">중요한 것은 <strong>대체 가능성</strong>이다. J.P. Morgan은 프라이빗 크레딧의 역할이 공동체 은행(Community Bank)이나 CDFI처럼 특정 차주에게 고유하고 대체 불가한 관계에 기반하지 않는다고 본다. 은행들은 이미 C&I 대출 기준을 완화하면서 그 이유로 '다른 대출기관으로부터의 더 공격적인 경쟁'을 언급했다. 이는 반대로, 프라이빗 크레딧 시장이 위축되면 은행이 그 자리를 채울 준비가 되어 있다는 신호이기도 하다.</p>
+
+    <div class="highlight-box">
+      <strong>수치로 본 대체 가능성:</strong> 2025년 한 해에만 $36bn의 프라이빗 크레딧 대출이 신디케이트 론으로 리파이낸싱되었다. 이는 다이렉트 렌딩 총 신규 발행액의 약 <strong>11%</strong>에 해당하며, 두 시장 간 경계가 이미 상당히 유연하다는 것을 보여준다. 은행들은 또한 비예금금융기관(NDFI)에 대한 대출을 꾸준히 늘려왔으며, 최근 Basel III 최종안(Endgame Rule) 이후 은행의 자본 여력이 더 확대될 것으로 예상된다.
+    </div>
+
+    <!-- DONUT / BAR CHART: 기업 대출 내 비중 비교 -->
+    <div class="chart-container">
+      <div class="chart-title">미국 비금융 기업 대출 시장 구성 — 프라이빗 크레딧의 위치</div>
+      <svg viewBox="0 0 820 220" xmlns="http://www.w3.org/2000/svg">
+        <rect width="820" height="220" fill="#0e1318"/>
+
+        <!-- Horizontal bar segments — total 100%, width 700px starting at x=60 -->
+        <!-- Bank C&I: ~40%, HY+LL: 21%, Private Credit: 10%, Other: 29% -->
+        <!-- 700px total -->
+        <!-- Bank loans: 280px -->
+        <rect x="60" y="80" width="280" height="52" fill="#1e5a80"/>
+        <!-- HY + LL: 147px -->
+        <rect x="340" y="80" width="147" height="52" fill="#2a5060"/>
+        <!-- Private credit: 70px -->
+        <rect x="487" y="80" width="70" height="52" fill="#c8a45a"/>
+        <!-- Other: 203px -->
+        <rect x="557" y="80" width="203" height="52" fill="#1e2a35"/>
+
+        <!-- Labels above -->
+        <text x="200" y="70" fill="#8a9aaa" font-family="IBM Plex Mono" font-size="11" text-anchor="middle">은행 C&amp;I 대출</text>
+        <text x="413" y="70" fill="#8a9aaa" font-family="IBM Plex Mono" font-size="10" text-anchor="middle">HY+LL</text>
+        <text x="522" y="67" fill="#c8a45a" font-family="IBM Plex Mono" font-size="11" text-anchor="middle" font-weight="500">PvC</text>
+        <text x="659" y="70" fill="#4a5a6a" font-family="IBM Plex Mono" font-size="11" text-anchor="middle">기타</text>
+
+        <!-- Percent inside bars -->
+        <text x="200" y="111" fill="#e8e0d0" font-family="IBM Plex Mono" font-size="14" text-anchor="middle" font-weight="500">~40%</text>
+        <text x="413" y="111" fill="#e8e0d0" font-family="IBM Plex Mono" font-size="13" text-anchor="middle" font-weight="500">21%</text>
+        <text x="522" y="111" fill="#080b10" font-family="IBM Plex Mono" font-size="13" text-anchor="middle" font-weight="700">10%</text>
+        <text x="659" y="111" fill="#4a5a6a" font-family="IBM Plex Mono" font-size="13" text-anchor="middle" font-weight="500">~29%</text>
+
+        <!-- annotation arrow for PvC -->
+        <line x1="522" y1="135" x2="522" y2="158" stroke="#c8a45a" stroke-width="1" stroke-dasharray="3,3"/>
+        <text x="522" y="172" fill="#c8a45a" font-family="IBM Plex Mono" font-size="10" text-anchor="middle">프라이빗 크레딧 ≈ $1.3~1.4tr</text>
+        <text x="522" y="185" fill="#8a6f3a" font-family="IBM Plex Mono" font-size="10" text-anchor="middle">미국 비금융 기업채 $13.5tr 중</text>
+
+        <!-- x-axis -->
+        <line x1="60" y1="132" x2="760" y2="132" stroke="#1e2a35" stroke-width="1"/>
+        <text x="60" y="147" fill="#4a5a6a" font-family="IBM Plex Mono" font-size="10">0%</text>
+        <text x="760" y="147" fill="#4a5a6a" font-family="IBM Plex Mono" font-size="10" text-anchor="end">100%</text>
+      </svg>
+      <div class="chart-source">출처: Federal Reserve, J.P. Morgan</div>
+    </div>
+
+    <p class="prose">스프레드 확대 문제도 짚어볼 필요가 있다. 일부 스프레드 상승은 다이렉트 렌딩 자산의 약 <strong>21%가 AI 충격에 노출된 소프트웨어 섹터</strong>에 집중되어 있다는 사실과 무관하지 않다. AI 발전이 소프트웨어 개발 비용을 낮출 경우, 해당 기업의 경쟁력에는 부정적이지만 이는 경제 전반에는 오히려 긍정적인 신호다. J.P. Morgan은 이를 '시장 기능이 제대로 작동하는 것'으로 해석하며, 구조적 붕괴의 신호로 보지 않는다.</p>
+  </section>
+
+  <!-- ── SECTION 4: 금융안정 위험 ── -->
+  <section class="section">
+    <div class="section-label">§ 04</div>
+    <h2 class="section-title">금융안정 위험 — 은행과 보험사 익스포저 점검</h2>
+
+    <p class="prose">프라이빗 크레딧의 스트레스가 금융 시스템 전반으로 전이되는 경로로는 크게 두 가지를 생각할 수 있다. 첫째는 프라이빗 크레딧 펀드에 자금을 공급한 <strong>은행의 익스포저</strong>이며, 둘째는 투자 포트폴리오의 상당 부분을 프라이빗 크레딧에 배분한 <strong>생명보험사의 건전성</strong>이다.</p>
+
+    <p class="prose"><em>은행 익스포저</em>: Berrospide et al.(2025)의 분석에 따르면 대형 은행의 NDFI(비예금금융기관) 대출 중 프라이빗 크레딧이 차지하는 비중은 <strong>약 4.4% ($96bn)</strong>이며 BDC 대상만으로는 2.6%에 불과하다. 스트레스 시나리오—즉 이 모든 약정이 전액 인출되는 상황—를 가정하더라도, 은행 CET1 비율 하락 폭은 고작 <strong>2bp</strong>에 그친다. 최근 블룸버그가 집계한 대형 은행들의 자발적 공시 데이터를 종합하면 총 익스포저는 $180bn 수준으로 다소 높아지지만, 여전히 NDFI 대출 전체의 10% 수준에 불과하다.</p>
+
+    <p class="prose">구조적으로도 은행의 프라이빗 크레딧 대출은 대부분 <strong>1순위 담보부 선순위 대출(First-lien, Senior Secured)</strong> 형태여서, 채무불이행 시 손실 규모 자체가 제한된다. BDC의 부채/자본 비율은 2025년 4분기 기준 <strong>0.93배</strong>로 과도한 레버리지 징후도 없다.</p>
+
+    <!-- CHART: 은행 익스포저 시각화 -->
+    <div class="chart-container">
+      <div class="chart-title">대형 은행의 프라이빗 크레딧 익스포저 구조 — 스트레스 시나리오 영향</div>
+      <svg viewBox="0 0 820 260" xmlns="http://www.w3.org/2000/svg">
+        <rect width="820" height="260" fill="#0e1318"/>
+
+        <!-- Three blocks: Total NDFI, Priv Credit commitment, Draw stress impact -->
+        <!-- Block 1 -->
+        <rect x="50" y="60" width="160" height="100" fill="#1e2a35" stroke="#2a3d4f" stroke-width="1"/>
+        <text x="130" y="48" fill="#4a5a6a" font-family="IBM Plex Mono" font-size="10" text-anchor="middle" text-transform="uppercase">NDFI 총 여신</text>
+        <text x="130" y="105" fill="#8a9aaa" font-family="IBM Plex Mono" font-size="20" text-anchor="middle" font-weight="500">~$2.2tr</text>
+        <text x="130" y="125" fill="#4a5a6a" font-family="IBM Plex Mono" font-size="10" text-anchor="middle">대형 은행 기준</text>
+
+        <!-- Arrow -->
+        <line x1="210" y1="110" x2="255" y2="110" stroke="#2a3d4f" stroke-width="1.5" marker-end="url(#arr)"/>
+
+        <!-- Block 2: $96bn = 4.4% -->
+        <rect x="255" y="70" width="120" height="80" fill="#1e3050" stroke="#2a4a70" stroke-width="1"/>
+        <text x="315" y="58" fill="#6a8aaa" font-family="IBM Plex Mono" font-size="10" text-anchor="middle">프라이빗 크레딧</text>
+        <text x="315" y="112" fill="#3a9fa8" font-family="IBM Plex Mono" font-size="18" text-anchor="middle" font-weight="500">$96bn</text>
+        <text x="315" y="128" fill="#4a5a6a" font-family="IBM Plex Mono" font-size="10" text-anchor="middle">NDFI 중 4.4%</text>
+
+        <!-- Arrow -->
+        <line x1="375" y1="110" x2="420" y2="110" stroke="#2a3d4f" stroke-width="1.5" marker-end="url(#arr)"/>
+
+        <!-- Block 3: worst case -->
+        <rect x="420" y="80" width="110" height="60" fill="#1a1a10" stroke="#3a3010" stroke-width="1"/>
+        <text x="475" y="68" fill="#8a8040" font-family="IBM Plex Mono" font-size="10" text-anchor="middle">전액 인출 시</text>
+        <text x="475" y="108" fill="#c8a45a" font-family="IBM Plex Mono" font-size="18" text-anchor="middle" font-weight="500">+$36bn</text>
+        <text x="475" y="124" fill="#4a5a6a" font-family="IBM Plex Mono" font-size="10" text-anchor="middle">잔액 증가</text>
+
+        <!-- Arrow -->
+        <line x1="530" y1="110" x2="575" y2="110" stroke="#2a3d4f" stroke-width="1.5" marker-end="url(#arr)"/>
+
+        <!-- CET1 impact -->
+        <rect x="575" y="80" width="120" height="60" fill="#0f1f10" stroke="#2a4a20" stroke-width="1"/>
+        <text x="635" y="68" fill="#4a8a60" font-family="IBM Plex Mono" font-size="10" text-anchor="middle">CET1 영향</text>
+        <text x="635" y="108" fill="#6fd494" font-family="IBM Plex Mono" font-size="22" text-anchor="middle" font-weight="500">−2bp</text>
+        <text x="635" y="124" fill="#4a5a6a" font-family="IBM Plex Mono" font-size="10" text-anchor="middle">등급 하향 전 기준</text>
+
+        <!-- Commentary below -->
+        <text x="410" y="178" fill="#4a5a6a" font-family="IBM Plex Mono" font-size="10.5" text-anchor="middle">BDC 부채/자본: 0.93x (4Q25) — 과도한 레버리지 없음</text>
+        <text x="410" y="196" fill="#4a5a6a" font-family="IBM Plex Mono" font-size="10.5" text-anchor="middle">대부분 1순위 담보부 선순위 → 손실률 구조적으로 낮음</text>
+        <text x="410" y="214" fill="#4a5a6a" font-family="IBM Plex Mono" font-size="10.5" text-anchor="middle">Bloomberg 집계 최대 $180bn → NDFI 여신의 ~10%</text>
+
+        <defs>
+          <marker id="arr" markerWidth="6" markerHeight="6" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#2a3d4f"/>
+          </marker>
+        </defs>
+      </svg>
+      <div class="chart-source">출처: Berrospide et al.(2025), Bloomberg, J.P. Morgan</div>
+    </div>
+
+    <p class="prose"><em>생명보험사 익스포저</em>: 생명보험사들은 투자 포트폴리오의 약 <strong>1/5</strong>을 프라이빗 크레딧에 배분하고 있는 것으로 알려져 있다. 하지만 보험사 정의의 프라이빗 크레딧은 다이렉트 렌딩뿐 아니라 주로 투자등급의 사모채(Private Placement)를 다수 포함한다. 최근 공시를 강화한 기업들의 데이터를 보면, 프라이빗 크레딧의 <strong>87%가 투자등급(IG)</strong>이며 중간시장 다이렉트 렌딩은 프라이빗 크레딧의 12%, 전체 투자자산의 겨우 2%에 불과하다. J.P. Morgan은 대형 분산 포트폴리오와 구조적 보호장치를 감안할 때 생명보험 업계 전반의 리스크는 관리 가능한 수준이라고 판단한다.</p>
+
+    <p class="prose"><em>규제 당국의 대비 수준</em>: 연준은 2023년 금융안정 보고서에서 이미 프라이빗 크레딧 리스크를 다룬 바 있으며, 규제 기관들도 꾸준히 이 시장을 모니터링해 왔다. 이는 향후 리스크가 현실화되더라도 신속한 정책 대응이 가능하며, 광범위한 시스템 전이 가능성을 낮추는 요인으로 작용한다.</p>
+  </section>
+
+  <!-- ── SECTION 5: 환매 리스크 ── -->
+  <section class="section">
+    <div class="section-label">§ 05</div>
+    <h2 class="section-title">BDC 환매 사태 — 실제 위험인가 구조적 제약인가</h2>
+
+    <p class="prose">최근 시장에서 가장 많은 헤드라인을 생산한 것은 <strong>프라이빗 BDC의 환매 요청 급증</strong>이다. 유동성이 거의 없는 프라이빗 크레딧 자산을 보유하면서도 소매 투자자에게 월 단위 환매를 제공하는 구조이기에, 투자자들이 대규모로 환매를 요청할 경우 자산 강제 매각(Fire Sale)의 위험이 있다는 우려다.</p>
+
+    <p class="prose">그러나 J.P. Morgan은 이 우려가 과장되어 있다고 본다. 환매가 가능한 프라이빗 BDC 지분(equity)은 2025년 말 기준 <strong>$160bn</strong>으로, 전체 다이렉트 렌딩 자산의 10%에도 못 미친다. 나머지 90%는 애초에 환매 옵션 자체가 없는 드로우다운 펀드 구조다. 더불어 분기당 NAV의 5% 환매 한도라는 구조적 제약이 급격한 자산 매각을 방지하는 완충 역할을 한다.</p>
+
+    <div class="highlight-box">
+      <strong>만기 불일치(Maturity Transformation) 위험 평가:</strong> 은행이 단기 예금으로 장기 대출을 조달하는 것과 달리, 프라이빗 크레딧 펀드는 만기 불일치 자체가 구조적으로 제한된다. 드로우다운 펀드는 장기 락업, BDC는 환매 한도 5%로 자금 유출 속도가 통제된다. 이는 전통적인 뱅크런 시나리오가 프라이빗 크레딧에서는 재현되기 어려운 이유다.
+    </div>
+
+    <!-- SVG: 리파이낸싱 흐름 -->
+    <div class="chart-container">
+      <div class="chart-title">프라이빗 크레딧 ↔ 신디케이트 론 간 리파이낸싱 규모 (2025년)</div>
+      <svg viewBox="0 0 820 200" xmlns="http://www.w3.org/2000/svg">
+        <rect width="820" height="200" fill="#0e1318"/>
+
+        <!-- Left: Private credit issuance $326bn -->
+        <rect x="50" y="50" width="200" height="100" fill="#1e2a35" stroke="#2a3d4f" stroke-width="1"/>
+        <text x="150" y="88" fill="#8a9aaa" font-family="IBM Plex Mono" font-size="11" text-anchor="middle">다이렉트 렌딩</text>
+        <text x="150" y="108" fill="#3a9fa8" font-family="IBM Plex Mono" font-size="18" text-anchor="middle" font-weight="500">총 신규 발행</text>
+        <text x="150" y="130" fill="#8a9aaa" font-family="IBM Plex Mono" font-size="12" text-anchor="middle">~$327bn (2025)</text>
+
+        <!-- arrow: bidirectional -->
+        <line x1="250" y1="100" x2="390" y2="100" stroke="#c8a45a" stroke-width="1.5" stroke-dasharray="5,3"/>
+        <!-- arrowhead right -->
+        <polygon points="390,95 400,100 390,105" fill="#c8a45a"/>
+        <!-- arrowhead left -->
+        <polygon points="250,95 240,100 250,105" fill="#c8a45a"/>
+        <text x="320" y="88" fill="#c8a45a" font-family="IBM Plex Mono" font-size="10" text-anchor="middle">리파이낸싱</text>
+        <text x="320" y="118" fill="#8a6f3a" font-family="IBM Plex Mono" font-size="24" text-anchor="middle" font-weight="700">$36bn</text>
+
+        <!-- Right: BSL -->
+        <rect x="400" y="50" width="200" height="100" fill="#1a1a10" stroke="#3a3010" stroke-width="1"/>
+        <text x="500" y="88" fill="#8a9aaa" font-family="IBM Plex Mono" font-size="11" text-anchor="middle">신디케이트 론</text>
+        <text x="500" y="108" fill="#c8a45a" font-family="IBM Plex Mono" font-size="18" text-anchor="middle" font-weight="500">(BSL 시장)</text>
+        <text x="500" y="130" fill="#8a9aaa" font-family="IBM Plex Mono" font-size="12" text-anchor="middle">평균 딜 규모 $950mm</text>
+
+        <!-- Side note -->
+        <text x="640" y="80" fill="#4a5a6a" font-family="IBM Plex Mono" font-size="11">$36bn =</text>
+        <text x="640" y="98" fill="#c8a45a" font-family="IBM Plex Mono" font-size="14" font-weight="500">11%</text>
+        <text x="640" y="114" fill="#4a5a6a" font-family="IBM Plex Mono" font-size="10">다이렉트 렌딩</text>
+        <text x="640" y="128" fill="#4a5a6a" font-family="IBM Plex Mono" font-size="10">신규 발행액 대비</text>
+      </svg>
+      <div class="chart-source">출처: J.P. Morgan</div>
+    </div>
+  </section>
+
+  <!-- ── SECTION 6: 위험 매트릭스 ── -->
+  <section class="section">
+    <div class="section-label">§ 06</div>
+    <h2 class="section-title">리스크 채널 종합 평가 — 2×2 매트릭스</h2>
+
+    <p class="prose">J.P. Morgan이 식별한 두 개의 주요 전이 채널, 즉 <strong>신용 공급 위험</strong>과 <strong>금융안정 위험</strong>을 세부 항목별로 중요도와 심각도를 기준으로 정리하면 아래와 같다.</p>
+
+    <div class="risk-grid">
+      <div class="risk-card low">
+        <div class="risk-title">🟢 LOW — 은행 직접 손실</div>
+        <div class="risk-body">대형 은행의 프라이빗 크레딧 익스포저는 $96~180bn으로 NDFI 여신의 4~10%. 전액 스트레스 시나리오에서도 CET1 −2bp. 1순위 담보 구조가 손실을 제한. <strong>은행 건전성 위협 없음.</strong></div>
+      </div>
+      <div class="risk-card low">
+        <div class="risk-title">🟢 LOW — 만기 불일치 위험</div>
+        <div class="risk-body">드로우다운 펀드는 장기 락업, BDC는 분기 5% 환매 상한. 전통적 뱅크런 구조 아님. 환매 가능 BDC 지분은 전체 직접 대출 자산의 <10%. <strong>Fire Sale 가능성 제한적.</strong></div>
+      </div>
+      <div class="risk-card medium">
+        <div class="risk-title">🟡 MEDIUM — 스프레드 확대 / 가격 재조정</div>
+        <div class="risk-body">AI 노출 소프트웨어 섹터 집중(21%)으로 스프레드 확대. 다만 이는 시장이 새로운 신용 위험을 반영하는 정상적 가격 발견 과정. <strong>시스템 오작동이 아닌 자연스러운 리프라이싱.</strong></div>
+      </div>
+      <div class="risk-card medium">
+        <div class="risk-title">🟡 MEDIUM — 생명보험사 익스포저</div>
+        <div class="risk-body">포트폴리오 약 1/5을 프라이빗 크레딧에 배분. 그러나 실제 고위험 다이렉트 렌딩 비중은 전체 투자자산의 2% 불과. 87%가 IG 등급. <strong>업계 전반 리스크는 관리 가능 수준.</strong></div>
+      </div>
+      <div class="risk-card low">
+        <div class="risk-title">🟢 LOW — 신용 공급 공백</div>
+        <div class="risk-body">은행이 C&I 및 NDFI 대출 지속 확대 중. Basel III Endgame으로 여유 자본 추가 확보 예정. $36bn 신디케이트론 리파이낸싱이 이미 선례. <strong>대체 공급원 충분히 존재.</strong></div>
+      </div>
+      <div class="risk-card medium">
+        <div class="risk-title">🟡 MEDIUM — 투자자 심리 충격</div>
+        <div class="risk-body">BDC 환매 급증 헤드라인이 소매 투자자 신뢰를 훼손할 수 있음. 단 전체 직접 대출 시장의 구조적 손상 없이 BDC 프리미엄/NAV 할인 심화 가능. <strong>시장 가격 불안 vs. 기초체력 훼손 구분 필요.</strong></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SECTION 7: 전략적 시사점 ── -->
+  <section class="section">
+    <div class="section-label">§ 07</div>
+    <h2 class="section-title">전략적 시사점 — 한국 채권 투자자 관점</h2>
+
+    <div class="impl-list">
+      <div class="impl-item">
+        <div class="impl-num">01</div>
+        <div class="impl-body">
+          <strong>글로벌 크레딧 스프레드에 대한 과도한 경계 불필요.</strong> 프라이빗 크레딧 발 스트레스가 IG 및 HY 공개 시장의 시스템적 스프레드 급등으로 이어질 가능성은 낮다. J.P. Morgan의 분석대로 은행의 자본 여력이 충분하고 리파이낸싱 경로도 열려 있다면, 현재의 스프레드 확대는 시스템 위기 프리미엄이 아니라 개별 섹터(특히 AI 노출 소프트웨어) 리프라이싱으로 해석해야 한다.
+        </div>
+      </div>
+      <div class="impl-item">
+        <div class="impl-num">02</div>
+        <div class="impl-body">
+          <strong>미국 은행채·금융채 포지션 재검토 기준선 확인.</strong> 대형 은행들의 CET1 충격이 최대 2bp 수준에 그친다는 점은, 프라이빗 크레딧 헤드라인 리스크를 근거로 미국 은행 subordinated debt에 대한 익스포저를 급격히 줄일 필요가 없음을 시사한다. 오히려 과도한 리스크 오프 포지션이 형성될 경우 역방향 가치 기회가 될 수 있다.
+        </div>
+      </div>
+      <div class="impl-item">
+        <div class="impl-num">03</div>
+        <div class="impl-body">
+          <strong>한국 내 대체투자 자산 익스포저 점검 시 참고 기준.</strong> 국내 기관투자자 중 해외 BDC 또는 프라이빗 크레딧 펀드에 출자한 기관이 있을 경우, 개별 펀드의 소프트웨어 섹터 비중 및 환매 조건 확인이 필요하다. 특히 AI 전환에 취약한 SaaS·소프트웨어 기업 대출 비중이 높은 펀드는 추가 스프레드 확대에 노출될 수 있다.
+        </div>
+      </div>
+      <div class="impl-item">
+        <div class="impl-num">04</div>
+        <div class="impl-body">
+          <strong>연준 정책 경로에 대한 함의 — 독립적 위험 요인 아님.</strong> 프라이빗 크레딧 리스크가 연준에게 추가적인 금융안정 완충(보험적 인하) 동기를 제공할 가능성은 낮다. J.P. Morgan의 평가대로 시스템 위험이 제한적이라면, 연준은 인플레이션 및 노동시장 지표를 중심으로 한 기존 프레임워크를 유지할 것이다. 국내 금리 전략에 있어 이 리스크를 연준 피벗의 트리거로 과대평가하지 않을 필요가 있다.
+        </div>
+      </div>
+      <div class="impl-item">
+        <div class="impl-num">05</div>
+        <div class="impl-body">
+          <strong>Basel III Endgame이 가져올 구조 변화 모니터링.</strong> 최종 규정 이후 은행의 자본 여력 증가는 프라이빗 크레딧 수요를 상당 부분 흡수할 공급원이 된다. 중기적으로는 은행의 C&I 대출 및 레버리지론 발행 증가가 예상되며, 이는 신디케이트론 시장의 스프레드 압축 요인으로 작용할 수 있다.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SECTION 8: 실무 포인트 ── -->
+  <section class="section">
+    <div class="section-label">§ 08</div>
+    <h2 class="section-title">실무 포인트 — 모니터링 지표</h2>
+
+    <p class="prose">아래 지표들은 프라이빗 크레딧 스트레스의 확산 여부를 조기에 포착하는 데 유용하다.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>모니터링 지표</th>
+            <th>현재 수준 / 기준</th>
+            <th>임계 신호</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>BDC 공개 시장 NAV 할인율</td>
+            <td class="td-num">다양 (펀드별 상이)</td>
+            <td>−20% 이하 지속 확대</td>
+          </tr>
+          <tr>
+            <td>BDC 환매 요청 / 허용 비율</td>
+            <td class="td-num">분기 NAV 5% 상한</td>
+            <td>상한 반복 도달 + 초과 거부</td>
+          </tr>
+          <tr>
+            <td>은행 NDFI 대출 증가율</td>
+            <td class="td-num">꾸준한 증가 추세</td>
+            <td>급격한 성장 둔화 or 감소 반전</td>
+          </tr>
+          <tr>
+            <td>레버리지론 → 다이렉트렌딩 리파이낸싱</td>
+            <td class="td-num">$36bn (2025)</td>
+            <td>흐름 역전 (PvC→BSL 급감)</td>
+          </tr>
+          <tr>
+            <td>소프트웨어 섹터 HY 스프레드</td>
+            <td class="td-num">AI 노출 기업 중심 확대</td>
+            <td>전 섹터 동반 확산</td>
+          </tr>
+          <tr>
+            <td>연준 금융안정 보고서 톤</td>
+            <td class="td-num">모니터링 중 (위험 인식)</td>
+            <td>"elevated concern" 격상</td>
+          </tr>
+          <tr>
+            <td>생보사 프라이빗 크레딧 손상 공시</td>
+            <td class="td-num">87% IG, 다이렉트렌딩 2%</td>
+            <td>IG 비중 하락 + 손상 확대</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer class="report-footer">
+    <div class="footer-left">
+      <div class="footer-brand">KakaoBank 채권리서치팀</div>
+      <div>본 자료는 J.P. Morgan North America Economic Research</div>
+      <div>"US: Private credit isn't a public problem" (2026.05.01)를</div>
+      <div>바탕으로 한국어 분석 리포트로 재구성한 것입니다.</div>
+    </div>
+    <div class="footer-right">
+      <div>발행일: 2026.05.01</div>
+      <div>분류: 북미 크레딧 / 거시 분석</div>
+      <div>원문 저자: Reinhart · Feroli · Jantzen · Caprihan</div>
+      <div style="margin-top:8px;color:#3a4a5a">본 자료는 투자 권유가 아닙니다</div>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>
