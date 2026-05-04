@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Warsh 체제의 연준: 통화정책 지형 변화 분석</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&family=DM+Serif+Display:ital@0;1&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080b10;
+    --bg2: #0d1117;
+    --bg3: #111820;
+    --bg4: #161d27;
+    --border: #1e2a38;
+    --border2: #253447;
+    --gold: #c8a45a;
+    --gold2: #e0bc7a;
+    --gold3: #a68840;
+    --gold-faint: rgba(200,164,90,0.08);
+    --gold-faint2: rgba(200,164,90,0.14);
+    --text: #d4dbe8;
+    --text2: #8fa3bc;
+    --text3: #56708a;
+    --accent-red: #e05c5c;
+    --accent-green: #4caf82;
+    --accent-blue: #5c9ade;
+    --accent-amber: #e0a040;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'IBM Plex Sans KR', sans-serif;
+    --serif: 'DM Serif Display', serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.75;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 28px 80px;
+  }
+
+  /* ── HEADER ── */
+  .report-header {
+    border-bottom: 1px solid var(--border2);
+    padding: 48px 0 36px;
+    position: relative;
+  }
+
+  .report-header::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold3), var(--gold), var(--gold2), transparent);
+  }
+
+  .header-meta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 20px;
+  }
+
+  .org-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    color: var(--gold);
+    background: var(--gold-faint2);
+    border: 1px solid var(--gold3);
+    padding: 4px 10px;
+    text-transform: uppercase;
+  }
+
+  .date-tag {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--text3);
+    letter-spacing: 0.06em;
+  }
+
+  .source-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.06em;
+    margin-left: auto;
+  }
+
+  .report-title {
+    font-family: var(--serif);
+    font-size: 38px;
+    line-height: 1.18;
+    color: #eef2f8;
+    margin-bottom: 10px;
+    letter-spacing: -0.01em;
+  }
+
+  .report-subtitle {
+    font-size: 15px;
+    color: var(--text2);
+    font-weight: 300;
+    line-height: 1.6;
+    max-width: 700px;
+  }
+
+  /* ── SECTION LABELS ── */
+  .section-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ── KPI SUMMARY CARDS ── */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 28px 0;
+  }
+
+  .kpi-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 18px 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--gold3);
+  }
+
+  .kpi-card.red::before { background: var(--accent-red); }
+  .kpi-card.green::before { background: var(--accent-green); }
+  .kpi-card.blue::before { background: var(--accent-blue); }
+  .kpi-card.amber::before { background: var(--accent-amber); }
+
+  .kpi-label {
+    font-family: var(--mono);
+    font-size: 9.5px;
+    letter-spacing: 0.12em;
+    color: var(--text3);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .kpi-value {
+    font-family: var(--mono);
+    font-size: 26px;
+    font-weight: 600;
+    color: #eef2f8;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .kpi-card.red .kpi-value { color: var(--accent-red); }
+  .kpi-card.green .kpi-value { color: var(--accent-green); }
+  .kpi-card.blue .kpi-value { color: var(--accent-blue); }
+  .kpi-card.amber .kpi-value { color: var(--accent-amber); }
+
+  .kpi-desc {
+    font-size: 11.5px;
+    color: var(--text2);
+    line-height: 1.5;
+  }
+
+  /* ── EXECUTIVE CALLOUT ── */
+  .exec-callout {
+    background: var(--gold-faint);
+    border-left: 3px solid var(--gold);
+    padding: 22px 24px;
+    margin: 28px 0;
+  }
+
+  .exec-callout p {
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--text);
+  }
+
+  .exec-callout strong {
+    color: var(--gold2);
+    font-weight: 600;
+  }
+
+  /* ── CONTENT SECTIONS ── */
+  .section {
+    margin: 48px 0;
+  }
+
+  .section-title {
+    font-family: var(--serif);
+    font-size: 24px;
+    color: #e0e8f4;
+    margin-bottom: 18px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+  }
+
+  .section-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--gold);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    flex-shrink: 0;
+  }
+
+  .prose {
+    color: var(--text);
+    line-height: 1.82;
+    font-size: 14.5px;
+    font-weight: 300;
+  }
+
+  .prose p {
+    margin-bottom: 18px;
+  }
+
+  .prose strong {
+    color: #d4dbe8;
+    font-weight: 600;
+  }
+
+  .prose em {
+    color: var(--gold2);
+    font-style: normal;
+    font-weight: 500;
+  }
+
+  /* ── INLINE QUOTE ── */
+  .quote-block {
+    background: var(--bg3);
+    border-left: 2px solid var(--border2);
+    padding: 16px 20px;
+    margin: 20px 0;
+    font-size: 13.5px;
+    color: var(--text2);
+    line-height: 1.75;
+    font-style: italic;
+  }
+
+  .quote-attr {
+    font-style: normal;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+    margin-top: 8px;
+    letter-spacing: 0.08em;
+  }
+
+  /* ── DATA TABLE ── */
+  .table-wrap {
+    overflow-x: auto;
+    margin: 24px 0;
+    border: 1px solid var(--border);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--mono);
+    font-size: 12px;
+    min-width: 500px;
+  }
+
+  thead tr {
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border2);
+  }
+
+  th {
+    padding: 10px 16px;
+    text-align: left;
+    color: var(--gold);
+    font-size: 9.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  td {
+    padding: 10px 16px;
+    color: var(--text);
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+
+  tr:last-child td { border-bottom: none; }
+
+  tr:hover td { background: var(--gold-faint); }
+
+  .td-label { color: var(--text2); }
+  .td-pos { color: var(--accent-green); font-weight: 600; }
+  .td-neg { color: var(--accent-red); font-weight: 600; }
+  .td-neu { color: var(--accent-amber); font-weight: 600; }
+
+  /* ── SCENARIO MATRIX ── */
+  .scenario-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 24px 0;
+  }
+
+  .scenario-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 18px 20px;
+  }
+
+  .scenario-card.highlight {
+    border-color: var(--gold3);
+    background: var(--gold-faint);
+  }
+
+  .scenario-tag {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    display: inline-block;
+    padding: 2px 8px;
+  }
+
+  .scenario-card .scenario-tag { background: var(--bg3); color: var(--text3); }
+  .scenario-card.highlight .scenario-tag { background: var(--gold-faint2); color: var(--gold); }
+
+  .scenario-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: #d4dbe8;
+    margin-bottom: 8px;
+  }
+
+  .scenario-desc {
+    font-size: 12.5px;
+    color: var(--text2);
+    line-height: 1.65;
+  }
+
+  /* ── SVG CHARTS ── */
+  .chart-container {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 24px;
+    margin: 24px 0;
+    overflow: hidden;
+  }
+
+  .chart-title {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .chart-sub {
+    font-size: 11.5px;
+    color: var(--text3);
+    margin-bottom: 20px;
+  }
+
+  svg {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* ── POLICY SIGNAL DASHBOARD ── */
+  .signal-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin: 24px 0;
+  }
+
+  .signal-item {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .signal-name {
+    font-family: var(--mono);
+    font-size: 9.5px;
+    letter-spacing: 0.1em;
+    color: var(--text3);
+    text-transform: uppercase;
+  }
+
+  .signal-val {
+    font-family: var(--mono);
+    font-size: 18px;
+    font-weight: 600;
+    color: #eef2f8;
+  }
+
+  .signal-dir {
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .dir-hawk { color: var(--accent-red); }
+  .dir-dove { color: var(--accent-green); }
+  .dir-neutral { color: var(--accent-amber); }
+
+  /* ── IMPLICATION BOX ── */
+  .implication-box {
+    background: var(--bg3);
+    border: 1px solid var(--border2);
+    padding: 22px 24px;
+    margin: 20px 0;
+  }
+
+  .implication-box h4 {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .impl-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .impl-list li {
+    font-size: 13.5px;
+    color: var(--text);
+    line-height: 1.65;
+    padding-left: 18px;
+    position: relative;
+  }
+
+  .impl-list li::before {
+    content: '›';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    font-weight: 700;
+    font-size: 15px;
+    line-height: 1.3;
+  }
+
+  /* ── FOOTER ── */
+  .report-footer {
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+  }
+
+  .footer-org {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.08em;
+    line-height: 1.8;
+  }
+
+  .footer-disc {
+    font-size: 10.5px;
+    color: var(--text3);
+    max-width: 500px;
+    line-height: 1.65;
+    text-align: right;
+  }
+
+  /* ── PROGRESS BAR ── */
+  .progress-bar-wrap {
+    margin: 6px 0 2px;
+    height: 6px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    position: absolute;
+    left: 0; top: 0;
+  }
+
+  /* ── WARSH PROFILE CARD ── */
+  .profile-card {
+    background: var(--bg2);
+    border: 1px solid var(--border2);
+    padding: 22px 24px;
+    margin: 24px 0;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+
+  .profile-icon {
+    width: 56px;
+    height: 56px;
+    background: var(--gold-faint2);
+    border: 1px solid var(--gold3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .profile-name {
+    font-family: var(--serif);
+    font-size: 20px;
+    color: #eef2f8;
+    margin-bottom: 4px;
+  }
+
+  .profile-meta {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text3);
+    letter-spacing: 0.08em;
+    margin-bottom: 12px;
+  }
+
+  .profile-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .ptag {
+    font-family: var(--mono);
+    font-size: 9.5px;
+    letter-spacing: 0.1em;
+    padding: 3px 9px;
+    border: 1px solid;
+    text-transform: uppercase;
+  }
+
+  .ptag-hawk { color: var(--accent-red); border-color: var(--accent-red); background: rgba(224,92,92,0.08); }
+  .ptag-dove { color: var(--accent-green); border-color: var(--accent-green); background: rgba(76,175,130,0.08); }
+  .ptag-qst  { color: var(--accent-amber); border-color: var(--accent-amber); background: rgba(224,160,64,0.08); }
+
+  /* ── DIVIDER ── */
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 36px 0;
+  }
+
+  @media (max-width: 620px) {
+    .kpi-grid { grid-template-columns: 1fr; }
+    .signal-grid { grid-template-columns: 1fr 1fr; }
+    .scenario-grid { grid-template-columns: 1fr; }
+    .profile-card { grid-template-columns: 1fr; }
+    .report-footer { flex-direction: column; }
+    .footer-disc { text-align: left; }
+    .report-title { font-size: 28px; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ── HEADER ── -->
+  <header class="report-header">
+    <div class="header-meta">
+      <span class="org-tag">카카오뱅크 채권리서치</span>
+      <span class="date-tag">2026.05.01</span>
+      <span class="source-tag">Source: J.P. Morgan North America Economic Research</span>
+    </div>
+    <h1 class="report-title">Warsh 체제의 연준<br>통화정책 지형 변화 분석</h1>
+    <p class="report-subtitle">Kevin Warsh의 연준 의장 취임이 임박한 가운데, 기준금리·대차대조표·커뮤니케이션 세 축에 걸친 정책 변화 가능성과 FOMC 내부 역학을 심층 분석한다.</p>
+  </header>
+
+  <!-- ── KPI CARDS ── -->
+  <div class="kpi-grid">
+    <div class="kpi-card red">
+      <div class="kpi-label">4월 FOMC 이탈표</div>
+      <div class="kpi-value">4명 (8:4)</div>
+      <div class="kpi-desc">Miran 1명은 인하 지지, Hammack·Kashkari·Logan 3명은 추가 인하 시사 문구에 반대. 1992년 이후 최대 이탈.</div>
+    </div>
+    <div class="kpi-card amber">
+      <div class="kpi-label">Dallas Fed 트림평균 PCE</div>
+      <div class="kpi-value">2.33%</div>
+      <div class="kpi-desc">Core PCE 대비 64bp 낮아 Warsh이 선호하는 인플레이션 지표. 다만 과거 역전 사례가 존재해 논거 약화 가능성 내포.</div>
+    </div>
+    <div class="kpi-card blue">
+      <div class="kpi-label">Warsh 취임 예상 시점</div>
+      <div class="kpi-value">5월 15일</div>
+      <div class="kpi-desc">상원 은행위원회 표결 통과 후 5월 15일 취임 예정. 6월 FOMC가 첫 의장 주재 회의이자 첫 기자회견.</div>
+    </div>
+  </div>
+
+  <!-- ── EXECUTIVE SUMMARY ── -->
+  <section class="section">
+    <div class="section-label">핵심 요약</div>
+
+    <div class="exec-callout">
+      <p>Kevin Warsh의 연준 의장 취임이 6월 FOMC를 앞두고 사실상 확정된 상황에서, 시장의 핵심 질문은 그가 <strong>기준금리를 얼마나 빠르게 낮출 수 있느냐</strong>다. J.P. Morgan의 결론은 명확하다. <strong>단기적으로는 불가능에 가깝다.</strong> 나머지 11명의 FOMC 위원들이 제동 역할을 할 것이며, 최근 3회에 걸친 매파적 반대표는 위원회의 집단적 분위기를 드러낸다. Warsh가 상대적으로 쉽게 움직일 수 있는 영역은 대차대조표 축소 방향성과 커뮤니케이션 개혁이지만, 이 역시 실행 속도와 기술적 복잡성이 발목을 잡는다.</p>
+    </div>
+
+    <!-- Warsh Profile -->
+    <div class="profile-card">
+      <div class="profile-icon">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <circle cx="14" cy="10" r="5" stroke="#c8a45a" stroke-width="1.5"/>
+          <path d="M4 24c0-5.523 4.477-10 10-10s10 4.477 10 10" stroke="#c8a45a" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div>
+        <div class="profile-name">Kevin Warsh</div>
+        <div class="profile-meta">연준 차기 의장 내정 · 전 연준 이사 (2006–2011) · GFC 이후 강경 매파</div>
+        <div class="profile-tags">
+          <span class="ptag ptag-hawk">GFC 이후: 매파</span>
+          <span class="ptag ptag-dove">최근: 비둘기 전환</span>
+          <span class="ptag ptag-qst">실체 불확실</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="prose">
+      <p>Warsh의 가장 큰 불확실성은 그가 '어떤 버전의 Warsh인가'라는 물음에서 시작된다. GFC(글로벌 금융위기) 이후 연준 이사 시절 그는 인플레이션에 대해 강경하게 반응한 매파의 상징이었다. 그러나 최근 의회 청문회에서 보인 발언들은 비둘기적 색채를 띠며, 이는 트럼프 행정부의 금리 인하 요구와 묘하게 일치한다. J.P. Morgan은 이것이 진정한 노선 전환인지, 아니면 정치적 신호에 대한 전략적 조율인지 판단하기 어렵다고 본다. 결국 시장은 그가 실제로 의장석에 앉아 첫 기자회견을 진행할 때까지 기다려야 한다.</p>
+      <p>설령 Warsh가 비둘기적 Warsh로 출발하더라도, 그 앞에는 근본적인 구조적 제약이 놓여 있다. 연준은 의장 1인의 기관이 아니다. 12명으로 구성된 FOMC 내에서 의장은 설득과 합의를 통해 움직여야 하며, 최근 연속된 매파적 이탈표들은 위원회 전반의 경계감이 여전히 높다는 것을 보여준다.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ── SECTION 1: FUNDS RATE ── -->
+  <section class="section">
+    <h2 class="section-title"><span class="section-num">01</span> 기준금리: 인하는 쉽지 않다</h2>
+
+    <div class="prose">
+      <p>시장 참여자들이 새 연준 의장에게 가장 먼저 묻는 것은 언제, 얼마나 금리를 낮출 것이냐다. Warsh의 경우 이 질문이 더 복잡하다. 표면적으로는 비둘기적 신호를 내보냈지만, FOMC 구조 자체가 강력한 브레이크 역할을 한다. <strong>J.P. Morgan은 근시일 내 금리 인하는 극히 어렵다고 본다.</strong></p>
+
+      <p>핵심 이유 중 하나는 위원회 내 인플레이션 인내심이 소진됐다는 점이다. 완고하게 높은 인플레이션이 FOMC 위원들의 피로를 쌓았고, 4월 회의에서 터져 나온 4명의 이탈표(8:4 표결, 1992년 이후 최다)는 그 피로가 이미 행동으로 표출되고 있음을 보여준다. 이탈의 결은 엇갈린다. Miran은 25bp 인하를 지지했고, Hammack·Kashkari·Logan은 반대 방향에서 추가 인하 가능성을 시사하는 성명 문구 자체에 반대했다. 비둘기 쪽이든 매파 쪽이든, 위원회 내부가 그 어느 때보다 분열돼 있다는 신호다. 한편 Miran은 Warsh이 차지할 자리를 비워주고 떠나는 중이어서, 비둘기 진영이 의장 교체만으로 강화되지는 않는다.</p>
+
+      <p>Warsh이 내세우는 비둘기적 논거 중 하나는 <em>AI가 공급 측면 생산성을 높여 중립금리를 낮출 수 있다</em>는 주장이다. 그러나 이는 파월 현 의장을 포함한 FOMC 위원 다수가 동의하지 않는 견해다. 파월은 3월 기자회견에서 단기적으로 데이터센터 건설 붐이 오히려 인플레이션 압력을 높이고 중립금리를 끌어올릴 가능성이 있다고 명확히 언급했다. AI 생산성 효과가 실질적으로 공급을 확대하는지는 사후적으로(ex post)만 확인할 수 있는 경험적 질문이라는 것이 FOMC 스탭과 다수 위원의 공통된 시각이다.</p>
+
+      <p>또 다른 논거는 <em>인플레이션 목표 기준 재정의</em>다. FOMC의 공식 인플레이션 목표는 2% PCE이며, 중간 지표로는 Core PCE(음식·에너지 제외)를 주로 사용해왔다. Warsh은 Dallas Fed가 산출하는 트림평균(Trimmed-mean) 인플레이션이 더 적절한 기준이 될 수 있다고 제안했다. 현재 이 지표는 2.33%로, Core PCE보다 약 64bp 낮다. 이 기준을 적용하면 목표에 훨씬 가까워진 셈이다.</p>
+    </div>
+
+    <!-- INFLATION COMPARISON CHART -->
+    <div class="chart-container">
+      <div class="chart-title">인플레이션 지표 비교</div>
+      <div class="chart-sub">PCE 관련 지표 현황 및 2% 목표와의 거리 (2026년 5월 기준)</div>
+      <svg viewBox="0 0 820 280" xmlns="http://www.w3.org/2000/svg">
+        <!-- Grid lines -->
+        <line x1="160" y1="30" x2="780" y2="30" stroke="#1e2a38" stroke-width="1"/>
+        <line x1="160" y1="80" x2="780" y2="80" stroke="#1e2a38" stroke-width="1"/>
+        <line x1="160" y1="130" x2="780" y2="130" stroke="#1e2a38" stroke-width="1"/>
+        <line x1="160" y1="180" x2="780" y2="180" stroke="#1e2a38" stroke-width="1"/>
+        <line x1="160" y1="230" x2="780" y2="230" stroke="#1e2a38" stroke-width="1"/>
+
+        <!-- Y axis labels -->
+        <text x="148" y="34" fill="#56708a" font-size="11" font-family="IBM Plex Mono" text-anchor="end">4.0%</text>
+        <text x="148" y="84" fill="#56708a" font-size="11" font-family="IBM Plex Mono" text-anchor="end">3.0%</text>
+        <text x="148" y="134" fill="#56708a" font-size="11" font-family="IBM Plex Mono" text-anchor="end">2.0%</text>
+        <text x="148" y="184" fill="#56708a" font-size="11" font-family="IBM Plex Mono" text-anchor="end">1.0%</text>
+        <text x="148" y="234" fill="#56708a" font-size="11" font-family="IBM Plex Mono" text-anchor="end">0.0%</text>
+
+        <!-- 2% Target line -->
+        <line x1="160" y1="130" x2="780" y2="130" stroke="#c8a45a" stroke-width="1.5" stroke-dasharray="6,4"/>
+        <text x="786" y="134" fill="#c8a45a" font-size="10" font-family="IBM Plex Mono">2% Target</text>
+
+        <!-- Bars -->
+        <!-- Core PCE: ~2.97% → height=(2.97/4)*200=148.5, y=230-148.5=81.5 -->
+        <rect x="220" y="80" width="100" height="150" fill="rgba(224,92,92,0.25)" stroke="#e05c5c" stroke-width="1"/>
+        <rect x="220" y="80" width="100" height="150" fill="url(#redGrad)"/>
+        <text x="270" y="73" fill="#e05c5c" font-size="12" font-family="IBM Plex Mono" text-anchor="middle" font-weight="600">2.97%</text>
+        <text x="270" y="252" fill="#8fa3bc" font-size="11" font-family="IBM Plex Mono" text-anchor="middle">Core PCE</text>
+        <text x="270" y="265" fill="#56708a" font-size="9" font-family="IBM Plex Mono" text-anchor="middle">(음식·에너지 제외)</text>
+
+        <!-- Trimmed Mean: 2.33% → (2.33/4)*200=116.5, y=230-116.5=113.5 -->
+        <rect x="390" y="113" width="100" height="117" fill="rgba(200,164,90,0.2)" stroke="#c8a45a" stroke-width="1.5"/>
+        <text x="440" y="106" fill="#c8a45a" font-size="12" font-family="IBM Plex Mono" text-anchor="middle" font-weight="600">2.33%</text>
+        <text x="440" y="252" fill="#8fa3bc" font-size="11" font-family="IBM Plex Mono" text-anchor="middle">Trimmed Mean</text>
+        <text x="440" y="265" fill="#56708a" font-size="9" font-family="IBM Plex Mono" text-anchor="middle">(Dallas Fed)</text>
+
+        <!-- Fed Funds Rate: 3.5-3.75% mid=3.625 → (3.625/4)*200=181.25, y=230-181.25=48.75 -->
+        <rect x="560" y="49" width="100" height="181" fill="rgba(92,154,222,0.15)" stroke="#5c9ade" stroke-width="1"/>
+        <text x="610" y="42" fill="#5c9ade" font-size="12" font-family="IBM Plex Mono" text-anchor="middle" font-weight="600">3.50–3.75%</text>
+        <text x="610" y="252" fill="#8fa3bc" font-size="11" font-family="IBM Plex Mono" text-anchor="middle">연방기금금리</text>
+        <text x="610" y="265" fill="#56708a" font-size="9" font-family="IBM Plex Mono" text-anchor="middle">(현행 목표 범위)</text>
+
+        <!-- Gap annotation between Core PCE and Trimmed Mean -->
+        <line x1="320" y1="80" x2="390" y2="113" stroke="#56708a" stroke-width="1" stroke-dasharray="3,3"/>
+        <text x="355" y="88" fill="#56708a" font-size="9.5" font-family="IBM Plex Mono" text-anchor="middle">−64bp</text>
+
+        <!-- Gradient defs -->
+        <defs>
+          <linearGradient id="redGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#e05c5c" stop-opacity="0.35"/>
+            <stop offset="100%" stop-color="#e05c5c" stop-opacity="0.1"/>
+          </linearGradient>
+        </defs>
+
+        <!-- Axes -->
+        <line x1="160" y1="30" x2="160" y2="230" stroke="#253447" stroke-width="1"/>
+        <line x1="160" y1="230" x2="780" y2="230" stroke="#253447" stroke-width="1"/>
+      </svg>
+    </div>
+
+    <div class="prose">
+      <p>그러나 이 논거도 취약하다. 트림평균은 <strong>2024년 초만 해도 Core PCE를 웃돌았다</strong>. 기준을 편의에 따라 바꿀 수 있다는 비판을 피하기 어렵고, 특히 Goolsbee(시카고 연은 총재)처럼 해당 분야에서 동료심사 논문을 발표한 전문가들 앞에서는 논리를 더 정밀하게 다듬어야 한다. 의회 청문회에서 통하는 화법이 FOMC 회의실에서 통하리란 보장이 없다.</p>
+
+      <p>만약 Warsh이 FOMC를 설득하지 못한다면 자신의 위원회에 반대표를 던질까? J.P. Morgan은 그렇지 않을 것으로 본다. 이는 역사적으로도 실패한 의장직의 신호로 읽히기 때문이다. 오히려 의장이 된 후에는 지금보다 더 강하게 집단 결정을 지지하는 방향으로 움직일 가능성이 높다.</p>
+    </div>
+
+    <!-- FOMC Resistance Meter -->
+    <div class="chart-container">
+      <div class="chart-title">FOMC 완화 저항 신호 스코어카드</div>
+      <div class="chart-sub">Warsh의 비둘기 어젠다에 대한 위원회 수용 가능성 평가 (J.P. Morgan 분석 기반)</div>
+
+      <div style="display:flex; flex-direction:column; gap:14px; padding: 4px 0;">
+
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+            <span style="font-family:var(--mono);font-size:11px;color:var(--text2);">AI → 금리 인하 논거 수용</span>
+            <span style="font-family:var(--mono);font-size:11px;color:var(--accent-red);font-weight:600;">매우 낮음 10%</span>
+          </div>
+          <div class="progress-bar-wrap">
+            <div class="progress-bar-fill" style="width:10%;background:var(--accent-red);"></div>
+          </div>
+        </div>
+
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+            <span style="font-family:var(--mono);font-size:11px;color:var(--text2);">트림평균 목표 기준 전환</span>
+            <span style="font-family:var(--mono);font-size:11px;color:var(--accent-red);font-weight:600;">낮음 20%</span>
+          </div>
+          <div class="progress-bar-wrap">
+            <div class="progress-bar-fill" style="width:20%;background:var(--accent-red);"></div>
+          </div>
+        </div>
+
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+            <span style="font-family:var(--mono);font-size:11px;color:var(--text2);">대차대조표 축소 방향성 공감</span>
+            <span style="font-family:var(--mono);font-size:11px;color:var(--accent-amber);font-weight:600;">중간 65%</span>
+          </div>
+          <div class="progress-bar-wrap">
+            <div class="progress-bar-fill" style="width:65%;background:var(--accent-amber);"></div>
+          </div>
+        </div>
+
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+            <span style="font-family:var(--mono);font-size:11px;color:var(--text2);">금리 > 대차대조표 정책도구 우선</span>
+            <span style="font-family:var(--mono);font-size:11px;color:var(--accent-green);font-weight:600;">높음 80%</span>
+          </div>
+          <div class="progress-bar-wrap">
+            <div class="progress-bar-fill" style="width:80%;background:var(--accent-green);"></div>
+          </div>
+        </div>
+
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+            <span style="font-family:var(--mono);font-size:11px;color:var(--text2);">커뮤니케이션 개혁 논의 수용</span>
+            <span style="font-family:var(--mono);font-size:11px;color:var(--accent-amber);font-weight:600;">중간 55%</span>
+          </div>
+          <div class="progress-bar-wrap">
+            <div class="progress-bar-fill" style="width:55%;background:var(--accent-amber);"></div>
+          </div>
+        </div>
+
+        <div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+            <span style="font-family:var(--mono);font-size:11px;color:var(--text2);">기자회견 폐지·축소</span>
+            <span style="font-family:var(--mono);font-size:11px;color:var(--accent-red);font-weight:600;">낮음 15%</span>
+          </div>
+          <div class="progress-bar-wrap">
+            <div class="progress-bar-fill" style="width:15%;background:var(--accent-red);"></div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ── SECTION 2: BALANCE SHEET ── -->
+  <section class="section">
+    <h2 class="section-title"><span class="section-num">02</span> 대차대조표: 방향은 맞지만 속도는 느리다</h2>
+
+    <div class="prose">
+      <p>Warsh는 청문회에서 통화정책 수단으로 <strong>금리를 대차대조표보다 우선시</strong>해야 한다는 입장을 밝혔다. 이 부분은 FOMC에서 별다른 저항을 받지 않을 것으로 보인다. 대부분의 연준 위원들이 이미 같은 생각을 갖고 있기 때문이다. 다만 그 논거에는 약간의 정제가 필요하다. Warsh은 "금리는 경제 구석구석으로 파고든다(gets in the cracks)"고 표현했는데, 이는 Jeremy Stein 전 연준 이사가 금융 안정 맥락에서 사용한 어구를 맥락과 다소 다르게 인용한 것이다.</p>
+
+      <p>더 주목해야 할 부분은 <em>대차대조표 규모 자체를 줄이겠다는 의지</em>다. Warsh은 현재 연준 대차대조표가 경제에 지나치게 큰 흔적(imprimatur)을 남기고 있다고 비판해왔다. 이 의제에 대해서는 위원회 내부에서도 재검토를 환영하는 분위기가 있다고 J.P. Morgan은 평가한다.</p>
+
+      <p>그러나 이 역시 구조적 난제에 부딪힌다. 대차대조표 규모를 줄이려면 단순히 자산을 매각하거나 만기를 롤오버하지 않는 것만으로는 부족하다. <strong>은행들의 지급준비금 수요를 먼저 줄여야</strong> 준비금 부족이라는 혼란 없이 대차대조표 축소가 가능하다. 준비금 수요를 줄이기 위한 규제·제도 변화(Darrell Duffie가 정리한 포괄적 옵션 리스트 참고)는 최소 수개월의 연구·토론을 필요로 한다. J.P. Morgan은 이것이 2026년은 물론 2027년까지도 본격적 이슈가 되기 어렵다고 본다.</p>
+    </div>
+
+    <!-- Balance Sheet Timeline -->
+    <div class="chart-container">
+      <div class="chart-title">Fed 대차대조표 축소 로드맵 — 예상 단계</div>
+      <div class="chart-sub">Warsh 의제 기준 시나리오 (J.P. Morgan 분석)</div>
+
+      <svg viewBox="0 0 820 180" xmlns="http://www.w3.org/2000/svg">
+        <!-- Timeline bar -->
+        <line x1="60" y1="90" x2="760" y2="90" stroke="#253447" stroke-width="2"/>
+
+        <!-- Phase markers -->
+        <!-- Phase 1: Study -->
+        <circle cx="150" cy="90" r="8" fill="#0d1117" stroke="#56708a" stroke-width="2"/>
+        <text x="150" y="94" fill="#56708a" font-size="8" font-family="IBM Plex Mono" text-anchor="middle">1</text>
+        <text x="150" y="75" fill="#8fa3bc" font-size="10" font-family="IBM Plex Mono" text-anchor="middle">2026 H1</text>
+        <text x="150" y="115" fill="#56708a" font-size="9.5" font-family="IBM Plex Mono" text-anchor="middle">Warsh 취임</text>
+        <text x="150" y="128" fill="#56708a" font-size="9" font-family="IBM Plex Mono" text-anchor="middle">& 의제 설정</text>
+
+        <!-- Phase 2: Framework -->
+        <circle cx="340" cy="90" r="8" fill="#0d1117" stroke="#e0a040" stroke-width="2"/>
+        <text x="340" y="94" fill="#e0a040" font-size="8" font-family="IBM Plex Mono" text-anchor="middle">2</text>
+        <text x="340" y="75" fill="#8fa3bc" font-size="10" font-family="IBM Plex Mono" text-anchor="middle">2026 H2</text>
+        <text x="340" y="115" fill="#e0a040" font-size="9.5" font-family="IBM Plex Mono" text-anchor="middle">준비금 수요</text>
+        <text x="340" y="128" fill="#56708a" font-size="9" font-family="IBM Plex Mono" text-anchor="middle">축소방안 연구</text>
+
+        <!-- Phase 3: Policy design -->
+        <circle cx="530" cy="90" r="8" fill="#0d1117" stroke="#e0a040" stroke-width="2"/>
+        <text x="530" y="94" fill="#e0a040" font-size="8" font-family="IBM Plex Mono" text-anchor="middle">3</text>
+        <text x="530" y="75" fill="#8fa3bc" font-size="10" font-family="IBM Plex Mono" text-anchor="middle">2027</text>
+        <text x="530" y="115" fill="#e0a040" font-size="9.5" font-family="IBM Plex Mono" text-anchor="middle">제도·규제</text>
+        <text x="530" y="128" fill="#56708a" font-size="9" font-family="IBM Plex Mono" text-anchor="middle">보완 논의</text>
+
+        <!-- Phase 4: Execution -->
+        <circle cx="720" cy="90" r="8" fill="#0d1117" stroke="#4caf82" stroke-width="2"/>
+        <text x="720" y="94" fill="#4caf82" font-size="8" font-family="IBM Plex Mono" text-anchor="middle">4</text>
+        <text x="720" y="75" fill="#8fa3bc" font-size="10" font-family="IBM Plex Mono" text-anchor="middle">2028+</text>
+        <text x="720" y="115" fill="#4caf82" font-size="9.5" font-family="IBM Plex Mono" text-anchor="middle">실질적 BS</text>
+        <text x="720" y="128" fill="#56708a" font-size="9" font-family="IBM Plex Mono" text-anchor="middle">축소 가능</text>
+
+        <!-- Connecting lines with gradient colors -->
+        <line x1="158" y1="90" x2="332" y2="90" stroke="#e0a040" stroke-width="1.5" stroke-opacity="0.5"/>
+        <line x1="348" y1="90" x2="522" y2="90" stroke="#e0a040" stroke-width="1.5" stroke-opacity="0.5"/>
+        <line x1="538" y1="90" x2="712" y2="90" stroke="#4caf82" stroke-width="1.5" stroke-opacity="0.5"/>
+
+        <!-- Note -->
+        <text x="410" y="165" fill="#56708a" font-size="9.5" font-family="IBM Plex Mono" text-anchor="middle">* 준비금 부족 리스크 방지 위한 사전 제도 정비가 선행 조건 — J.P. Morgan</text>
+      </svg>
+    </div>
+
+    <div class="prose">
+      <p>결론적으로 대차대조표 어젠다는 방향성에 있어서는 FOMC 전반의 공감을 이끌어낼 수 있지만, 실행의 타임라인은 시장이 기대하는 것보다 훨씬 길다. 준비금 수요 축소는 단순한 규모 조정이 아닌 복합적인 제도 변화를 수반하는 다년간 프로젝트임을 인식해야 한다.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ── SECTION 3: COMMUNICATIONS ── -->
+  <section class="section">
+    <h2 class="section-title"><span class="section-num">03</span> 커뮤니케이션: 말처럼 쉽지 않다</h2>
+
+    <div class="prose">
+      <p>Warsh의 세 번째 주요 어젠다는 <strong>연준 커뮤니케이션 개혁</strong>이다. 그는 포워드 가이던스를 줄여야 한다는 점을 여러 번 강조했다. 포워드 가이던스가 정책결정자들의 이후 판단을 미리 고정시켜버리는 문제가 있다는 것이다. FOMC도 이 의제를 논의할 의사는 있다. 그러나 파월이 올해 프레임워크 리뷰와 연계해 커뮤니케이션 전반을 검토했음에도 불구하고 "위원회 전반의 광범위한 지지를 얻는 안을 도출하지 못해 그냥 넘어갔다"고 밝힌 것은 의미심장하다.</p>
+
+      <p>특히 <em>Dot Plot(점도표)</em>의 수정이나 폐지는 위원회 전체 투표가 필요한 사안으로 보인다. 표면적으로는 외부의 혼란을 유발하는 요소로 지목받기도 하지만, 사실상 각 위원들이 Fed의 전반적 커뮤니케이션에 자신의 목소리를 낼 수 있는 중요한 통로다. 이를 없애려는 시도에 위원들이 반발할 가능성이 높다.</p>
+
+      <p>기자회견 형식은 다른 차원의 문제다. 의장의 재량에 속하는 영역이어서 위원회 동의 없이 변경할 수 있다. Warsh이 기자회견을 폐지하거나 축소할 것이라는 추측이 나오지만, J.P. Morgan은 그가 기존 형식을 유지할 것으로 본다. 이유는 단순하다. 기자회견은 의장이 회의 직후 정책 방향성의 내러티브를 <em>가장 먼저 주도적으로 제시</em>할 수 있는 무기이기 때문이다. 이를 포기하는 것은 자신의 커뮤니케이션 파워를 자발적으로 약화시키는 행위다.</p>
+
+      <p>6월 FOMC 회의는 Warsh에게 첫 번째 진짜 시험이 된다. 만약 그가 정책 유지(동결)에 내심 반대하면서도 위원회 분위기를 따라야 하는 상황에 처한다면, 기자회견에서 어떤 언어를 사용하느냐가 시장의 집중 관찰 대상이 될 것이다. 역대 의장들(버냉키, 옐런, 파월)은 기자회견에서 위원회 전체의 시각을 충실히 전달했다는 신뢰를 받아왔다. Warsh이 개인적 편향을 드러낸다는 인식이 생기면 기자회견의 권위 자체가 훼손된다.</p>
+    </div>
+
+    <div class="quote-block">
+      "We couldn't come up with anything that had really broad support on the Committee, and so we just moved on."
+      <div class="quote-attr">— Jerome Powell (현 의장), 커뮤니케이션 개혁 논의 결과에 대해 (2025년 프레임워크 리뷰 후)</div>
+    </div>
+
+    <!-- Communication Reform Matrix -->
+    <div class="section-label" style="margin-top:28px;">커뮤니케이션 어젠다별 실행 가능성</div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>어젠다</th>
+            <th>현황</th>
+            <th>재량 주체</th>
+            <th>위원회 수용도</th>
+            <th>J.P. Morgan 전망</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>포워드 가이던스 축소</td>
+            <td class="td-label">적극적 가이던스 관행</td>
+            <td class="td-label">위원회 동의 필요</td>
+            <td class="td-neu">중간</td>
+            <td class="td-neu">부분적 조정 가능</td>
+          </tr>
+          <tr>
+            <td>Dot Plot 수정/폐지</td>
+            <td class="td-label">위원 전원 참여</td>
+            <td class="td-label">위원회 투표 필요</td>
+            <td class="td-neg">낮음</td>
+            <td class="td-neg">단기 변화 어려움</td>
+          </tr>
+          <tr>
+            <td>기자회견 폐지/축소</td>
+            <td class="td-label">회의당 1회</td>
+            <td class="td-label">의장 단독 재량</td>
+            <td class="td-neu">가능</td>
+            <td class="td-pos">유지 예상</td>
+          </tr>
+          <tr>
+            <td>SEP 형식 변경</td>
+            <td class="td-label">분기별 전망 공표</td>
+            <td class="td-label">위원회 동의 필요</td>
+            <td class="td-neu">중간</td>
+            <td class="td-neu">논의 지속</td>
+          </tr>
+          <tr>
+            <td>인플레이션 기준 재정의</td>
+            <td class="td-label">Core PCE 2% 목표</td>
+            <td class="td-label">위원회 동의 필요</td>
+            <td class="td-neg">낮음</td>
+            <td class="td-neg">FOMC 전문가 저항</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ── SECTION 4: SCENARIO MATRIX ── -->
+  <section class="section">
+    <h2 class="section-title"><span class="section-num">04</span> 시나리오 분석: 어떤 Warsh이 오는가</h2>
+
+    <div class="prose">
+      <p>Warsh 시대의 연준을 전망하기 위해 가장 중요한 변수는 그가 <em>어떤 정책 노선을 실제로 견지하느냐</em>다. GFC 이후 매파였던 Warsh과 최근 비둘기적 신호를 보낸 Warsh 중 어떤 버전이 의장석에 앉느냐에 따라 시장 반응은 크게 달라진다.</p>
+    </div>
+
+    <div class="scenario-grid">
+      <div class="scenario-card highlight">
+        <span class="scenario-tag">Base Case (J.P. Morgan)</span>
+        <div class="scenario-title">비둘기 희망, 매파 현실</div>
+        <div class="scenario-desc">Warsh은 비둘기적 의지를 갖고 출발하지만 FOMC의 집단적 저항과 인플레이션 지속으로 금리 인하를 관철하지 못한다. 대차대조표와 커뮤니케이션 개혁에서 소폭 성과를 내는 정도에 그친다. 시장 충격은 제한적이지만 기대 실망 가능성 내재.</div>
+      </div>
+      <div class="scenario-card">
+        <span class="scenario-tag">Bull Scenario</span>
+        <div class="scenario-title">Warsh의 설득 성공</div>
+        <div class="scenario-desc">인플레이션 지표가 빠르게 둔화되고 Warsh이 트림평균 논거로 위원회 과반을 설득. 2026년 하반기 금리 인하 2~3회 현실화. 장기채 랠리 + 달러 약세. 가능성 낮지만 금리 하락 베팅의 업사이드 리스크.</div>
+      </div>
+      <div class="scenario-card">
+        <span class="scenario-tag">Bear Scenario</span>
+        <div class="scenario-title">인플레 재가속 + 갈등</div>
+        <div class="scenario-desc">관세 충격 등으로 인플레이션이 재가속. 위원회 내부 갈등 심화. Warsh의 기자회견 발언이 개인적 편향으로 읽히며 시장 혼란 야기. 장기 금리 급등, 연준 신뢰 훼손 우려.</div>
+      </div>
+      <div class="scenario-card">
+        <span class="scenario-tag">Wild Card</span>
+        <div class="scenario-title">Warsh의 매파 복귀</div>
+        <div class="scenario-desc">취임 후 실제로는 GFC 시절 매파적 스탠스로 회귀. 시장의 금리 인하 기대를 완전히 분쇄. 단기물 급등, 커브 역전 심화. 가능성 낮지만 현재 포지셔닝상 가장 충격적인 시나리오.</div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ── SECTION 5: POLICY SIGNAL DASHBOARD ── -->
+  <section class="section">
+    <h2 class="section-title"><span class="section-num">05</span> 정책 신호 대시보드</h2>
+
+    <div class="section-label">주요 매크로·정책 지표 현황</div>
+
+    <div class="signal-grid">
+      <div class="signal-item">
+        <div class="signal-name">연방기금금리 목표</div>
+        <div class="signal-val">3.50–3.75%</div>
+        <div class="signal-dir dir-hawk">↔ 3회 연속 동결</div>
+      </div>
+      <div class="signal-item">
+        <div class="signal-name">Core PCE (전년비)</div>
+        <div class="signal-val">~2.97%</div>
+        <div class="signal-dir dir-hawk">↑ 목표 상회</div>
+      </div>
+      <div class="signal-item">
+        <div class="signal-name">Dallas 트림평균 PCE</div>
+        <div class="signal-val">2.33%</div>
+        <div class="signal-dir dir-neutral">→ 목표 근접</div>
+      </div>
+      <div class="signal-item">
+        <div class="signal-name">Core-Trimmed 스프레드</div>
+        <div class="signal-val">64bp</div>
+        <div class="signal-dir dir-neutral">→ Warsh 논거</div>
+      </div>
+      <div class="signal-item">
+        <div class="signal-name">4월 FOMC 이탈표</div>
+        <div class="signal-val">4명 (8:4)</div>
+        <div class="signal-dir dir-hawk">↑ 1992년 이후 최대</div>
+      </div>
+      <div class="signal-item">
+        <div class="signal-name">Warsh 취임 예정일</div>
+        <div class="signal-val">5월 15일</div>
+        <div class="signal-dir dir-neutral">→ 6월 FOMC 주재</div>
+      </div>
+    </div>
+
+    <!-- Key Policy Tension Chart -->
+    <div class="chart-container" style="margin-top:24px;">
+      <div class="chart-title">Warsh 어젠다 vs. FOMC 구조적 제약 — 긴장 지형도</div>
+      <div class="chart-sub">각 정책 영역별 Warsh의 의지(X축)와 실행 가능성(Y축) 매핑</div>
+
+      <svg viewBox="0 0 820 360" xmlns="http://www.w3.org/2000/svg">
+        <!-- Background quadrants -->
+        <rect x="80" y="30" width="330" height="145" fill="rgba(224,92,92,0.04)"/>
+        <rect x="410" y="30" width="340" height="145" fill="rgba(224,160,64,0.04)"/>
+        <rect x="80" y="175" width="330" height="145" fill="rgba(224,160,64,0.04)"/>
+        <rect x="410" y="175" width="340" height="145" fill="rgba(76,175,130,0.05)"/>
+
+        <!-- Quadrant labels -->
+        <text x="245" y="110" fill="rgba(224,92,92,0.25)" font-size="22" font-family="DM Serif Display" text-anchor="middle">HIGH WILL / LOW CAN</text>
+        <text x="580" y="110" fill="rgba(224,160,64,0.25)" font-size="22" font-family="DM Serif Display" text-anchor="middle">HIGH WILL / HIGH CAN</text>
+        <text x="245" y="260" fill="rgba(224,160,64,0.2)" font-size="22" font-family="DM Serif Display" text-anchor="middle">LOW WILL / LOW CAN</text>
+        <text x="580" y="260" fill="rgba(76,175,130,0.2)" font-size="22" font-family="DM Serif Display" text-anchor="middle">LOW WILL / HIGH CAN</text>
+
+        <!-- Axes -->
+        <line x1="80" y1="175" x2="750" y2="175" stroke="#253447" stroke-width="1.5"/>
+        <line x1="410" y1="30" x2="410" y2="320" stroke="#253447" stroke-width="1.5"/>
+        <text x="415" y="340" fill="#56708a" font-size="10" font-family="IBM Plex Mono">낮은 의지 →</text>
+        <text x="580" y="340" fill="#56708a" font-size="10" font-family="IBM Plex Mono">높은 의지 →</text>
+        <text x="68" y="80" fill="#56708a" font-size="10" font-family="IBM Plex Mono" text-anchor="middle" transform="rotate(-90,68,80)">높은 가능성 ↑</text>
+        <text x="68" y="260" fill="#56708a" font-size="10" font-family="IBM Plex Mono" text-anchor="middle" transform="rotate(-90,68,260)">낮은 가능성 ↑</text>
+
+        <!-- Axis titles -->
+        <text x="415" y="17" fill="#8fa3bc" font-size="11" font-family="IBM Plex Mono">실행 가능성 (높음)</text>
+        <text x="415" y="330" fill="#8fa3bc" font-size="11" font-family="IBM Plex Mono">Warsh 의지 →</text>
+
+        <!-- Data points -->
+        <!-- Rate cuts: high will, low feasibility -->
+        <circle cx="580" cy="270" r="14" fill="rgba(224,92,92,0.2)" stroke="#e05c5c" stroke-width="1.5"/>
+        <text x="580" y="274" fill="#e05c5c" font-size="9" font-family="IBM Plex Mono" text-anchor="middle">금리인하</text>
+
+        <!-- Trimmed mean target: high will, low feasibility -->
+        <circle cx="520" cy="250" r="12" fill="rgba(224,92,92,0.15)" stroke="#e05c5c" stroke-width="1.5"/>
+        <text x="520" y="254" fill="#e05c5c" font-size="9" font-family="IBM Plex Mono" text-anchor="middle">목표재정의</text>
+
+        <!-- AI dove: high will, very low -->
+        <circle cx="620" cy="290" r="11" fill="rgba(224,92,92,0.12)" stroke="#e05c5c" stroke-width="1"/>
+        <text x="620" y="294" fill="#e05c5c" font-size="9" font-family="IBM Plex Mono" text-anchor="middle">AI논거</text>
+
+        <!-- Rates > BS: high will, high feasibility -->
+        <circle cx="600" cy="80" r="14" fill="rgba(76,175,130,0.2)" stroke="#4caf82" stroke-width="1.5"/>
+        <text x="600" y="77" fill="#4caf82" font-size="9" font-family="IBM Plex Mono" text-anchor="middle">금리우선</text>
+        <text x="600" y="89" fill="#4caf82" font-size="9" font-family="IBM Plex Mono" text-anchor="middle">정책</text>
+
+        <!-- BS smaller direction: medium will, medium feasibility -->
+        <circle cx="540" cy="140" r="13" fill="rgba(224,160,64,0.18)" stroke="#e0a040" stroke-width="1.5"/>
+        <text x="540" y="137" fill="#e0a040" font-size="9" font-family="IBM Plex Mono" text-anchor="middle">BS축소</text>
+        <text x="540" y="149" fill="#e0a040" font-size="9" font-family="IBM Plex Mono" text-anchor="middle">방향성</text>
+
+        <!-- Press conf reform: medium will, high feasibility -->
+        <circle cx="460" cy="70" r="12" fill="rgba(76,175,130,0.15)" stroke="#4caf82" stroke-width="1.5"/>
+        <text x="460" y="74" fill="#4caf82" font-size="9" font-family="IBM Plex Mono" text-anchor="middle">기자회견</text>
+
+        <!-- Dot plot: high will, low feasibility -->
+        <circle cx="560" cy="230" r="11" fill="rgba(224,92,92,0.12)" stroke="#e05c5c" stroke-width="1"/>
+        <text x="560" y="234" fill="#e05c5c" font-size="9" font-family="IBM Plex Mono" text-anchor="middle">Dot Plot</text>
+
+        <!-- Comm reform general -->
+        <circle cx="490" cy="120" r="12" fill="rgba(224,160,64,0.15)" stroke="#e0a040" stroke-width="1.5"/>
+        <text x="490" y="116" fill="#e0a040" font-size="9" font-family="IBM Plex Mono" text-anchor="middle">FWD</text>
+        <text x="490" y="128" fill="#e0a040" font-size="9" font-family="IBM Plex Mono" text-anchor="middle">가이던스↓</text>
+      </svg>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ── SECTION 6: STRATEGIC IMPLICATIONS ── -->
+  <section class="section">
+    <h2 class="section-title"><span class="section-num">06</span> 전략적 시사점</h2>
+
+    <div class="prose">
+      <p>Warsh 체제 연준에 대한 가장 큰 오독 리스크는 <em>의장 교체 = 정책 전환</em>이라는 등식이다. 연준은 12인 위원회 체제이며, 의장의 영향력은 크지만 절대적이지 않다. 버냉키의 전례처럼, '헬리콥터 벤'이라는 별명에도 불구하고 2006년 첫 반년 동안 오히려 시장 예상보다 매파적으로 움직인 사례가 있다. Warsh의 실제 행동 반경은 취임 초기 몇 달간 확인되어야 한다.</p>
+
+      <p>채권 투자 관점에서 핵심은 <strong>단기 금리 인하 기대의 재조정</strong>이다. 시장이 Warsh 취임으로 금리 인하 경로가 빨라질 것을 가격에 반영했다면, FOMC의 구조적 저항이 드러날 때 단기물 조정 압력이 커질 수 있다. 반면 장기물은 대차대조표 축소 어젠다에 대한 기대가 장기 용량 공급 우려를 자극할 수 있으나, 실행 타임라인이 수년 단위라는 점에서 단기적 임팩트는 크지 않다.</p>
+
+      <p>한국 채권시장 관점에서 Warsh 체제는 미국 금리 인하 속도 지연 → 달러 강세 유지 → 원화 약세 → 한국은행 추가 인하 여력 제약이라는 연쇄 경로를 통해 영향을 미친다. 다만 글로벌 위험 회피 심리나 관세 충격에 따른 경기 하방 위험이 커진다면, 미국의 금리 인하가 지연되더라도 한국은행이 독자적으로 선제 완화에 나설 수 있다는 시나리오도 배제할 수 없다.</p>
+    </div>
+
+    <div class="implication-box">
+      <h4>실무 체크포인트</h4>
+      <ul class="impl-list">
+        <li><strong>6월 FOMC 기자회견 언어 분석:</strong> Warsh의 첫 기자회견에서 위원회 컨센서스와 개인 견해 사이의 간극이 드러나는지 주목. "데이터 의존"보다 강한 표현이 나오면 비둘기 신호, 신중한 어조 유지면 동결 지속 확인.</li>
+        <li><strong>트림평균 vs Core PCE 갭 모니터링:</strong> 64bp 갭이 좁혀지면 Warsh 논거 약화. 반대로 갭 확대 시 트림평균 기준 목표 재정의 논쟁 재점화 가능성.</li>
+        <li><strong>FOMC 반대표 패턴:</strong> 매파 이탈표 3회 연속에서 변화가 생기는지 추적. 비둘기 이탈표가 등장하기 시작하면 정책 전환의 전조.</li>
+        <li><strong>Dot Plot 변화:</strong> 9월 SEP에서 2026·2027년 중앙 금리 전망이 낮아지는지 확인. 이것이 공식적 경로 전환의 가장 명확한 시그널.</li>
+        <li><strong>준비금 수요 관련 규제 논의:</strong> Fed 스탭 리포트나 BIS 채널을 통해 준비금 축소 방안 검토 여부가 시장에 알려지면 장기물 수급 부담 논의가 다시 불붙을 수 있음.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer class="report-footer">
+    <div class="footer-org">
+      카카오뱅크 채권리서치팀<br>
+      KakaoBank Fixed Income Research<br>
+      2026.05.01
+    </div>
+    <div class="footer-disc">
+      본 자료는 J.P. Morgan North America Economic Research (Michael Feroli, 2026.05.01) 원문을 기초로 카카오뱅크 채권리서치팀이 재구성한 내용입니다. 투자 권유 목적이 아니며, 내부 참고용으로만 활용하시기 바랍니다.
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>
